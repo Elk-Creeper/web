@@ -1,64 +1,139 @@
-.appointment-page {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.sidebar {
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+.container {
+    font-family: Arial, sans-serif;
+    margin-left: 200px;
+    width: 1000px;
+    padding: 10px;
 }
 
 h1 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-left: 80px;
+    margin-top: 15px;
 }
 
-.appointment-list {
-    border: 1px solid #ddd;
-    padding: 20px;
-    background-color: #f9f9f9;
-    margin-bottom: 20px;
+/* Style for the search input container */
+.search-container {
+  position: relative;
+  display: flex;
 }
 
-.appointment-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #fff;
+/* Style for the search icon */
+.search-icon {
+  position: absolute;
+  top: 45%;
+  left: 80px; /* Adjust the left position as needed */
+  transform: translateY(-50%);
+  color: black; /* Icon color */
 }
 
-.appointment-item h3 {
-    font-size: 18px;
+/* Add CSS styles for the search input */
+.search-input {
+    padding: 8px 30px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    border: 1px solid #1f1f1f;
+    border-radius: 25px;
+    width: 100%;
+    height: 25px;
+    max-width: 300px; /* Adjust the width as needed */
+    font-size: 14px;
+    outline: none;
+    margin-left: 70px;
 }
 
-.appointment-form {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 20px;
-}
-
-form {
+/* Filter container styles */
+.filter-container {
     display: flex;
-    flex-direction: column;
+    margin-inline: 20px;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
+.filter-input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 120px;
+    font-size: 11px;
 }
 
-select,
-input[type="date"],
-input[type="time"],
-button {
-    margin-bottom: 10px;
+.custom-table {
+    width: 90%;
+    border-collapse: collapse;
     padding: 10px;
-    border: 1px solid #ccc;
 }
 
-button {
-    background-color: #1e7566;
-    color: white;
+/*table*/
+td {
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px; /* Add spacing between buttons if needed */
+    margin-left: 0;
+}
+
+.approve-button,
+.disapprove-button {
+    width: 90px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+    font-size: 12px; /* Adjust the font size as needed */
+}
+
+.approve-button {
+    padding: 5px 10px;
+    background-color: #447D60;
+    color: #fff;
     border: none;
     cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
 }
 
-button:hover {
-    background-color: #3fc589;
+.approve-button:hover {
+    background-color: #afe6ca;
+    color: black;
+}
+
+.disapprove-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #983232;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.disapprove-button:hover {
+    background-color: #e17e7e;
+    color: black;
 }

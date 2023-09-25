@@ -1,0 +1,62 @@
+
+.container {
+    font-family: Arial, sans-serif;
+    margin-left: 200px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-left: 70px;
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: 70px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.approve-button {
+    padding: 5px 10px;
+    background-color: #447D60;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.approve-button:hover {
+    background-color: #afe6ca;
+    color: black;
+}
+
+.disapprove-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #983232;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.disapprove-button:hover {
+    background-color: #e17e7e;
+    color: black;
+}

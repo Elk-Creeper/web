@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -9,6 +9,7 @@ import {
   faNewspaper,
   faGear,
   faArrowRightFromBracket,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/logo.png';
 
@@ -20,6 +21,9 @@ const SidebarContainer = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
+  margin-top: 0px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 `;
 
 const SidebarHeader = styled.div`
@@ -27,6 +31,7 @@ const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   background-color: #1e7566;
+  border-top-right-radius: 50px;
 `;
 
 const SidebarLogo = styled.img`
@@ -57,7 +62,7 @@ const SidebarMenu = styled.ul`
   margin: 0;
   flex-grow: 1; /* Allow the menu to grow and push Settings/Logout to the bottom */
 
-  .Link {
+  .link {
     color: white;
     text-decoration: none;
   }
@@ -72,22 +77,20 @@ const SidebarMenuItem = styled.li`
   margin-left: 40px;
   margin-top: 4px;
   justify-content: justify;
-
-  &:hover {
-    background-color: white;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-    color: green;
-
-    .icon {
-      color: #1E7566;
-    }
-  }
+  background-color: ${(props) => (props.isActive ? 'white' : 'transparent')};
+  border-radius: 50px;
+  color: ${(props) => (props.isActive ? '#1e7566' : 'white')};
+  width: 160px;
 
   .icon {
     margin-right: 10px;
-    color: white;
+    color: ${(props) => (props.isActive ? '#1e7566' : 'white')};
     transition: all 0.3s ease;
+  }
+
+  .link:hover {
+    text-decoration: none; /* Remove underline on hover */
+    color: #1e7566;
   }
 `;
 
@@ -96,11 +99,16 @@ const BottomMenuItems = styled.div`
 `;
 
 const Sidebar = () => {
+  const location = useLocation();
   const [activeMenu, setActiveMenu] = useState('');
 
-  const handleMenuClick = (menuName) => {
-    setActiveMenu(menuName);
-  };
+  useEffect(() => {
+    // Extract the pathname from the location
+    const currentPath = location.pathname;
+
+    // Set the active menu based on the current path
+    setActiveMenu(currentPath);
+  }, [location]);
 
   return (
     <SidebarContainer>
@@ -113,56 +121,48 @@ const Sidebar = () => {
       </SidebarHeader>
 
       <SidebarMenu>
-        <Link to="/dashboard">
-        <SidebarMenuItem
-          onClick={() => handleMenuClick('dashboard')}
-          className={activeMenu === 'dashboard' ? 'active' : ''}
-        >
-          <FontAwesomeIcon icon={faHome} className="icon" />
-          Dashboard
-        </SidebarMenuItem>
-        </Link>
-        <SidebarMenuItem
-          onClick={() => handleMenuClick('transactions')}
-          className={activeMenu === 'transactions' ? 'active' : ''}
-        >
-          <Link to="/transaction">
-          <FontAwesomeIcon icon={faReceipt} className="icon" />
-          Transactions
-          </Link>
-        </SidebarMenuItem>
-
-        <Link to="/appointments">
-        <SidebarMenuItem
-          onClick={() => handleMenuClick('appointments')}
-          className={activeMenu === 'appointments' ? 'active' : ''}
-        >
-          
-          <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
-           Appointments
-        </SidebarMenuItem>
+        <Link to="/dashboard" className="link">
+          <SidebarMenuItem isActive={activeMenu === '/dashboard'}>
+            <FontAwesomeIcon icon={faHome} className="icon" />
+            Dashboard
+          </SidebarMenuItem>
         </Link>
 
+        <Link to="/transactions" className="link">
+          <SidebarMenuItem isActive={activeMenu === '/transactions'}>
+            <FontAwesomeIcon icon={faReceipt} className="icon" />
+            Service Requests
+          </SidebarMenuItem>
+        </Link>
+
+        <Link to="/appointments" className="link">
+          <SidebarMenuItem isActive={activeMenu === '/appointments'}>
+            <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
+            Appointments
+          </SidebarMenuItem>
+        </Link>
+        
         <SidebarMenuItem
-          onClick={() => handleMenuClick('news')}
-          className={activeMenu === 'news' ? 'active' : ''}
+          onClick={() => setActiveMenu('/news')}
+          isActive={activeMenu === '/news'}
         >
           <FontAwesomeIcon icon={faNewspaper} className="icon" />
           News
         </SidebarMenuItem>
+
       </SidebarMenu>
 
       <BottomMenuItems>
         <SidebarMenuItem
-          onClick={() => handleMenuClick('settings')}
-          className={activeMenu === 'settings' ? 'active' : ''}
+          onClick={() => setActiveMenu('/settings')}
+          isActive={activeMenu === '/settings'}
         >
           <FontAwesomeIcon icon={faGear} className="icon" />
           Settings
         </SidebarMenuItem>
         <SidebarMenuItem
-          onClick={() => handleMenuClick('logout')}
-          className={activeMenu === 'logout' ? 'active' : ''}
+          onClick={() => setActiveMenu('/logout')}
+          isActive={activeMenu === '/logout'}
         >
           <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon" />
           Logout

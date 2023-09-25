@@ -126,7 +126,7 @@ function Signup() {
                 </button>
 
                 <h6>
-                    Alreaady have an account? <a href="/login">Login</a>
+                    Alreaady have an account? <a href ="/login">Login</a>
                 </h6>
             </div>
         </div >

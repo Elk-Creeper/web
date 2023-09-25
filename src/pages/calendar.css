@@ -1,0 +1,121 @@
+/* Calendar container */
+.calendar {
+    margin-left: 420px;
+    padding: 10px;
+    width: 300px;
+}
+
+/* Calendar title */
+h2 {
+    font-size: 24px;
+    margin: 20px 0;
+    margin-left: 100px;
+}
+
+/* Calendar component container */
+.react-calendar {
+    max-width: 300px;
+    /* Adjust the width as needed */
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px #b1f8d8;
+    color:white;
+}
+
+/* Calendar navigation buttons */
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #307A59;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+.react-calendar__navigation button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.react-calendar__navigation button:hover {
+    background-color: #307A59;
+}
+
+/* Calendar day labels */
+.react-calendar__month-view__weekdays {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 5px;
+    padding: 5px;
+    background-color: #307A59;
+}
+
+/* Calendar day cells */
+.react-calendar__month-view__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 7px;
+    padding: 10px;
+}
+
+/* Calendar day cell */
+.react-calendar__month-view__days__day {
+    background-color: #307A59;
+    border: 1px solid #307A59;
+    border-radius: 25px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    text-justify: auto;
+}
+
+/* Calendar day cell (hover) */
+.react-calendar__month-view__days__day:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+/* Add Event button */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Events list */
+h3 {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .react-calendar {
+        max-width: 100%;
+    }
+}
