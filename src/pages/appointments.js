@@ -167,16 +167,16 @@ function App() {
         let filteredResult = filteredData;
 
         if (departmentFilter) {
-            filteredResult = filteredResult.filter(item => item.department.toLowerCase().includes(departmentFilter.toLowerCase()));
+            filteredResult = filteredResult.filter(item => item.department().includes(departmentFilter()));
         }
         if (dateFilter) {
             filteredResult = filteredResult.filter(item => item.date && item.date.toDate().toLocaleDateString().includes(dateFilter));
         }
         if (personnelFilter) {
-            filteredResult = filteredResult.filter(item => item.personnel.toLowerCase().includes(personnelFilter.toLowerCase()));
+            filteredResult = filteredResult.filter(item => item.personnel().includes(personnelFilter()));
         }
         if (statusFilter) {
-            filteredResult = filteredResult.filter(item => item.status.toLowerCase().includes(statusFilter.toLowerCase()));
+            filteredResult = filteredResult.filter(item => item.status().includes(statusFilter()));
         }
 
         return filteredResult;
@@ -201,49 +201,59 @@ function App() {
             </div>
             <div className="container">
                 <h1>Appointment Records</h1>
+                
                 {/* Search input */}
-                <div className="search-container">
+                <div className="search-containers">
                     <FaSearch className="search-icon"></FaSearch>
                     <input
-                    type="text"
-                    placeholder="Search by Name"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="search-input"
-                />
+                        type="text"
+                        placeholder="Search by Name"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="search-input"
+                    />
 
-                {/* Filter input fields or select dropdowns */}
-                <div className="filter-container">
-                    <input
-                        type="text"
-                        placeholder="Filter by Department"
-                        value={departmentFilter}
-                        onChange={(e) => setDepartmentFilter(e.target.value)}
-                        className="filter-input"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Filter by Date"
-                        value={dateFilter}
-                        onChange={(e) => setDateFilter(e.target.value)}
-                        className="filter-input"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Filter by Personnel"
-                        value={personnelFilter}
-                        onChange={(e) => setPersonnelFilter(e.target.value)}
-                        className="filter-input"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Filter by Status"
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                        className="filter-input"
-                    />
+                    {/* Filter dropdowns */}
+                    <div className="filter-container">
+                        <select
+                            value={departmentFilter}
+                            onChange={(e) => setDepartmentFilter(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="">Filter by Department</option>
+                            <option value="Department1">Department1</option>
+                            <option value="Department2">Department2</option>
+                        </select>
+                        <input
+                            type="text"
+                            placeholder="Filter by Date"
+                            value={dateFilter}
+                            onChange={(e) => setDateFilter(e.target.value)}
+                            className="filter-input"
+                        />
+                        <select
+                            value={personnelFilter}
+                            onChange={(e) => setPersonnelFilter(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="">Filter by Personnel</option>
+                            <option value="Personnel1">Personnel1</option>
+                            <option value="Personnel2">Personnel2</option>
+                            {/* Add more options as needed */}
+                        </select>
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="">Filter by Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Disapproved">Disapproved</option>
+                            {/* Add more options as needed */}
+                        </select>
+                    </div>
                 </div>
-                </div>
+
                 <table {...getTableProps()} className="custom-table" style={{ border: "1px solid black" }}>
                     <thead>
                         {headerGroups.map((headerGroup) => (

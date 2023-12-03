@@ -18,47 +18,46 @@ h1 {
     margin-left: 80px;
     margin-top: 15px;
 }
-
 /* Style for the search input container */
-.search-container {
+.search-containers {
   position: relative;
   display: flex;
+  justify-content: flex-start; /* Align to the left */
 }
 
 /* Style for the search icon */
 .search-icon {
   position: absolute;
   top: 45%;
-  left: 80px; /* Adjust the left position as needed */
+  left: 10px; /* Adjust the left position as needed */
   transform: translateY(-50%);
   color: black; /* Icon color */
 }
 
 /* Add CSS styles for the search input */
 .search-input {
-    padding: 8px 30px;
-    margin-top: 20px;
-    margin-bottom: 25px;
-    border: 1px solid #1f1f1f;
-    border-radius: 25px;
-    width: 100%;
-    height: 25px;
-    max-width: 300px; /* Adjust the width as needed */
-    font-size: 14px;
-    outline: none;
-    margin-left: 70px;
+  padding: 8px 30px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  border: 1px solid #1f1f1f;
+  border-radius: 25px;
+  width: 100%;
+  height: 25px;
+  font-size: 14px;
+  outline: none;
+  margin-left: 10px; /* Adjusted to align with the left side */
 }
 
 /* Filter container styles */
 .filter-container {
     display: flex;
-    margin-inline: 20px;
     align-items: center;
     margin-top: 15px;
     margin-bottom: 20px;
 }
 
-.filter-input {
+.filter-input,
+.filter-select {
     padding: 8px;
     margin-right: 10px;
     border: 1px solid black;
@@ -66,6 +65,18 @@ h1 {
     width: 120px;
     font-size: 11px;
 }
+
+/* Search by Name input styles */
+.search-input {
+    padding: 8px 30px;
+    border: 1px solid #1f1f1f;
+    border-radius: 25px;
+    width: 100%;
+    height: 25px;
+    font-size: 14px;
+    outline: none;
+}
+
 
 .custom-table {
     width: 90%;
