@@ -5,6 +5,8 @@ import { useTable } from "react-table";
 import { FaSearch } from 'react-icons/fa'; // Import icons
 import './appointment.css';
 import Sidebar from "../components/sidebar";
+import logo from '../assets/logo.png';
+import notification from '../assets/icons/Notification.png';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -167,16 +169,16 @@ function App() {
         let filteredResult = filteredData;
 
         if (departmentFilter) {
-            filteredResult = filteredResult.filter(item => item.department().includes(departmentFilter()));
+            filteredResult = filteredResult.filter(item => item.department.includes(departmentFilter));
         }
         if (dateFilter) {
             filteredResult = filteredResult.filter(item => item.date && item.date.toDate().toLocaleDateString().includes(dateFilter));
         }
         if (personnelFilter) {
-            filteredResult = filteredResult.filter(item => item.personnel().includes(personnelFilter()));
+            filteredResult = filteredResult.filter(item => item.personnel.includes(personnelFilter));
         }
         if (statusFilter) {
-            filteredResult = filteredResult.filter(item => item.status().includes(statusFilter()));
+            filteredResult = filteredResult.filter(item => item.status.includes(statusFilter));
         }
 
         return filteredResult;
@@ -199,8 +201,16 @@ function App() {
             <div className="sidebar">
             <Sidebar />
             </div>
-            <div className="container">
-                <h1>Appointment Records</h1>
+
+            <div className='container'>
+                <div className="header">
+                    <div className='icons'>
+                        <h2>Appointments</h2>
+                        <img src={notification} alt="Notification.png" className='notif-icon' />
+                        <img src={logo} alt="logo" className='account-img' />
+                        <div className='account-name'><h1>Admin</h1></div>
+                    </div>
+                </div>
                 
                 {/* Search input */}
                 <div className="search-containers">
@@ -220,9 +230,25 @@ function App() {
                             onChange={(e) => setDepartmentFilter(e.target.value)}
                             className="filter-select"
                         >
-                            <option value="">Filter by Department</option>
-                            <option value="Department1">Department1</option>
-                            <option value="Department2">Department2</option>
+                            <option value="">Filter by Offices</option>
+                            <option value="Municipal Mayor's Office">Municipal mayor's Office</option>
+                            <option value="Municipal Vice Mayor's Office">Municipal Vice Mayor's Office</option>
+                            <option value="Sangguniang Bayan Office">Sangguniang Bayan Office</option>
+                            <option value="Municipal Accountant's Office">Municipal Accountant's Office</option>
+                            <option value="Municipal Agricultural Office">Municipal Agricultural Office</option>
+                            <option value="Municipal Assessor's Office">Municipal Assessor's Office</option>
+                            <option value="Municipal Civil Registrar Office">Municipal Civil Registrar Office</option>
+                            <option value="Municipal Budget Office">Municipal Budget Office</option>
+                            <option value="Municipal Disaster Risk Reduction and Management Office">Municipal Disaster Risk Reduction and Management Office</option>
+                            <option value="Municipal Engineering Office">Municipal Engineering Office</option>
+                            <option value="Municipal Environment and Natural Resources Office">Municipal Environment and Natural Resources Office</option>
+                            <option value="Municipal Health Office">Municipal Health Office</option>
+                            <option value="Municipal Human Resource and Management Office">Municipal Human Resource and Management Office</option>
+                            <option value="Municipal Planning and Development Office">Municipal Planning and Development Office</option>
+                            <option value="Municipal Social Welfare and Development Office">Municipal Social Welfare and Development Office</option>
+                            <option value="Municipal Treasurer's Office">Municipal Treasurer's Office</option>
+                            <option value="General Service Office">General Service Office</option>
+                            <option value="Public Employment Service Office">Public Employment Service Office</option>
                         </select>
                         <input
                             type="text"
@@ -237,9 +263,21 @@ function App() {
                             className="filter-select"
                         >
                             <option value="">Filter by Personnel</option>
-                            <option value="Personnel1">Personnel1</option>
-                            <option value="Personnel2">Personnel2</option>
-                            {/* Add more options as needed */}
+                            <option value="Hon. Melanie Abarientos-Garcia">Hon. Melanie Abarientos-Garcia</option>
+                            <option value="Hon. Florencia G. Bargo">Hon. Florencia G. Bargo</option>
+                            <option value="Mr. Allan Ronquillo">Mr. Allan Ronquillo</option>
+                            <option value="Ms. Deta P. Gaspar, CPA">Ms. Deta P. Gaspar, CPA</option>
+                            <option value="Engr. Alex B. Idanan">Engr. Alex B. Idanan</option>
+                            <option value="Mr. Elberto R. Adulta">Mr. Elberto R. Adulta</option>
+                            <option value="Mr. Ceasar P. Manalo">Mr. Ceasar P. Manalo</option>
+                            <option value="Mrs. Maria Elinar N. Ilagan">Mrs. Maria Elinar N. Ilagan</option>
+                            <option value="Mr. Laurence V. Rojo">Mr. Laurence V. Rojo</option>
+                            <option value="Engr. Fernando P Lojo Jr.">Engr. Fernando P Lojo Jr.</option>
+                            <option value="Dr. Jeffrey James B. Motos">Dr. Jeffrey James B. Motos</option>
+                            <option value="Ms. Ma. Glaiza C. Bermudo">Ms. Ma. Glaiza C. Bermudo</option>
+                            <option value="Eng. Paz C. Caguimbal">Eng. Paz C. Caguimbal</option>
+                            <option value="Ms.Ana C. Mangubat, RSW">Ms.Ana C. Mangubat, RSW</option>
+                            <option value="Mr. Dante A. Cadag">Mr. Dante A. Cadag</option>
                         </select>
                         <select
                             value={statusFilter}
@@ -254,7 +292,7 @@ function App() {
                     </div>
                 </div>
 
-                <table {...getTableProps()} className="custom-table" style={{ border: "1px solid black" }}>
+                <table {...getTableProps()} className="tables" style={{ border: "1px solid black" }}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>

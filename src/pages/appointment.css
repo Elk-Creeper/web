@@ -4,13 +4,82 @@
     top: 0;
     left: 0;
     overflow-y: auto;
+    z-index: 2; /* Set a higher z-index value for the sidebar */
 }
 
 .container {
     font-family: Arial, sans-serif;
     margin-left: 200px;
-    width: 1000px;
+    width: 100%;
     padding: 10px;
+    background-color: #fff;
+    position: relative; /* Add relative positioning for stacking context */
+    z-index: 1; /* Set a lower z-index value for the container */
+    margin-top: 20px;
+    overflow-x: hidden;
+}
+
+.header {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #fff;
+    z-index: 1; /* Set a lower z-index value for the header */
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
+}
+
+.header h2 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 15px;
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+.notif-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 10px; /* Adjust this margin as needed */
+}
+
+.account-img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    border: 1px gray solid;
+    border-radius: 50px;
+    margin-right: 10px; /* Adjust this margin as needed */
+}
+
+.account-name {
+    background-color: #307A59;
+    width: 115px;
+    height: 33px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
@@ -22,10 +91,10 @@ h1 {
 .search-containers {
   position: relative;
   display: flex;
-  justify-content: flex-start; /* Align to the left */
+  justify-content: flex-start;
+  margin-top: 50px; 
 }
 
-/* Style for the search icon */
 .search-icon {
   position: absolute;
   top: 45%;
@@ -34,7 +103,6 @@ h1 {
   color: black; /* Icon color */
 }
 
-/* Add CSS styles for the search input */
 .search-input {
   padding: 8px 30px;
   margin-top: 20px;
@@ -77,11 +145,11 @@ h1 {
     outline: none;
 }
 
-
-.custom-table {
-    width: 90%;
+.tables {
+    width: 75%;
     border-collapse: collapse;
     padding: 10px;
+    margin-left: 70px;
 }
 
 /*table*/

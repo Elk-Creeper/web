@@ -6,6 +6,7 @@ import image4 from '../assets/adminpic.png';
 import image5 from '../assets/adminpic.png';
 import image6 from '../assets/calendar.png';
 import logo from '../assets/logo.png';
+import notification from '../assets/icons/Notification.png';
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, query, limit } from "firebase/firestore";
@@ -69,6 +70,8 @@ const Dashboard = ({ count }) => {
 
   const formattedTime = currentDateTime.toLocaleTimeString();
 
+
+  
   return (
     <div>
       <div className="sidebar">
@@ -76,7 +79,12 @@ const Dashboard = ({ count }) => {
       </div>
       <div className='container'>
         <div className="header">
-          Overview
+          <div className='icons'>
+            <h1>Overview</h1>
+              <img src={notification} alt="Notification.png" className='notif-icon'/>
+              <img src={logo} alt="logo" className='account-img'/>
+            <div className='account-name'><h1>Admin</h1></div>
+          </div>
         </div>
 
         <div className="clock">

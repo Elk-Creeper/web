@@ -4,6 +4,7 @@ import "./transactions.css";
 import Sidebar from "../components/sidebar";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import logo from '../assets/logo.png';
+import notification from '../assets/icons/Notification.png';
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, query, limit } from "firebase/firestore";
@@ -51,40 +52,45 @@ const App = () => {
                 <Sidebar />
             </div>
 
-            <div className="main-content">
-                <div className="container">
-                    <h1>Service Requests and Transaction Records</h1>
+            <div className='container'>
+                <div className="header">
+                    <div className='icons'>
+                        <h2>Transactions</h2>
+                        <img src={notification} alt="Notification.png" className='notif-icon' />
+                        <img src={logo} alt="logo" className='account-img' />
+                        <div className='account-name'><h1>Admin</h1></div>
+                    </div>
                 </div>
 
                 <div className='screen'>
                     <div className="categories-container">
                         <Link to="/birthReg" className="link">
                             <button className="categories1">
-                                <h5>Certificate of Live Birth</h5>
+                                <h6>Certificate of Live Birth</h6>
                             </button>
                         </Link>
 
                         <Link to="/marriageCert" className="link">
                             <button className="categories1">
-                                <h5>Marriage Certificate</h5>
+                                <h6>Marriage Certificate</h6>
                             </button>
                         </Link>
 
                         <Link to="/deathCert" className="link">
                             <button className="categories1">
-                                <h5>Certificate of Death Certificate</h5>
+                                <h6>Certificate of Death Certificate</h6>
                             </button>
                         </Link>
 
                         <Link to="/businessPermit" className="link">
                             <button className="categories1">
-                                <h5>Business Permit</h5>
+                                <h6>Business Permit</h6>
                             </button>
                         </Link>
 
                         <Link to="/job" className="link">
                             <button className="categories1">
-                                <h5>Job Application</h5>
+                                <h6>Job Application</h6>
                             </button>
                         </Link>
                     </div>

@@ -1,18 +1,88 @@
 .sidebar {
-  position: fixed;
-  height: 100%;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 2; /* Set a higher z-index value for the sidebar */
+}
+
+.container {
+    font-family: Arial, sans-serif;
+    margin-left: 200px;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    position: relative; /* Add relative positioning for stacking context */
+    z-index: 1; /* Set a lower z-index value for the container */
+    margin-top: 20px;
+    overflow-x: hidden;
+}
+
+.header {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #fff;
+    z-index: 1; /* Set a lower z-index value for the header */
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
+}
+
+.header h2 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 15px;
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+.notif-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 10px; /* Adjust this margin as needed */
+}
+
+.account-img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    border: 1px gray solid;
+    border-radius: 50px;
+    margin-right: 10px; /* Adjust this margin as needed */
+}
+
+.account-name {
+    background-color: #307A59;
+    width: 115px;
+    height: 33px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 body {
-  overflow-x: hidden;
-}
-
-/* transactions.css */
-.container {
-  margin-top: 20px;
   overflow-x: hidden;
 }
 
@@ -120,10 +190,14 @@ body {
   align-items: center;
 }
 
+.screen {
+  margin-top: 40px;
+  margin-left: -220px;
+}
+
 .categories-container {
   display: inline-block;
   flex-direction: column;
-  margin-left: 280px;
   margin-bottom: 20px;
 }
 
@@ -136,7 +210,7 @@ body {
 .categories3,
 .categories4,
 .categories5:hover {
-    background-color: rgb(51, 164, 102) 185, 106)/* Change the background color on hover as needed */
+    background-color: rgb(51, 164, 102)* Change the background color on hover as needed */
 }
 
 .categories1,
@@ -161,11 +235,11 @@ body {
   transition: background-color 0.3s;
 }
 
-.categories1 h5,
-.categories2 h5,
-.categories3 h5,
-.categories4 h5,
-.categories5 h5 {
+.categories1 h6,
+.categories2 h6,
+.categories3 h6,
+.categories4 h6,
+.categories5 h6 {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -175,7 +249,8 @@ body {
   border-radius: 5px;
   color: white;
   padding: 10px;
-  margin-top: 17px;
+  margin-top: 2px;
+  font-weight: 400;
 }
 
 .link {
