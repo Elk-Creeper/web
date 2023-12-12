@@ -5,6 +5,7 @@ import Sidebar from "../components/sidebar";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import logo from '../assets/logo.png';
 import notification from '../assets/icons/Notification.png';
+import { Bar } from 'react-chartjs-2';
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, query, limit } from "firebase/firestore";
@@ -17,13 +18,18 @@ const firebaseConfig = {
     messagingSenderId: "874813480248",
     appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
     measurementId: "G-LS66HXR3GT"
-};
+}; 
 
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 
 const App = () => {
     const [data, setData] = useState([]);
+    const [chartData, setChartData] = useState({});
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -33,19 +39,44 @@ const App = () => {
                 id: doc.id,
                 ...doc.data(),
             }));
+
+            // Extract relevant data for the chart
+            const chartLabels = items.map((item) => item.label); // Replace 'label' with the actual property name in your data
+            const chartValues = items.map((item) => item.value); // Replace 'value' with the actual property name in your data
+
+            // Set the data for the chart
+            setChartData({
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: 'Your Chart Label',
+                        data: chartValues,
+                        backgroundColor: 'rgba(75,192,192,0.6)',
+                        borderColor: 'rgba(75,192,192,1)',
+                        borderWidth: 1,
+                    },
+                ],
+            });
+
+            // Set the data for other components as needed
             setData(items);
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     const currentDateTime = new Date();
     const formattedTime = currentDateTime.toLocaleTimeString();
 
+    // Define chart options if needed
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+    
     return (
         <div className="app-container">
             <div className="sidebar">
@@ -58,7 +89,7 @@ const App = () => {
                         <h2>Transactions</h2>
                         <img src={notification} alt="Notification.png" className='notif-icon' />
                         <img src={logo} alt="logo" className='account-img' />
-                        <div className='account-name'><h1>Admin</h1></div>
+                        <div className='account-name'><h1>Civil Regi..</h1></div>
                     </div>
                 </div>
 
@@ -88,16 +119,18 @@ const App = () => {
                             </button>
                         </Link>
 
-                        <Link to="/job" className="link">
+                        <Link to="/job" className="link"> 
                             <button className="categories1">
                                 <h6>Job Application</h6>
                             </button>
                         </Link>
                     </div>
-                </div>
-            </div>
+                </div> 
+                
+            </div> 
         </div>
     );
 };
 
 export default App;
+  

@@ -15,8 +15,11 @@ import Marriage from './pages/marriageCert';
 import Death from './pages/deathCert';
 import Business from './pages/businessPermit';
 import JobApplication from './pages/job';
+import NewsForm from './pages/news';
+import NewsDetails from './pages/newsDetails';
 
 const Layout = () => {
+    
     return (
         <Router>
             <div className="app">
@@ -35,6 +38,8 @@ const Layout = () => {
                         <Route path="/deathCert" component={Death} />
                         <Route path="/businessPermit" component={Business} />
                         <Route path="/job" component={JobApplication} />
+                        <Route path="/news" component={NewsForm} />
+                        <Route path="/news/:id" component={NewsDetails} />
                     </Switch>
                 </MainContent>
             </div>

@@ -1,85 +1,85 @@
 .sidebar {
-    position: fixed;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow-y: auto;
-    z-index: 2; /* Set a higher z-index value for the sidebar */
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 2; /* Set a higher z-index value for the sidebar */
 }
 
 .container {
-    font-family: Arial, sans-serif;
-    margin-left: 200px;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    position: relative; /* Add relative positioning for stacking context */
-    z-index: 1; /* Set a lower z-index value for the container */
-    margin-top: 20px;
-    overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  margin-left: 200px;
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  position: relative; /* Add relative positioning for stacking context */
+  z-index: 1; /* Set a lower z-index value for the container */
+  margin-top: 20px;
+  overflow-x: hidden;
 }
 
 .header {
-    font-size: 30px;
-    font-weight: bold;
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 80px;
-    background-color: #fff;
-    z-index: 1; /* Set a lower z-index value for the header */
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #fff;
+  z-index: 1; /* Set a lower z-index value for the header */
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
 }
 
 .header h2 {
-    font-size: 25px;
-    font-weight: bold;
-    color: #000;
-    margin-top: 15px;
-    margin-left: 60px;
-    display: flex;
-    align-items: center;
-    position: relative;
+  font-size: 25px;
+  font-weight: bold;
+  color: #000;
+  margin-top: 15px;
+  margin-left: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .icons {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-.notif-icon {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    margin-right: 10px; /* Adjust this margin as needed */
+.notifs {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-left: 650px;
 }
 
 .account-imgs {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-    border: 1px gray solid;
-    border-radius: 50px;
-    margin-right: 10px; /* Adjust this margin as needed */
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  border: 1px gray solid;
+  border-radius: 50px;
+  margin-right: 40px; /* Adjust this margin as needed */
 }
 
 .account-names {
-    background-color: #307A59;
-    width: 115px;
-    height: 33px;
-    font-size: 13px;
-    color: #fff;
-    font-weight: 400;
-    text-align: center;
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #307a59;
+  width: 120px;
+  height: 33px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body {
@@ -87,150 +87,177 @@ body {
 }
 
 .create {
-    background-color: #f9f9f9;
-    padding: 20px;
-    width: 800px; /* Adjust width for responsiveness */
-    border: 1px solid #ccc;
-    margin-top: 0px;
-    margin-left: 60px;
-    margin-right: 100px;
-    position: relative;
-  }
-
-h3 {
-    color: black;
-    margin-bottom: 15px;
-    justify-content: center;
-  }
-  
-  .create label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .create input,
-  .create textarea {
-    width: 93%;
-    height: 50%;
-    padding: 8px;
-    margin-bottom: 10px;
-    margin-left: 15px;
-  }
-  
-  .submits {
-    padding: 8px 20px;
-    background-color: #0B847B;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 20px;
-  }
-
-  .submitted-news-container {
-    margin-top: 7px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  width: 800px; /* Adjust width for responsiveness */
+  border: 1px solid #ccc;
+  margin-top: 0px;
+  margin-left: 60px;
+  margin-right: 100px;
+  position: relative;
 }
 
-  .news-item {
-    background-color: whitesmoke;
-    padding: 10px;
-    margin: 5px; /* Adjust margin for responsiveness */
-    border: 1px solid #ccc;
-    width: 820px; /* Adjust width for responsiveness */
-    max-width: 1108px; /* Set a maximum width */
-    margin-bottom: 5%; /* Adjust bottom margin for responsiveness */
-    margin-left: 60px;
-  }
+h3 {
+  color: black;
+  margin-bottom: 15px;
+  justify-content: center;
+}
 
-  h1 {
-    color: black;
-    font-size: large;
-  }
-  
-  /* Keep other styles intact */
-   h5 {
-    margin-bottom: 5px;
-    color: black;
-    margin-right: 1000px;
-  }
-  
-  .news-item button {
-    margin-right: 20px;
-    border-radius: 20px;
-    background-color: #0B847B;
-  }
+.create label {
+  display: block;
+  margin-bottom: 5px;
+}
 
- .subhead {
-    font-size: 16px;
-    margin-bottom: 5px;
-    margin-left: 60px;
-    display: flex;
+.create input,
+.create textarea {
+  width: 93%;
+  height: 50%;
+  padding: 8px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+
+.submits {
+  padding: 8px 20px;
+  background-color: #0b847b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.submitted-news-container {
+  margin-top: 7px;
+}
+
+.news-item {
+  background-color: whitesmoke;
+  padding: 15px;
+  margin: 5px; /* Adjust margin for responsiveness */
+  border: 1px solid #ccc;
+  width: 820px; /* Adjust width for responsiveness */
+  max-width: 1108px; /* Set a maximum width */
+  margin-bottom: 15px; /* Adjust bottom margin for responsiveness */
+  margin-left: 60px;
+  border-radius: 10px;
+}
+
+.news-image {
+  max-width: 50%; /* Make the image responsive within its container */
+  height: auto;
+}
+
+.news-text {
+  font-size: 15px;
+   line-height: 2;
+}
+
+.image-section {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.text-section {
+  width: 100%;
+  text-align: justify;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+h1 {
+  color: black;
+  font-size: large;
+}
+
+/* Keep other styles intact */
+h5 {
+  margin-bottom: 5px;
+  color: black;
+  margin-right: 1000px;
+}
+
+.subhead {
+  font-size: 16px;
+  margin-bottom: 5px;
+  margin-left: 60px;
+  display: flex;
 }
 
 .requests {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-    margin-left: 5px;
-    text-align: justify;
-    width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+  margin-left: 5px;
+  text-align: justify;
+  width: 450px;
 }
 
 /* Updated CSS for each request item */
 .request-item {
-    border: 1px solid #ccc;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 25px;
-    position: relative; /* Add relative positioning */
+  border: 1px solid #ccc;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 25px;
+  position: relative; /* Add relative positioning */
 }
 
 .title {
-    display: flex;
+  display: flex;
 }
 
 .title h3 {
-    margin-right: 20px;
-    margin-top: 10px;
-    font-size: 12px;
-    font-weight: 500;
-    color: gray;
-    margin-left: auto; /* Push the h3 element to the right */
+  margin-right: 20px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: gray;
+  margin-left: auto; /* Push the h3 element to the right */
 }
 
 .logo {
-    max-width: 30px;
-    max-height: 30px;
+  max-width: 30px;
+  max-height: 30px;
 }
 
 .title h5 {
-    font-size: 17px;
-    margin: 0;
-    margin-top: 5px;
-    margin-left: 10px;
-    margin-bottom: 5px;
+  font-size: 17px;
+  margin: 0;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .request-item p {
-    font-size: 14px;
-    margin-top: 10px;
-    line-height: 20px;
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: 20px;
 }
 
 .check {
-    background-color: #447D60;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 25px;
-    width: 120px;
-    height: 35px;
-    margin-left: 320px;
+  background-color: #447d60;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 25px;
+  width: 120px;
+  height: 35px;
+  margin-left: 320px;
 }
 
 .check:hover {
-    background-color: #93C49E;
-    color: black;
+  background-color: #93c49e;
+  color: black;
 }
 
 .note {
@@ -240,7 +267,7 @@ h3 {
 }
 
 .plus-icon {
-  background-color: #447D60;
+  background-color: #447d60;
   border-radius: 50px;
   color: #fff;
   padding: 10px;
@@ -267,10 +294,65 @@ h3 {
   color: #ff0000; /* Adjust hover color as needed */
 }
 
+.form-container {
+  position: relative;
+}
+
+.icon-container {
+  position: absolute;
+  top: 10px;
+  left: 600px;
+  display: flex;
+  align-items: center;
+}
+
+.icns {
+  width: 20px;
+  height: 20px;
+  margin-left: 720px;
+}
+
 .icon-button {
   background: none;
-  color: white;
+  color: black;
   border: 0px transparent;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  margin-left: 2px;
 }
+
+.image-previews {
+  margin-top: 5px;
+}
+
+.image-preview {
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-preview-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.remove-button {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  border: none;
+  color: #ff0000; /* Set the color as needed */
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.read {
+  color:rgb(174, 11, 174);
+  cursor: pointer;
+}
+
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/sidebar';
 import './dashboard.css';
-//import Calendar from './Calendar';
+import Calendar from './Calendar';
 import image4 from '../assets/adminpic.png';
 import image5 from '../assets/adminpic.png';
 import image6 from '../assets/calendar.png';
@@ -69,21 +69,20 @@ const Dashboard = ({ count }) => {
   }, []);
 
   const formattedTime = currentDateTime.toLocaleTimeString();
-
-
   
   return (
     <div>
       <div className="sidebar">
         <Sidebar />
       </div>
+      
       <div className='container'>
         <div className="header">
           <div className='icons'>
             <h1>Overview</h1>
-              <img src={notification} alt="Notification.png" className='notif-icon'/>
+              <img src={notification} alt="Notification.png" className='notif'/>
               <img src={logo} alt="logo" className='account-img'/>
-            <div className='account-name'><h1>Admin</h1></div>
+            <div className='account-name'><h1>Civil Regi..</h1></div>
           </div>
         </div>
 
@@ -102,7 +101,7 @@ const Dashboard = ({ count }) => {
         </div>
 
         <div className='subhead'>
-          Service Requests
+          Appointments
         </div>
         <div className="subhead">
           <div className="requests">
@@ -121,11 +120,14 @@ const Dashboard = ({ count }) => {
               </div>
             ))}
           </div>
-          <div className="image-calendar">
-            <img src={image6} alt="calendar.png" />
+          <div style={{ marginLeft: '60px' }}>
+            <Calendar />
           </div>
         </div>
       </div>
+      <footer className='footer'>
+        <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

@@ -42,12 +42,23 @@ function App() {
                 id: doc.id,
                 ...doc.data(),
             }));
-            setData(items);
-            setLocalData(items); // Initialize localData with the fetched data
+
+            // Sort the data by date and time in descending order (newest to oldest)
+            const sortedData = items.sort((a, b) => {
+                const dateA = a.date ? a.date.toDate() : null;
+                const dateB = b.date ? b.date.toDate() : null;
+
+                return dateB - dateA || b.time - a.time;
+            });
+
+            setData(sortedData);
+            setLocalData(sortedData); // Initialize localData with the sorted data
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
+
+    // ...
 
     useEffect(() => {
         // Fetch data when the component mounts
@@ -206,9 +217,9 @@ function App() {
                 <div className="header">
                     <div className='icons'>
                         <h2>Appointments</h2>
-                        <img src={notification} alt="Notification.png" className='notif-icon' />
+                        <img src={notification} alt="Notification.png" className='notif-icons' />
                         <img src={logo} alt="logo" className='account-img' />
-                        <div className='account-name'><h1>Admin</h1></div>
+                        <div className='account-name'><h1>Civil Regi..</h1></div>
                     </div>
                 </div>
                 

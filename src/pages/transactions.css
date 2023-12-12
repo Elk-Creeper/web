@@ -54,7 +54,7 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
-    margin-right: 10px; /* Adjust this margin as needed */
+    margin-left: 560px; /* Adjust this margin as needed */
 }
 
 .account-img {
@@ -65,7 +65,6 @@
     z-index: 2;
     border: 1px gray solid;
     border-radius: 50px;
-    margin-right: 10px; /* Adjust this margin as needed */
 }
 
 .account-name {
@@ -191,7 +190,7 @@ body {
 }
 
 .screen {
-  margin-top: 40px;
+  margin-top: 60px;
   margin-left: -220px;
 }
 
@@ -210,7 +209,7 @@ body {
 .categories3,
 .categories4,
 .categories5:hover {
-    background-color: rgb(51, 164, 102)* Change the background color on hover as needed */
+    background-color: rgb(51, 164, 102), Change the background color on hover as needed */
 }
 
 .categories1,

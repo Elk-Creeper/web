@@ -50,13 +50,12 @@
     align-items: center;
 }
 
-.notif-icon {
+.notif-icons {
     width: 30px;
     height: 30px;
     cursor: pointer;
-    margin-right: 10px; /* Adjust this margin as needed */
+    margin-left: 546px; /* Adjust this margin as needed */
 }
-
 .account-img {
     width: 32px;
     height: 32px;
@@ -65,7 +64,6 @@
     z-index: 2;
     border: 1px gray solid;
     border-radius: 50px;
-    margin-right: 10px; /* Adjust this margin as needed */
 }
 
 .account-name {

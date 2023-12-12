@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Import Firebase Storage related functions
 import './transactions.css';
+import logo from '../assets/logo.png';
+import notification from '../assets/icons/Notification.png';
 import Sidebar from "../components/sidebar";
 import { FaSearch } from 'react-icons/fa'; // Import icons
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
@@ -140,7 +142,14 @@ function App() {
                 <Sidebar />
             </div>
             <div className="container">
-                <h1>Service Requests and Transaction Records</h1>
+                <div className="header">
+                    <div className='icons'>
+                        <h2>Transactions</h2>
+                        <img src={notification} alt="Notification.png" className='notif-icon' />
+                        <img src={logo} alt="logo" className='account-img' />
+                        <div className='account-name'><h1>Civil Regi..</h1></div>
+                    </div>
+                </div>
             </div>
 
             <div className="containers">

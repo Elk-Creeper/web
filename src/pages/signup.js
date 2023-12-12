@@ -3,11 +3,11 @@ import slider1 from "../assets/slider1.png";
 import slider2 from "../assets/slider2.png";
 import slider3 from "../assets/slider3.png";
 import '../styles/style.css';
-import './login'
 import { FaEnvelope, FaLock } from 'react-icons/fa'; // Import icons
 import React, { useState, useEffect } from "react";
 import { signInWithGoogle } from "./config";
-//import { Alert } from 'react-bootstrap';
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import Login from './login';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -54,6 +54,7 @@ function Signup() {
     }, [currentImage]);
 
     return (
+        <Router>
         <div className="App">
             <div className="App-slider">
                 <img src={logo} className="App-logo" alt="logo" />
@@ -125,11 +126,16 @@ function Signup() {
                     Sign up with Google
                 </button>
 
+
                 <h6>
-                    Alreaady have an account? <a href ="/login">Login</a>
+                    Already have an account? <Link to="/login">Login</Link>
                 </h6>
             </div>
         </div >
+            <Switch>
+                <Route path="/login" component={Login} />
+            </Switch>
+        </Router>
     );
 }
 

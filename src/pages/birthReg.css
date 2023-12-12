@@ -18,9 +18,13 @@ body {
 }
 
 .containers {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  margin-left: 215px;
+  margin-top: 60px;
+  margin-bottom: 7px;
+  margin-left: 195px;
+}
+
+.containers h1 {
+  font-size: 20px;
 }
 
 /* Dropdown menu container */
