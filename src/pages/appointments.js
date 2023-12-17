@@ -258,8 +258,6 @@ function App() {
                             <option value="Municipal Planning and Development Office">Municipal Planning and Development Office</option>
                             <option value="Municipal Social Welfare and Development Office">Municipal Social Welfare and Development Office</option>
                             <option value="Municipal Treasurer's Office">Municipal Treasurer's Office</option>
-                            <option value="General Service Office">General Service Office</option>
-                            <option value="Public Employment Service Office">Public Employment Service Office</option>
                         </select>
                         <input
                             type="text"
@@ -296,6 +294,7 @@ function App() {
                             className="filter-select"
                         >
                             <option value="">Filter by Status</option>
+                            <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
                             <option value="Disapproved">Disapproved</option>
                             {/* Add more options as needed */}
