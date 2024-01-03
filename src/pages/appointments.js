@@ -38,27 +38,27 @@ function App() {
         try {
             const snapshot = await collection(firestore, "appointments");
             const querySnapshot = await getDocs(snapshot);
+    
+            // Map the data and add the id field
             const items = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-
-            // Sort the data by date and time in descending order (newest to oldest)
+    
+            // Sort the data by createdAt in descending order (newest to oldest)
             const sortedData = items.sort((a, b) => {
-                const dateA = a.date ? a.date.toDate() : null;
-                const dateB = b.date ? b.date.toDate() : null;
-
-                return dateB - dateA || b.time - a.time;
+                const dateA = a.createdAt ? a.createdAt.toDate() : null;
+                const dateB = b.createdAt ? b.createdAt.toDate() : null;
+    
+                return dateB - dateA;
             });
-
+    
             setData(sortedData);
             setLocalData(sortedData); // Initialize localData with the sorted data
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
-    };
-
-    // ...
+    };    
 
     useEffect(() => {
         // Fetch data when the component mounts
@@ -74,7 +74,7 @@ function App() {
             },
             {
                 Header: "User Name",
-                accessor: "name",
+                accessor: "userName",
             },
             {
                 Header: "Department",
@@ -112,6 +112,22 @@ function App() {
             {
                 Header: "Reason for Appointment",
                 accessor: "reason",
+            },
+            {
+                Header: "Residency",
+                accessor: "userBarangay",
+            },
+            {
+                Header: "Date of Application",
+                accessor: "createdAt",
+                Cell: ({ value }) => {
+                    if (value) {
+                        const date = value.toDate();
+                        return date.toLocaleDateString();
+                    } else {
+                        return "N/A"; // Handle the case where value is null or undefined
+                    }
+                },
             },
             {
                 Header: "Status",
