@@ -103,13 +103,25 @@ const App = () => {
 
                         <Link to="/marriageCert" className="link">
                             <button className="categories1">
-                                <h6>Marriage Certificate</h6>
+                                <h6>Request for copy of Marriage Certificate</h6>
+                            </button>
+                        </Link>
+
+                        <Link to="/marriageReg" className="link">
+                            <button className="categories1">
+                                <h6>Certificate of Marriage</h6>
                             </button>
                         </Link>
 
                         <Link to="/deathCert" className="link">
                             <button className="categories1">
-                                <h6>Certificate of Death Certificate</h6>
+                                <h6>Request for copy of Death Certificate</h6>
+                            </button>
+                        </Link>
+
+                        <Link to="/deathReg" className="link">
+                            <button className="categories1">
+                                <h6>Certificate of Death</h6>
                             </button>
                         </Link>
 

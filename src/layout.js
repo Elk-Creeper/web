@@ -12,7 +12,9 @@ import News from './pages/news';
 import Users from './pages/users';
 import Birth from './pages/birthReg';
 import Marriage from './pages/marriageCert';
+import Marriages from './pages/marriageReg';
 import Death from './pages/deathCert';
+import DeathReg from './pages/deathReg';
 import Business from './pages/businessPermit';
 import JobApplication from './pages/job';
 import NewsForm from './pages/news';
@@ -35,7 +37,9 @@ const Layout = () => {
                         <Route path="/users" component={Users} />
                         <Route path="/birthReg" component={Birth} />
                         <Route path="/marriageCert" component={Marriage} />
+                        <Route path="/marriageReg" component={Marriages} />
                         <Route path="/deathCert" component={Death} />
+                        <Route path="/deathReg" component={DeathReg} />
                         <Route path="/businessPermit" component={Business} />
                         <Route path="/job" component={JobApplication} />
                         <Route path="/news" component={NewsForm} />

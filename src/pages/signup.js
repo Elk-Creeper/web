@@ -2,141 +2,194 @@ import logo from "../assets/logo.png";
 import slider1 from "../assets/slider1.png";
 import slider2 from "../assets/slider2.png";
 import slider3 from "../assets/slider3.png";
-import '../styles/style.css';
-import { FaEnvelope, FaLock } from 'react-icons/fa'; // Import icons
+import "../styles/style.css";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import { signInWithGoogle } from "./config";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import Login from './login';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from "firebase/auth"; // Update the path as needed
+import { useHistory } from "react-router-dom";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
+    authDomain: "muniserve-4dc11.firebaseapp.com",
+    projectId: "muniserve-4dc11",
+    storageBucket: "muniserve-4dc11.appspot.com",
+    messagingSenderId: "874813480248",
+    appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
+    measurementId: "G-LS66HXR3GT"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const firestore = getFirestore(app);
 
 function Signup() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [role, setRole] = useState("");
+  const history = useHistory();
+  const auth = getAuth();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Check if passwords match
-        if (password !== confirmPassword) {
-            setError("Passwords do not match!");
-            return;
-        }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
 
-        // Handle sign-up logic here
-        // You can send the email and password to your authentication service
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-        // Reset form fields
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setError('');
+      await updateProfile(userCredential.user, { displayName: role });
+
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setRole("");
+      setError("");
+      setSuccess("Account created successfully!");
+
+      // Automatically route to the login page after successful registration
+      history.push("/login");
+    } catch (error) {
+      setError(error.message);
+      setSuccess("");
+    }
+  };
+
+  const images = [slider1, slider2, slider3];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const nextImage = (currentImage + 1) % images.length;
+      setCurrentImage(nextImage);
+    }, 2000);
+
+    return () => {
+      clearInterval(timer);
     };
+  }, [currentImage, images]);
 
-    const images = [slider1, slider2, slider3];
+  return (
+    <div className="App">
+      <div className="App-slider">
+        <img src={logo} className="App-logo" alt="logo" />
 
-    const [currentImage, setCurrentImage] = useState(0);
+        <div className="auto-play-slider">
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Image ${index + 1}`}
+              className={`slide ${index === currentImage ? "active" : ""}`}
+            />
+          ))}
+        </div>
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            // Calculate the next image index
-            const nextImage = (currentImage + 1) % images.length;
-            setCurrentImage(nextImage);
-        }, 2000); // Change the interval (in milliseconds) as needed
+        <h5>
+          MuniServe ensures secure transaction<br></br> and great user
+          experience.
+        </h5>
+      </div>
 
-        return () => {
-            clearInterval(timer);
-        };
-    }, [currentImage]);
-
-    return (
-        <Router>
-        <div className="App">
-            <div className="App-slider">
-                <img src={logo} className="App-logo" alt="logo" />
-
-                <div className="auto-play-slider">
-                    {images.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`Image ${index + 1}`}
-                            className={`slide ${index === currentImage ? "active" : ""}`}
-                        />
-                    ))}
-                </div>
-
-                <h5>
-                    MuniServe ensures secure transaction<br></br> and great user
-                    experience.
-                </h5>
+      <div className="Form">
+        <h3>Sign Up</h3>
+        <h6>
+          To create an account, fill out the required information, including
+          <br /> your email address and a secure password.
+        </h6>
+        <div className="sign">
+          <form onSubmit={handleSubmit} className="signup-form">
+            <div className="icon-input">
+              <FaEnvelope className="input-icons" />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="icon-input">
+              <div className="role-selection">
+              <FaUser className="input-icons" />
+                <label>Select Role:</label>
+                <select
+                  className="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Choose a role
+                  </option>
+                  <option value="Civil Registrar">Civil Registrar</option>
+                  <option value="HR Department">HR Department</option>
+                </select>
+              </div>
+            </div>
+            <div className="icon-input">
+              <FaLock className="input-icons" />
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="icon-input">
+              <FaLock className="input-icons" />
+              <input
+                type="password"
+                placeholder="Re-enter your password"
+                value={confirmPassword}
+                required
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </div>
 
-            <div className="Form">
-                <h3>Sign Up</h3>
-                <h6>To create an account, fill out the required information, including
-                    <br /> your email address and a secure password.</h6>
-                <div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="icon-input">
-                            <FaEnvelope className="input-icon" />
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                required
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div className="icon-input">
-                            <FaLock className="input-icon" />
-                            <input
-                                type="password"
-                                placeholder="Enter your password"
-                                value={password}
-                                required
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                        <div className="icon-input">
-                            <FaLock className="input-icon" />
-                            <input
-                                type="password"
-                                placeholder="Re-enter your password"
-                                value={confirmPassword}
-                                required
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                        </div>
-                    <div>
-                        {error && <div className="error-popup">{error}</div>}
-                    </div>
-                        <button type="submit" className="my-button">
-                            Continue
-                        </button>
-                    </form>
-                </div>
-
-                <h4> - or - </h4>
-                <button class="login-with-google-btn" onClick={signInWithGoogle}>
-                    Sign up with Google
-                </button>
-
-
-                <h6>
-                    Already have an account? <Link to="/login">Login</Link>
-                </h6>
+            <div>
+              {error && <div className="error-popup">{error}</div>}
+              {success && <div className="success-popup">{success}</div>}
             </div>
-        </div >
-            <Switch>
-                <Route path="/login" component={Login} />
-            </Switch>
-        </Router>
-    );
+
+            <button type="submit" className="my-button">
+              Continue
+            </button>
+          </form>
+        </div>
+
+        <div className="sign">
+          <h4> - or - </h4>
+          <button className="login-with-google-btn" onClick={signInWithGoogle}>
+            Sign up with Google
+          </button>
+        </div>
+
+        <h6>
+          Already have an account? <a href="/login">Login</a>
+        </h6>
+      </div>
+    </div>
+  );
 }
 
 export default Signup;

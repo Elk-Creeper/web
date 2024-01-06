@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Import Firebase Storage related functions
-import './transactions.css';
+import './birthReg.css';
 import logo from '../assets/logo.png';
 import notification from '../assets/icons/Notification.png';
 import Sidebar from "../components/sidebar";
 import { FaSearch } from 'react-icons/fa'; // Import icons
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { onSnapshot } from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -28,6 +27,7 @@ const firestore = getFirestore(app);
 function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(true);
     const [selectedItem, setSelectedItem] = useState(null);
     const [tableVisible, setTableVisible] = useState(true);
 
@@ -37,41 +37,40 @@ function App() {
     const [selectedDayFilter, setSelectedDayFilter] = useState("");
     const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
 
+    // Initialize Firebase Firestore and Storage (you should have already done this)
     const storage = getStorage();
+
+    const fetchData = async () => {
+        try {
+            // Adjust this query based on your actual data structure
+            const snapshot = await collection(firestore, "birth_reg");
+            const querySnapshot = await getDocs(snapshot);
+            const items = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            for (const item of items) {
+                if (item.imagePath) {
+                    const imageUrl = await getDownloadURL(ref(storage, item.imagePath));
+                    item.imageUrl = imageUrl;
+                }
+            }
+
+            // Sort the data based on createdAt timestamp in descending order
+            items.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+
+            setData(items);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         setLoading(true);
-
-        // Subscribe to real-time updates
-        const unsubscribe = onSnapshot(collection(firestore, "deathCert"), async (querySnapshot) => {
-            try {
-                const items = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-
-                for (const item of items) {
-                    if (item.imagePath) {
-                        const imageUrl = await getDownloadURL(ref(storage, item.imagePath));
-                        item.imageUrl = imageUrl;
-                    }
-                }
-
-                // Sort the data based on createdAt timestamp in descending order
-                items.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds); 
-
-                setData(items);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-                setLoading(false);
-            }
-        });
-
-        return () => {
-            // Unsubscribe when the component unmounts
-            unsubscribe();
-        };
+        fetchData();
     }, []);
 
     const openDetailsModal = async (item) => {
@@ -86,7 +85,7 @@ function App() {
 
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const appointmentRef = doc(firestore, "deathCert", id);
+            const appointmentRef = doc(firestore, "birth_reg", id);
             await updateDoc(appointmentRef, {
                 status: newStatus,
             });
@@ -111,11 +110,11 @@ function App() {
         };
 
         return (
-            item.rname &&
-            item.rname.toLowerCase().includes(searchQuery.toLowerCase()) &&
-            (selectedYearFilter !== "" ? (item.createdAt && item.createdAt.toDate && typeof item.createdAt.toDate === 'function' && item.createdAt.toDate().getFullYear().toString() === selectedYearFilter) : true) &&
-            (selectedMonthFilter !== "" ? (item.createdAt && item.createdAt.toDate && typeof item.createdAt.toDate === 'function' && getMonthName(item.createdAt.toDate().getMonth() + 1).toLowerCase() === selectedMonthFilter.toLowerCase()) : true) &&
-            (selectedDayFilter !== "" ? (item.createdAt && item.createdAt.toDate && typeof item.createdAt.toDate === 'function' && item.createdAt.toDate().getDate().toString() === selectedDayFilter) : true) &&
+            item.childname &&
+            item.childname.toLowerCase().includes(searchQuery.toLowerCase()) &&
+            (selectedYearFilter !== "" ? (item.c_birthdate && item.c_birthdate.toDate && typeof item.c_birthdate.toDate === 'function' && item.c_birthdate.toDate().getFullYear().toString() === selectedYearFilter) : true) &&
+            (selectedMonthFilter !== "" ? (item.c_birthdate && item.c_birthdate.toDate && typeof item.c_birthdate.toDate === 'function' && getMonthName(item.c_birthdate.toDate().getMonth() + 1).toLowerCase() === selectedMonthFilter.toLowerCase()) : true) &&
+            (selectedDayFilter !== "" ? (item.c_birthdate && item.c_birthdate.toDate && typeof item.c_birthdate.toDate === 'function' && item.c_birthdate.toDate().getDate().toString() === selectedDayFilter) : true) &&
             (selectedStatusFilter !== "" ? item.status.toLowerCase().includes(selectedStatusFilter.toLowerCase()) : true)
         );
     });
@@ -153,7 +152,7 @@ function App() {
             </div>
 
             <div className="containers">
-                <h1>Request for copy of Death Certificate</h1>
+                <h1>Registration of Marriage Certificate</h1>
             </div>
 
             <div className="search-container">
@@ -228,7 +227,6 @@ function App() {
                         <option value="29">29</option>
                         <option value="30">30</option>
                         <option value="31">31</option>
-
                     </select>
 
                     <select
@@ -245,15 +243,12 @@ function App() {
                 </div>
             </div>
 
-
             {tableVisible && (
                 <div className="table-container">
                     <table className="custom-table" style={{ border: "1px solid black" }}>
                         <thead>
                             <tr style={{ borderBottom: "1px solid black" }}>
-                                <th style={{ borderBottom: "1px solid black" }}>Name of Applicant</th>
-                                <th style={{ borderBottom: "1px solid black" }}>Residency</th>
-                                <th style={{ borderBottom: "1px solid black" }}>Contact</th>
+                                <th style={{ borderBottom: "1px solid black" }}>Name</th>
                                 <th style={{ borderBottom: "1px solid black" }}>Date of Application</th>
                                 <th style={{ borderBottom: "1px solid black" }}>Status</th>
                                 <th style={{ borderBottom: "1px solid black" }}>Action</th>
@@ -267,24 +262,22 @@ function App() {
                                     </td>
                                 </tr>
                             ) : (
-                                    // Display filtered data
-                                    filteredData.map((item) => (
-                                        <tr key={item.id}>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>{item.userName}</td>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>{item.userBarangay}</td>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>{item.userEmail}</td>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>
-                                                {item.createdAt && item.createdAt.toDate
-                                                    ? item.createdAt.toDate().toLocaleString()
-                                                    : "Invalid Date"}
-                                            </td>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>{item.status}</td>
-                                            <td style={{ padding: "8px", border: "1px solid black" }}>
-                                                <button onClick={() => openDetailsModal(item)} className="view-button">
-                                                    View
-                                                </button>
-                                            </td>
-                                        </tr>
+                                // Display filtered data
+                                filteredData.map((item) => (
+                                    <tr key={item.id}>
+                                        <td style={{ padding: "8px", border: "1px solid black" }}>{item.childname}</td>
+                                        <td style={{ padding: "8px", border: "1px solid black" }}>
+                                            {item.c_birthdate && item.c_birthdate.toDate
+                                                ? item.c_birthdate.toDate().toLocaleString()
+                                                : "Invalid Date"}
+                                        </td>
+                                        <td style={{ padding: "8px", border: "1px solid black" }}>{item.status}</td>
+                                        <td style={{ padding: "8px", border: "1px solid black" }}>
+                                            <button onClick={() => openDetailsModal(item)} className="view-button">
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
                                 ))
                             )}
                         </tbody>
@@ -297,64 +290,154 @@ function App() {
                     <div className="details-content">
                         <div className="subheads">
                             <div className="request-item">
-                                <button className="close-button" onClick={closeDetailsModal}>
-                                    x
-                                </button>
                                 <div className="title">
-                                    <h6>Birth Registration</h6>
+                                    <h6>Full Details</h6>
+                                    <span className="close-button" onClick={closeDetailsModal}>
+                                        &times;
+                                    </span>
                                 </div>
                                 <p>This registration form is requested by {selectedItem.m_name}.</p>
 
+                                {/* Child's Information */}
                                 <div className="section">
+                                    <h3>Child's Information</h3>
                                     <div className="form-grid">
-
                                         <div className="form-group">
-                                            <label>Complete name of the deceased person</label>
-                                            <div className="placeholder">{selectedItem.name}</div>
+                                            <label>Name of Child</label>
+                                            <div className="placeholder">{selectedItem.childname}</div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Birth date</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_birthdate && selectedItem.c_birthdate.toDate
+                                                    ? selectedItem.c_birthdate.toDate().toLocaleString()
+                                                    : "Invalid Date"}                                         
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Birth Place</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_birthplace}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Sex</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_sex}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Type of Birth</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_typeofbirth}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Weight</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_weight}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Birth Order</label>
+                                            <div className="placeholder">
+                                                {selectedItem.c_birthorder}
+                                            </div>
                                         </div>
 
+                                    </div>
+                                </div>
+
+                                {/* Mother's Information */}
+                                <div className="section">
+                                    <h3>Mother's Information</h3>
+                                    <div className="form-grid">
                                         <div className="form-group">
-                                            <label>Date of Death</label>
+                                            <label>Mother's Name</label>
                                             <div className="placeholder">
-                                                {selectedItem.date && selectedItem.date.toDate().toLocaleString()}
+                                                {selectedItem.m_name}
                                             </div>
                                         </div>
 
                                         <div className="form-group">
-                                            <label>Place of Death</label>
+                                            <label>Mother's Age at the time of Birth</label>
                                             <div className="placeholder">
-                                                {selectedItem.place}
+                                                {selectedItem.m_age}
                                             </div>
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Complete name of requesting party</label>
+                                            <label>Mother's Occupation</label>
                                             <div className="placeholder">
-                                                {selectedItem.rname}
+                                                {selectedItem.m_occur}
                                             </div>
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Complete address of requesting party</label>
+                                            <label>Mother's Citizenship</label>
                                             <div className="placeholder">
-                                                {selectedItem.address}
+                                                {selectedItem.m_citizenship}
                                             </div>
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Number of copies needed</label>
+                                            <label>Mother's Religion</label>
                                             <div className="placeholder">
-                                                {selectedItem.copies}
+                                                {selectedItem.m_religion}
                                             </div>
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Purpose of the certification</label>
+                                            <label>Total Children</label>
                                             <div className="placeholder">
-                                                {selectedItem.purpose}
+                                                {selectedItem.m_totchild}
                                             </div>
                                         </div>
+                                        {/* Add more mother fields here */}
+                                    </div>
+                                </div>
 
+                                {/* Father's Information */}
+                                <div className="section">
+                                    <h3>Father's Information</h3>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>Father's Name</label>
+                                            <div className="placeholder">{selectedItem.f_name}</div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Father's Age at the time of Birth</label>
+                                            <div className="placeholder">
+                                                {selectedItem.f_age}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Father's Occupation</label>
+                                            <div className="placeholder">
+                                                {selectedItem.f_occur}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Father's Citizenship</label>
+                                            <div className="placeholder">
+                                                {selectedItem.f_citizenship}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Father's Religion</label>
+                                            <div className="placeholder">
+                                                {selectedItem.f_religion}
+                                            </div>
+                                        </div>
+                                        {/* Add more father fields here */}
+                                    </div>
+                                </div>
+
+                                {/* Other Information */}
+                                <div className="section">
+                                    <h3>Other Information</h3>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>Place of Marriage</label>
+                                            <div className="placeholder">{selectedItem.f_placemarried}</div>
+                                        </div>
+                                        {/* Add more other fields here */}
                                     </div>
                                 </div>
 
@@ -391,13 +474,6 @@ function App() {
                                         disabled={selectedItem.status === "On Process"}
                                     >
                                         On Process
-                                    </button>
-                                    <button
-                                        onClick={() => handleStatusChange(selectedItem.id, "Rejected")}
-                                        className="on-process-button"
-                                        disabled={selectedItem.status === "Rejected"}
-                                    >
-                                        Rejected
                                     </button>
                                 </div>
                             </div>

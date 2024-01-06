@@ -1,222 +1,276 @@
 .App {
-    text-align: center;
-    justify-content: center;
-    display: flex;
-    background-color: #DCFAEB;
-  }
-  
-  .App-logo {
-    height: 17vmin;
-    pointer-events: none;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .App-slider {
-    background-color: #DCFAEB;
-    width: 50%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  background-color: #dcfaeb;
+}
 
-  .auto-play-slider {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    position: relative;
-    height: 55vmin;
-    width: 55vmin;
-    overflow: hidden;
-    margin-bottom: 15px;
-  }
+.App-logo {
+  height: 17vmin;
+  pointer-events: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-  .slide {
-    width: 100%;
-    height: auto;
-    display: none;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-  }
-  
-  .active {
-    display: block;
-    opacity: 1;
-  }
-  
-  h3 {
-    font-family: 'Karla', sans-serif;
-    font-weight: 700;
-    font-size: 25px;
-    margin-bottom: 5px;
-    color: #000;
-  }
+.App-slider {
+  background-color: #dcfaeb;
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  h4 {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 100;
-    font-size: 13px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    color: #000;
-  }
+.auto-play-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  position: relative;
+  height: 55vmin;
+  width: 55vmin;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
 
-  h5 {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 400;
-    font-size: 17px;
-    margin-top: 0px;
-    margin-bottom: 20px;
-    color: #000;
-  }
+.slide {
+  width: 100%;
+  height: auto;
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
 
-  h6 {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 100;
-    font-size: 15px;
-    margin-top: 20px;
-    margin-bottom: 25px;
-    color: #000;
-  }
+.active {
+  display: block;
+  opacity: 1;
+}
+
+.Form h3 {
+  font-family: "Karla", sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  margin-bottom: 5px;
+  color: #000;
+}
+
+.Form h4 {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 100;
+  font-size: 13px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+.Form h5 {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.Form h6 {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 100;
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  color: #000;
+}
 
 /* MyButton.css */
 .my-button {
-    background-color: #307A59;
-    color: #fff;
-    width: 175px;
-    height: 42px;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 15px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
+  background-color: #307a59;
+  color: #fff;
+  width: 175px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: "Fredoka", sans-serif;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
 
-  .my-button:hover {
-    background-color: transparent;
-    border: #307A59 1.5px solid;
-    color: #307A59;
-    box-shadow: 0 -1px 0 rgba(30, 30, 30, 0.04), 0 1px 1px rgba(50, 50, 50, 0.25);
-  }
+.my-button:hover {
+  background-color: transparent;
+  border: #307a59 1.5px solid;
+  color: #307a59;
+  box-shadow: 0 -1px 0 rgba(30, 30, 30, 0.04), 0 1px 1px rgba(50, 50, 50, 0.25);
+}
 
-  .Form {
-    background-color: #FFFFFF;
-    width: 50%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .forgot-password {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 300;
-    font-size: 15px;
-    color: #2236e7;
-    margin-top: 20px;
-  }
+.Form {
+  background-color: #ffffff;
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.forgot-password {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: #2236e7;
+  margin-top: 20px;
+}
 
 /* Add this CSS to your component's CSS file or a global stylesheet */
 
+.role-selection,
 .icon-input {
-    position: relative;
-    margin-bottom: 20px;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-  }
-  
-  .input-icon {
-    position: absolute;
-    top: 50%;
-    left: 10px; /* Adjust the left offset as needed */
-    transform: translateY(-50%);
-    font-size: 18px; /* Adjust the font size as needed */
-    color: #555; /* Adjust the icon color as needed */
-    margin-top: 4px;
-  }
-  
-  /* Style the input field to give space for the icon */
-  input[type="email"],
-  input[type="password"] {
-    padding-left: 40px; /* Adjust the left padding to make space for the icon */
-    border: #307a59 1.4px solid;
-    border-radius: 5px;
-    outline: none;
-    font-size: 15px;
-    width: 270px;
-    height: 45px;
-    font-family: 'Karla', sans-serif;
-    font-weight: 300;
-    margin-top: 0px;
-  }
-  
-  /* Remove the default input field placeholder */
-  input::placeholder {
-    color: #555;
-  }
-  
-  /* Style the input field placeholder text */
-  .icon-input input::before {
-    content: attr(placeholder);
-    position: absolute;
-    top: 50%;
-    left: 45px; /* Adjust the left offset to place the text properly */
-    transform: translateY(-50%);
-    color: #999; /* Adjust the placeholder text color */
-    font-size: 16px;
-  }
+  position: relative;
+  margin-bottom: 20px;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
 
-  .error-popup {
-    color: rgb(173, 3, 3);
-    padding: 8px;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    display: inline-block;
-  }
-  
-  /*Sign in with google button*/
-  .login-with-google-btn {
-    transition: background-color 0.3s, box-shadow 0.3s;
-    padding: 12px 16px 12px 42px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 -1px 0 rgba(30, 30, 30, 0.04), 0 1px 1px rgba(50, 50, 50, 0.25);
-    color: #2e2e2e;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: "Fredoka", sans-serif;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
-    background-color: white;
-    background-repeat: no-repeat;
-    background-position: 12px 11px;
-    width: 200px;
-  }
-  .login-with-google-btn:hover {
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
-  }
-  .login-with-google-btn:active {
-    background-color: #eeeeee;
-  }
-  .login-with-google-btn:focus {
-    outline: none;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
-      0 0 0 3px #c8dafc;
-  }
-  .login-with-google-btn:disabled {
-    filter: grayscale(100%);
-    background-color: #ebebeb;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-    cursor: not-allowed;
-  }
+.input-icons {
+  position: absolute;
+  top: 40%;
+  left: 15px; /* Adjust the left offset as needed */
+  transform: translateY(-50%);
+  font-size: 18px; /* Adjust the font size as needed */
+  color: #555; /* Adjust the icon color as needed */
+  margin-top: 4px;
+}
+
+/* Style the input field to give space for the icon */
+input[type="email"],
+input[type="password"],
+select {
+  padding-left: 40px; /* Adjust the left padding to make space for the icon */
+  border: #307a59 1.4px solid;
+  border-radius: 5px;
+  outline: none;
+  font-size: 15px;
+  width: 270px;
+  height: 45px;
+  font-family: "Karla", sans-serif;
+  font-weight: 300;
+  margin-top: 0px;
+}
+
+.signup-form {
+  display: inline-block;
+  flex-direction: column;
+}
+
+/* Remove the default input field placeholder */
+input::placeholder {
+  color: #555;
+}
+
+/* Style the input field placeholder text */
+.icon-input input::before {
+  content: attr(placeholder);
+  position: absolute;
+  top: 50%;
+  left: 45px; /* Adjust the left offset to place the text properly */
+  transform: translateY(-50%);
+  color: #999; /* Adjust the placeholder text color */
+  font-size: 16px;
+}
+
+.error-popup {
+  color: rgb(173, 3, 3);
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+/*Sign in with google button*/
+.sign {
+  justify-content: center;
+  align-items: center;
+}
+
+.login-with-google-btn {
+  transition: background-color 0.3s, box-shadow 0.3s;
+  padding: 12px 16px 12px 42px;
+  width: fit-content;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 -1px 0 rgba(30, 30, 30, 0.04), 0 1px 1px rgba(50, 50, 50, 0.25);
+  color: #2e2e2e;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Fredoka", sans-serif;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 12px 11px;
+}
+.login-with-google-btn:hover {
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.login-with-google-btn:active {
+  background-color: #eeeeee;
+}
+.login-with-google-btn:focus {
+  outline: none;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+    0 0 0 3px #c8dafc;
+}
+.login-with-google-btn:disabled {
+  filter: grayscale(100%);
+  background-color: #ebebeb;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+}
+
+.role-selection{
+  margin-right: 130px;
+
+}
+
+.role{
+  margin-left:5px ;
+}
+
+.input-icon{
+  margin-left: 70px;
+}
+
+.sign h4{
+  margin-left: 100px;
+}
+
+.login-with-google-btn{
+  margin-left: 100px;
+}
+
+h6{
+  margin-left: 50px;
+}
+
+.icon-input .input-icon{
+  margin-left: 110px;
+}
+
+
+.role-selection .role{
+  width: 315px;
+  margin-left: 45px;
+}
+
+.Form h3{
+  margin-left: 50px;
+}

@@ -7,6 +7,7 @@ import image5 from '../assets/adminpic.png';
 import image6 from '../assets/calendar.png';
 import logo from '../assets/logo.png';
 import notification from '../assets/icons/Notification.png';
+import useAuth from "../components/useAuth";
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, query, limit } from "firebase/firestore";
@@ -32,6 +33,22 @@ const Dashboard = ({ count }) => {
   // State to hold the fetched data
   const [data, setData] = useState([]);
   const [localData, setLocalData] = useState([]);
+
+  //Function for the account name
+  const { user } = useAuth();
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    const fetchUserEmail = () => {
+      if (user) {
+        const email = user.email;
+        const truncatedEmail = email.length > 5 ? `${email.substring(0, 5)}...` : email;
+        setUserEmail(truncatedEmail);
+      }
+    };
+
+    fetchUserEmail();
+  }, [user]);
 
   // Function to fetch data from Firestore
   const fetchData = async () => {
@@ -82,7 +99,7 @@ const Dashboard = ({ count }) => {
             <h1>Overview</h1>
               <img src={notification} alt="Notification.png" className='notif'/>
               <img src={logo} alt="logo" className='account-img'/>
-            <div className='account-name'><h1>Civil Regi..</h1></div>
+              <div className="account-name"><h1>{userEmail}</h1></div>
           </div>
         </div>
 
