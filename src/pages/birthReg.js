@@ -21,6 +21,7 @@ import { debounce } from "lodash";
 import jsPDF from "jspdf";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import useAuth from "../components/useAuth";
+import Footer from '../components/footer';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -625,6 +626,7 @@ function App() {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   );
 }

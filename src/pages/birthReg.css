@@ -15,8 +15,10 @@ body, html {
 }
 
 .containers {
-  margin-top: auto;
+  margin-top: 100px;
   margin-bottom: 7px;
+  margin-left: 10px;
+  margin-right: 50px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -212,12 +214,15 @@ h3 {
 }
 
 .table-container {
-  margin-left: 220px;
+  margin-left: 10px;
+  margin-right: 150px;
 }
 
 .details-modal {
     /* ... (your existing styles) */
-    position: relative; /* Make sure the details-modal is set to relative positioning */
+    position: relative;
+    margin-left: 10px;
+    margin-right: 100px; /* Make sure the details-modal is set to relative positioning */
 }
 
 .close-button {
@@ -290,7 +295,7 @@ h3 {
 .search-container {
   position: relative;
   display: flex;
-  margin-left: 220px;
+  margin-left: 0px;
 }
 
 /* Style for the search icon */
@@ -344,28 +349,20 @@ label {
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: max-content;
+  width: 1200px;
 }
 
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    padding: 10px;
-    margin-left: 70px;
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-left: 70px;
 }
 
-/*table*/
-td {
-    padding: 10px;
-    text-align: center;
-    font-size: 13px;
+.table-container th, .table-container td {
+  border: 1px solid #ddd; /* You can adjust the color and thickness of the border */
+  padding: 8px; /* Add padding for better spacing */
 }
 
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    font-size: 15px;
-}
 
 tr:nth-child(even) {
     background-color: #f2f2f2;

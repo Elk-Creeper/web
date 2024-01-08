@@ -14,7 +14,7 @@ import notification from "../assets/icons/Notification.png";
 import { FaSearch } from "react-icons/fa"; // Import icons
 import useAuth from "../components/useAuth";
 import { onSnapshot } from "firebase/firestore";
-
+import Footer from '../components/footer';
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -505,6 +505,7 @@ function App() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

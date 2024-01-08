@@ -143,11 +143,11 @@ const Dashboard = ({ count }) => {
         <img src={image5} alt="adminpic.png" />
       </div>
 
-      <div className='subhead'>
+      <div className='subhead'  style={{ marginLeft: '-130px' }}>
         Appointments
       </div>
       <div className="subhead">
-        <div className="requests">
+        <div className="requests"  style={{ marginLeft: '-190px' }}>
           {data.map((item) => (
             <div key={item.id} className="request-item">
               <div className="title">

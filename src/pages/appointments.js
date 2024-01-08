@@ -7,7 +7,7 @@ import './appointment.css';
 import logo from '../assets/logo.png';
 import notification from '../assets/icons/Notification.png';
 import useAuth from "../components/useAuth";
-
+import Footer from '../components/footer';
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -399,6 +399,7 @@ function App() {
                     </tbody>
                 </table>
             </div>
+            <Footer />
         </div>
     );
 }

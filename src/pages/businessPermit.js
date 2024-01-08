@@ -19,7 +19,7 @@ import jsPDF from "jspdf";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { pdfjs } from "react-pdf";
-
+import Footer from '../components/footer';
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -581,6 +581,7 @@ function App() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

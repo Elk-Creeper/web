@@ -71,8 +71,9 @@ h1 {
   position: relative;
   display: flex;
   justify-content: flex-start;
-  margin-top: 50px; 
-  margin-left: -1000px;
+  margin-top: 120px; 
+  margin-left: 50px;
+  margin-right: 70px;
 }
 
 .search-icon {
@@ -104,13 +105,21 @@ h1 {
     margin-bottom: 20px;
 }
 
-.filter-input,
-.filter-select {
+.filter-input{
     padding: 8px;
     margin-right: 10px;
     border: 1px solid black;
     border-radius: 4px;
     width: 120px;
+    height: 27px;
+    font-size: 11px;
+}
+.filter-select {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 135px;
     font-size: 11px;
 }
 
@@ -126,10 +135,10 @@ h1 {
 }
 
 .tables {
-    width: 75%;
+    width: 85%;
     border-collapse: collapse;
     padding: 10px;
-    margin-left: auto;
+    margin-left: 10px;
 }
 
 /*table*/

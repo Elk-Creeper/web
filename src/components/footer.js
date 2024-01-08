@@ -59,6 +59,9 @@ const footerStyle = {
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   border: "1px solid #1e7566",
+  width: "1500px",
+  marginTop: "20px",
+ 
 };
 
 const logoContainerStyle = {

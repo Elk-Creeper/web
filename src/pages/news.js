@@ -9,6 +9,8 @@ import notification from '../assets/icons/Notification.png';
 import { formatDistanceToNow } from 'date-fns';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import NewsDetails from './newsDetails';
+import Footer from '../components/footer';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -275,9 +277,7 @@ const NewsForm = () => {
   return (
     <Router>
       <div className="app-container">
-        <div className="sidebar">
-          <Sidebar />
-        </div>
+        
 
         <div className='container'>
           <div className="header">
@@ -288,7 +288,6 @@ const NewsForm = () => {
               <div className='account-name'><h1>Civil Regi..</h1></div>
             </div>
           </div>
-
           <div className="search-containers">
             <FaSearch className="search-icon"></FaSearch>
             <input
@@ -487,7 +486,9 @@ const NewsForm = () => {
         </Switch>
 
       </div>
+      <Footer />
     </Router >
+    
   );
 };
 

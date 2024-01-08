@@ -8,6 +8,7 @@ import notification from '../assets/icons/Notification.png';
 import Sidebar from "../components/sidebar";
 import { FaSearch } from 'react-icons/fa'; // Import icons
 import useAuth from "../components/useAuth";
+import Footer from '../components/footer';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -562,6 +563,7 @@ function App() {
                     </div>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 }

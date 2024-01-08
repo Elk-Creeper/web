@@ -128,6 +128,7 @@ h3 {
 
 .submitted-news-container {
   margin-top: 7px;
+  margin-right: 60px;
 }
 
 .news-item {
@@ -277,6 +278,9 @@ h5 {
 
 .form-container {
   position: relative;
+  margin-right: 30px;
+  margin-left: 50px;
+ 
 }
 
 .clos-buttons {
