@@ -1191,6 +1191,11 @@
   resolved "https://registry.npmjs.org/@bundled-es-modules/pdfjs-dist/-/pdfjs-dist-2.1.266-rc.tgz"
   integrity sha512-idli/i9GA7hUW8uRIs2Y48m5QHKRv3PaVxlM1VEoOuzWoF2qLdtOepOpIy3BTblakDNt2f/gINPN7X/v9DBKoQ==
 
+"@canvas-fonts/arial@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/@canvas-fonts/arial/-/arial-1.0.4.tgz"
+  integrity sha512-3kutrSYYWiICFjMNQWqlhu1JJmi1tlqz+CaVgkpq24B4oREIg8IYDvqJK4DiewC0qvcWvqVS/8GPNv5QXm7KeA==
+
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-12.0.0.tgz"

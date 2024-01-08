@@ -18,9 +18,9 @@ body {
 }
 
 .containers {
-  margin-top: 60px;
+  margin-top: auto;
   margin-bottom: 7px;
-  margin-left: 195px;
+  margin-left: 20px;
 }
 
 .containers h1 {

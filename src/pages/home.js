@@ -4,7 +4,6 @@ import Calendar from './Calendar';
 import image4 from '../assets/adminpic.png';
 import image5 from '../assets/adminpic.png';
 import logo from '../assets/logo.png';
-import Footer from '../components/footer';
 import notification from '../assets/icons/Notification.png';
 import useAuth from "../components/useAuth";
 
@@ -132,44 +131,6 @@ const Dashboard = ({ count }) => {
         <h4>Good day, It's</h4>
         <h2>{formattedTime}</h2>
       </div>
-
-    <div className='center'>
-      <div className="news">
-        News
-      </div>
-
-      <div className="image-admin">
-        <img src={image4} alt="adminpic.png" />
-        <img src={image5} alt="adminpic.png" />
-      </div>
-
-      <div className='subhead'>
-        Appointments
-      </div>
-      <div className="subhead">
-        <div className="requests">
-          {data.map((item) => (
-            <div key={item.id} className="request-item">
-              <div className="title">
-                <img src={logo} alt="logo" />
-                <h5>Appointment</h5>
-                <h3>{new Date(item.createdAt.seconds * 1000).toLocaleDateString()}</h3>
-              </div>
-              <p>
-                {item.name} requested for {item.personnel} from {item.department} for an appointment on {new Date(item.date.seconds * 1000).toLocaleDateString()} at {new Date(item.time.seconds * 1000).toLocaleTimeString()} regarding {item.reason}.
-                Check the application for approval.
-              </p>
-              <a href='./appointments'><button className='check'>Check Now</button></a>
-            </div>
-          ))}
-        </div>
-        <div style={{ marginLeft: '60px' }}>
-          <Calendar />
-        </div>
-      </div>
-      </div>
-
-      <Footer/>
     </div>
   );
 }
