@@ -1,30 +1,31 @@
-.sidebar {
-  position: fixed;
+body, html {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
 }
 
-body {
-  overflow-x: hidden;
-}
-
-/* transactions.css */
 .container {
-  margin-top: 20px;
-  overflow-x: hidden;
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .containers {
   margin-top: auto;
   margin-bottom: 7px;
-  margin-left: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .containers h1 {
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* Dropdown menu container */
@@ -331,17 +332,23 @@ h3 {
     margin-right: 5px;
     border: 1px solid black;
     border-radius: 4px;
-    width: 120px;
+    width: 100px;
     font-size: 14px;
-    
 }
 
 label {
     font-size: 15px;
 }
 
+.table-container {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: max-content;
+}
+
 .custom-table {
-    width: 90%;
+    width: 100%;
     border-collapse: collapse;
     padding: 10px;
     margin-left: 70px;

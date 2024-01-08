@@ -1,19 +1,18 @@
-.sidebar {
-  position: fixed;
+
+body, html {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
 }
 
-body {
-  overflow-x: hidden;
-}
-
-/* transactions.css */
 .container {
-  margin-top: 20px;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 /* Dropdown menu container */
@@ -317,4 +316,9 @@ h3 {
     border-radius: 4px;
     width: 120px;
     font-size: 11px;
+}
+
+.containers {
+  margin-top: 90px;
+  margin-left: 60px;
 }

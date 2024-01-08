@@ -1,290 +1,295 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align content to the left side */
-  justify-content: flex-start; /* Align content to the top */
-  height: 100vh;
-  padding-left: 20px; /* Add left padding for spacing */
-  border: #000 1px solid;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
-  
-  .header {
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 100%;
-      height: 80px;
-      background-color: #fff;
-      z-index: 1; /* Set a lower z-index value for the header */
-      box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
-  }
-  
-  .horizontal-nav {
-    display: flex;
-    align-items: center;
-    margin-left: auto; 
-  }
-  
-  .horizontal-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    margin-top: -9px;
-  }
-  
-  .horizontal-nav li {
-    margin-right: 25px;
-  }
-  
-  .horizontal-nav a {
-    text-decoration: none;
-    color: #000;
-    font-weight: 500;
-    font-size: 16px;
-    transition: color 0.3s ease;
-    letter-spacing: 1px;
-    padding: 10px; /* Adjust the padding as needed */
-  }
-  
-  .horizontal-nav a:hover {
-    background-color: #1e7566;
-    color: white;
-    padding: 10px; /* Adjust the padding as needed */
-    border-radius: 5px;
-    letter-spacing: 1px;
-  }
-  
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-  }
-  
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-  
-  .dropdown-content a {
-    color: black;
-    padding: 10px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #1e7566;
-    color: white;
-  }
-  
-  .icons {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 25px;
-  }
-  
-  .notif-icon {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    margin-left: 10px; /* Adjust margin as needed */
-  }
-  
-  .account-name {
-    background-color: #307A59;
-    width: 115px;
-    height: 33px;
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
 
-  .account-name h1 {
-    font-size: 13px;
-    color: #fff;
-    font-weight: 400;
-  }
+.header {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #fff;
+  z-index: 1; /* Set a lower z-index value for the header */
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
+}
 
-  .center {
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 20px; 
-  }
+.horizontal-nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.horizontal-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  margin-top: -9px;
+}
+
+.horizontal-nav li {
+  margin-right: 25px;
+}
+
+.horizontal-nav a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  letter-spacing: 1px;
+  padding: 10px; /* Adjust the padding as needed */
+}
+
+.horizontal-nav a:hover {
+  background-color: #1e7566;
+  color: white;
+  padding: 10px; /* Adjust the padding as needed */
+  border-radius: 5px;
+  letter-spacing: 1px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #1e7566;
+  color: white;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 25px;
+}
+
+.notif-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-left: 10px; /* Adjust margin as needed */
+}
+
+.account-name {
+  background-color: #307a59;
+  width: 115px;
+  height: 33px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.account-name h1 {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 400;
+}
+
+.center {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 20px;
+}
 
 .clock {
-    position: relative;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    background-color: #307A59;
-    padding: 10px;
-    border: 1px solid #f7f2f2;
-    border-radius: 25px;
-    height: 100px;
-    margin-top: 80px;
-    width: 250px;
-    margin-left: 60px;
+  position: relative;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  background-color: #307a59;
+  padding: 10px;
+  border: 1px solid #f7f2f2;
+  border-radius: 25px;
+  height: 100px;
+  margin-top: 80px;
+  width: 250px;
+  margin-left: 60px;
 }
 
 h4 {
-    font-size: 20px;
-    margin: 0;
-    color: #ffffff;
-    margin-top: 17px;
-    text-align: center;
-    font-weight: 400;
+  font-size: 20px;
+  margin: 0;
+  color: #ffffff;
+  margin-top: 17px;
+  text-align: center;
+  font-weight: 400;
 }
 
 h2 {
-    font-size: 30px;
-    margin: 10px 0;
-    color: #fff;
-    text-align: center;
-    justify-content: center;
+  font-size: 30px;
+  margin: 10px 0;
+  color: #fff;
+  text-align: center;
+  justify-content: center;
 }
 
 /* CSS for the request container */
 .subhead {
-    font-size: 16px;
-    margin-bottom: 5px;
-    margin-right: auto;
-    display: flex;
-    flex-direction: row;
+  font-size: 16px;
+  margin-bottom: 5px;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
 }
 
 .requests {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-    margin-left: 5px;
-    text-align: justify;
-    width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+  margin-left: 5px;
+  text-align: justify;
+  width: 450px;
 }
 
 /* CSS for each request item */
 .request-item {
-    border: 1px solid #ccc;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 25px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 25px;
 }
 
 .title {
-    display: flex;
+  display: flex;
 }
 
 .title h3 {
-    margin-left: 200px;
-    margin-top: 7px;
-    font-size: 11px;
-    font-weight: 500;
-    color: gray;
+  margin-left: 200px;
+  margin-top: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  color: gray;
 }
 
 .request-item img {
-    max-width: 24px;
-    max-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
 }
 
 .request-item h5 {
-    font-size: 16px;
-    margin: 0;
-    margin-top: 3px;
-    margin-left: 7px;
-    margin-bottom: 7px;
+  font-size: 16px;
+  margin: 0;
+  margin-top: 3px;
+  margin-left: 7px;
+  margin-bottom: 7px;
 }
 
 .request-item p {
-    font-size: 14px;
-    margin-top: 10px;
-    line-height: 20px;
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: 20px;
 }
 
-
 .check {
-    background-color: #447D60;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 25px;
-    width: 120px;
-    height: 35px;
-    margin-left: 320px;
+  background-color: #447d60;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 25px;
+  width: 120px;
+  height: 35px;
+  margin-left: 320px;
 }
 
 .check:hover {
-    background-color: #93C49E;
-    color: black;
+  background-color: #93c49e;
+  color: black;
 }
 
 /* Add a responsive breakpoint for smaller screens */
 @media (max-width: 768px) {
-    .requests {
-        font-size: 16px; 
-    }
+  .requests {
+    font-size: 16px;
+  }
 
-    .request-item {
-        font-size: 14px;
-        padding: 8px;
-    }
+  .request-item {
+    font-size: 14px;
+    padding: 8px;
+  }
 
-    .request-item img {
-        max-width: 20px;
-        max-height: 20px;
-    }
+  .request-item img {
+    max-width: 20px;
+    max-height: 20px;
+  }
 
-    .request-item h6 {
-        font-size: 14px;
-    }
+  .request-item h6 {
+    font-size: 14px;
+  }
 
-    .request-item p {
-        font-size: 12px;
-    }
+  .request-item p {
+    font-size: 12px;
+  }
 }
 
 /* CSS for the news part */
 .news {
-    font-size: 16px;
-    margin-top: -140px;
-    margin-left: 420px;
+  font-size: 16px;
+  margin-top: -140px;
+  margin-left: 420px;
 }
 
 .image-admin {
-    display: flex;
-    width: 100px;
-    height: 30px;
-    align-items: center;
-    margin-left: 400px;
-    margin-bottom: 70px;
-    margin-top: 50px;
+  display: flex;
+  width: 100px;
+  height: 30px;
+  align-items: center;
+  margin-left: 400px;
+  margin-bottom: 70px;
+  margin-top: 50px;
 }
 
 .image-admin img {
-    width: 320px;
-    height: 120px;
-    margin-inline: 15px;
-    border-radius: 5px;
+  width: 320px;
+  height: 120px;
+  margin-inline: 15px;
+  border-radius: 5px;
 }
 
 .calendar {
-    margin-top: 15px;
-    margin-left: 10px;
+  margin-top: 15px;
+  margin-left: 10px;
 }
 
 .footer {
