@@ -674,6 +674,24 @@ function App() {
                   </div>
 
                   <div className="buttons">
+                  <button
+                      onClick={() =>
+                        handleStatusChange(selectedItem.id, "Approved")
+                      }
+                      className="completed-button"
+                      disabled={selectedItem.status === "Approved"}
+                    >
+                      Approved
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(selectedItem.id, "On Process")
+                      }
+                      className="on-process-button"
+                      disabled={selectedItem.status === "On Process"}
+                    >
+                      On Process
+                    </button>
                     <button
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Completed")
@@ -685,12 +703,12 @@ function App() {
                     </button>
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "On Process")
+                        handleStatusChange(selectedItem.id, "Rejected")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "On Process"}
+                      disabled={selectedItem.status === "Rejected"}
                     >
-                      On Process
+                      Rejected
                     </button>
                   </div>
                 </div>
