@@ -14,7 +14,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
+import './signup.css';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -118,7 +118,7 @@ function Signup() {
         <div className="sign">
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="icon-input">
-              <FaEnvelope className="input-icons" />
+              <FaEnvelope className="input-icons" style={{ marginLeft: '120px'}}/>
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -129,7 +129,7 @@ function Signup() {
             </div>
             <div className="icon-input">
               <div className="role-selection">
-              <FaUser className="input-icons" />
+              <FaUser className="input-icons" style={{ marginLeft: '120px'}}/>
                 <label>Select Role:</label>
                 <select
                   className="role"
@@ -146,7 +146,7 @@ function Signup() {
               </div>
             </div>
             <div className="icon-input">
-              <FaLock className="input-icons" />
+              <FaLock className="input-icons" style={{ marginLeft: '120px'}}/>
               <input
                 type="password"
                 placeholder="Enter your password"
@@ -156,7 +156,7 @@ function Signup() {
               />
             </div>
             <div className="icon-input">
-              <FaLock className="input-icons" />
+              <FaLock className="input-icons" style={{ marginLeft: '120px'}}/>
               <input
                 type="password"
                 placeholder="Re-enter your password"

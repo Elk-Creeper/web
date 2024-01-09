@@ -143,7 +143,7 @@ const Dashboard = ({ count }) => {
         <img src={image5} alt="adminpic.png" />
       </div>
 
-      <div className='subhead'  style={{ marginLeft: '-130px' }}>
+      <div className='subhead'  style={{ marginLeft: '-120px' }}>
         Appointments
       </div>
       <div className="subhead">
