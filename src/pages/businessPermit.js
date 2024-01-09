@@ -4,22 +4,25 @@ import {
   getFirestore,
   collection,
   getDocs,
+  orderBy,
+  query,
+  limit,
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Import Firebase Storage related functions
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import "./marriageCert.css";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
 import Sidebar from "../components/sidebar";
-import { FaSearch } from "react-icons/fa"; // Import icons
-import useAuth from "../components/useAuth";
+import { FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { debounce } from "lodash";
 import jsPDF from "jspdf";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { pdfjs } from "react-pdf";
+import useAuth from "../components/useAuth";
 import Footer from '../components/footer';
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -31,7 +34,6 @@ const firebaseConfig = {
   measurementId: "G-LS66HXR3GT",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 
@@ -41,57 +43,70 @@ function App() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableVisible, setTableVisible] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [searchQuery, setSearchQuery] = useState(""); // New state for the search query
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedYearFilter, setSelectedYearFilter] = useState("");
   const [selectedMonthFilter, setSelectedMonthFilter] = useState("");
   const [selectedDayFilter, setSelectedDayFilter] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
-
   const [pdfFileUrl, setPdfFileUrl] = useState(null);
 
   // Function for the account name
- const { user } = useAuth();
- const [userEmail, setUserEmail] = useState('');
+  const { user } = useAuth();
+  const [userEmail, setUserEmail] = useState("");
 
- useEffect(() => {
-   const fetchUserEmail = () => {
-     if (user) {
-       const email = user.email;
-       const truncatedEmail = email.length > 5 ? `${email.substring(0, 5)}...` : email;
-       setUserEmail(truncatedEmail);
-     }
-   };
+  useEffect(() => {
+    const fetchUserEmail = () => {
+      if (user) {
+        const email = user.email;
+        const truncatedEmail =
+          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+        setUserEmail(truncatedEmail);
+      }
+    };
 
-   fetchUserEmail();
- }, [user]);
+    fetchUserEmail();
+  }, [user]);
 
   const storage = getStorage();
 
   const fetchData = async () => {
     try {
-      // Adjust this query based on your actual data structure
-      const snapshot = await collection(firestore, "businessPermit");
-      const querySnapshot = await getDocs(snapshot);
-      const items = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const querySnapshot = await getDocs(collection(firestore, "businessPermit"));
+      const items = [];
 
-      for (const item of items) {
-        if (item.imagePath) {
-          const imageUrl = await getDownloadURL(ref(storage, item.imagePath));
-          item.imageUrl = imageUrl;
+      if (!querySnapshot.empty) {
+        for (const doc of querySnapshot.docs) {
+          const data = doc.data();
+
+          if (data.imagePath) {
+            try {
+              const imageUrl = await getDownloadURL(
+                ref(storage, data.imagePath)
+              );
+              data.imageUrl = imageUrl;
+            } catch (imageError) {
+              console.error("Error fetching image URL:", imageError);
+            }
+          }
+
+          items.push({
+            id: doc.id,
+            ...data,
+          });
         }
+
+        items.sort(
+          (a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+        );
+
+        setData(items);
+        setLoading(false);
+      } else {
+        console.log("No documents found in the 'businessPermit' collection.");
+        setLoading(false);
       }
-
-      // Sort the data based on createdAt timestamp in descending order
-      items.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
-
-      setData(items);
-      setLoading(false);
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error fetching data from Firestore:", error);
       setLoading(false);
     }
   };
@@ -103,17 +118,17 @@ function App() {
 
   const openDetailsModal = async (item) => {
     setSelectedItem(item);
-    setTableVisible(false); // Set the table to hide
+    setTableVisible(false);
   };
 
   const closeDetailsModal = () => {
     setSelectedItem(null);
-    setTableVisible(true); // Set the table to show
+    setTableVisible(true);
   };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const appointmentRef = doc(firestore, "marriageCert", id);
+      const appointmentRef = doc(firestore, "businessPermit", id);
       await updateDoc(appointmentRef, {
         status: newStatus,
       });
@@ -132,98 +147,73 @@ function App() {
   useEffect(() => {
     setLoading(true);
     debouncedFetchData();
-  }, [searchTerm]);
+  }, [
+    searchTerm,
+    selectedYearFilter,
+    selectedMonthFilter,
+    selectedDayFilter,
+    selectedStatusFilter,
+  ]);
 
   const filteredData = data.filter((item) => {
-    const getMonthName = (monthNumber) => {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      return monthNames[monthNumber - 1];
-    };
+    const matchesSearch =
+      item.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.userBarangay.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.userEmail.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesYear = selectedYearFilter
+      ? item.createdAt &&
+        item.createdAt.toDate &&
+        item.createdAt.toDate().getFullYear() == selectedYearFilter
+      : true;
+
+    const matchesMonth = selectedMonthFilter
+      ? item.createdAt &&
+        item.createdAt.toDate &&
+        item.createdAt.toDate().getMonth() + 1 == selectedMonthFilter
+      : true;
+
+    const matchesDay = selectedDayFilter
+      ? item.createdAt &&
+        item.createdAt.toDate &&
+        item.createdAt.toDate().getDate() == selectedDayFilter
+      : true;
+
+    const matchesStatus = selectedStatusFilter
+      ? item.status.toLowerCase() == selectedStatusFilter.toLowerCase()
+      : true;
 
     return (
-      item.rname &&
-      item.rname.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (selectedYearFilter !== ""
-        ? item.createdAt &&
-          item.createdAt.toDate &&
-          typeof item.createdAt.toDate === "function" &&
-          item.createdAt.toDate().getFullYear().toString() ===
-            selectedYearFilter
-        : true) &&
-      (selectedMonthFilter !== ""
-        ? item.createdAt &&
-          item.createdAt.toDate &&
-          typeof item.createdAt.toDate === "function" &&
-          getMonthName(item.createdAt.toDate().getMonth() + 1).toLowerCase() ===
-            selectedMonthFilter.toLowerCase()
-        : true) &&
-      (selectedDayFilter !== ""
-        ? item.createdAt &&
-          item.createdAt.toDate &&
-          typeof item.createdAt.toDate === "function" &&
-          item.createdAt.toDate().getDate().toString() === selectedDayFilter
-        : true) &&
-      (selectedStatusFilter !== ""
-        ? item.status.toLowerCase().includes(selectedStatusFilter.toLowerCase())
-        : true)
+      matchesSearch &&
+      matchesYear &&
+      matchesMonth &&
+      matchesDay &&
+      matchesStatus
     );
   });
 
   const handleYearFilterChange = (event) => {
     setSelectedYearFilter(event.target.value);
+    setLoading(true);
+    debouncedFetchData();
   };
 
   const handleMonthFilterChange = (event) => {
     setSelectedMonthFilter(event.target.value);
+    setLoading(true);
+    debouncedFetchData();
   };
 
   const handleDayFilterChange = (event) => {
     setSelectedDayFilter(event.target.value);
+    setLoading(true);
+    debouncedFetchData();
   };
 
   const handleStatusFilterChange = (event) => {
     setSelectedStatusFilter(event.target.value);
-  };
-
-  const openPdf = async () => {
-    try {
-      // Set the full URL to your PDF file
-      const pdfPath = "/certificate.pdf";
-
-      // Fetch the PDF content
-      const response = await fetch(pdfPath);
-      const arrayBuffer = await response.arrayBuffer();
-
-      // Convert the array buffer to a Uint8Array
-      const uint8Array = new Uint8Array(arrayBuffer);
-
-      // Create a Blob from the Uint8Array
-      const blob = new Blob([uint8Array], { type: "application/pdf" });
-
-      // Generate a data URL from the Blob
-      const dataUrl = URL.createObjectURL(blob);
-
-      // Set the dataUrl to state
-      setPdfFileUrl(dataUrl);
-
-      // Open the PDF in a new tab or window (optional)
-      window.open(dataUrl, "_blank");
-    } catch (error) {
-      console.error("Error opening PDF:", error);
-    }
+    setLoading(true);
+    debouncedFetchData();
   };
 
   return (
@@ -255,13 +245,13 @@ function App() {
                 <a href="/appointments">Appointments</a>
               </li>
               <li>
-                <a href="/transactions">News</a>
+                <a href="/news">News</a>
               </li>
               <li>
-                <a href="/transactions">About</a>
+                <a href="/">About</a>
               </li>
               <li>
-                <a href="/transactions">Settings</a>
+                <a href="/">Settings</a>
               </li>
             </ul>
           </nav>
@@ -280,7 +270,7 @@ function App() {
         </div>
 
         <div className="containers">
-          <h1>Business Permit</h1>
+          <h1>Application of Business Permit</h1>
         </div>
 
         <div className="search-container">
@@ -402,34 +392,25 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.length === 0 ? ( // Check if there are no matching records
+                {filteredData.length === 0 ? (
                   <tr>
                     <td colSpan="6" style={{ textAlign: "center" }}>
                       No matching records found.
                     </td>
                   </tr>
                 ) : (
-                  // Display filtered data
                   filteredData.map((item) => (
                     <tr key={item.id}>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {item.userName}
-                      </td>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {item.userBarangay}
-                      </td>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {item.userEmail}
-                      </td>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
+                      <td>{item.userName}</td>
+                      <td>{item.userBarangay}</td>
+                      <td>{item.userEmail}</td>
+                      <td>
                         {item.createdAt && item.createdAt.toDate
                           ? item.createdAt.toDate().toLocaleString()
                           : "Invalid Date"}
                       </td>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {item.status}
-                      </td>
-                      <td style={{ padding: "8px", border: "1px solid black" }}>
+                      <td>{item.status}</td>
+                      <td>
                         <button
                           onClick={() => openDetailsModal(item)}
                           className="view-button"
@@ -450,88 +431,168 @@ function App() {
             <div className="details-content">
               <div className="subheads">
                 <div className="request-item">
-                  <button className="close-button" onClick={closeDetailsModal}>
-                    x
-                  </button>
                   <div className="title">
                     <h6>Full Details</h6>
+                    <span className="close-button" onClick={closeDetailsModal}>
+                      &times;
+                    </span>
                   </div>
-                  <p>
-                    This registration form is requested by {selectedItem.userName}
-                    .
-                  </p>
+                  <p>This registration form is requested by {selectedItem.userName}.</p>
 
+                  {/* Business Permit Form */}
                   <div className="section">
+                    <h3>Business Permit Form </h3>
                     <div className="form-grid">
-                      <div className="form-group">
-                        <label>Name of Wife</label>
-                        <div className="placeholder">{selectedItem.wname}</div>
-                      </div>
 
                       <div className="form-group">
-                        <label>Name of Husband</label>
-                        <div className="placeholder">{selectedItem.hname}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Date of Marriage</label>
+                        <label>Type of Application</label>
                         <div className="placeholder">
-                          {selectedItem.date &&
-                            selectedItem.date.toDate().toLocaleString()}
+                          {selectedItem.typeOfApplication}
                         </div>
                       </div>
 
                       <div className="form-group">
-                        <label>Place of Marriage</label>
+                        <label>Contact Number</label>
                         <div className="placeholder">
-                          {selectedItem.marriage}
+                          {selectedItem.userContact}
                         </div>
                       </div>
 
                       <div className="form-group">
-                        <label>Complete name of requesting party</label>
-                        <div className="placeholder">{selectedItem.rname}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Complete address of requesting party</label>
+                        <label>Business Registration Number</label>
                         <div className="placeholder">
-                          {selectedItem.address}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Number of copies needed</label>
-                        <div className="placeholder">{selectedItem.copies}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Purpose of the certification</label>
-                        <div className="placeholder">
-                          {selectedItem.purpose}
+                          {selectedItem.businessNum1}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="section">
-                    <h3>Proof of Payment</h3>
+                    <h3>Cedula</h3>
                     <div className="proof">
-                      {selectedItem.payment ? (
+                      {selectedItem.cedula1 ? (
                         <img
-                          src={selectedItem.payment}
+                          src={selectedItem.cedula1}
                           alt="Proof of Payment"
-                          className="proof-image"
-                        />
-                      ) : (
-                        <p>No payment proof available</p>
-                      )}
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
                     </div>
-                    <div className="form-group">
+                  </div>
+
+                  <div className="section">
+                    <h3>Barangay Business Clearance</h3>
+                    <div className="proof">
+                      {selectedItem.barangayClearance1 ? (
+                        <img
+                          src={selectedItem.barangayClearance1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>DTI Registration (Single Proprietor)</h3>
+                    <div className="proof">
+                      {selectedItem.dti1 ? (
+                        <img
+                          src={selectedItem.dti1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>SEC Registration(Corporation & Partnership)</h3>
+                    <div className="proof">
+                      {selectedItem.sec1 ? (
+                        <img
+                          src={selectedItem.sec1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>Fire Safety Clearance</h3>
+                    <div className="proof">
+                      {selectedItem.fire1 ? (
+                        <img
+                          src={selectedItem.fire1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>Sanitary/Health Certificate</h3>
+                    <div className="proof">
+                      {selectedItem.sanitary1 ? (
+                        <img
+                          src={selectedItem.sanitary1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>Police Clearance</h3>
+                    <div className="proof">
+                      {selectedItem.police1 ? (
+                        <img
+                          src={selectedItem.police1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>Picture 2x2 (1 piece)</h3>
+                    <div className="proof">
+                      {selectedItem.picture1 ? (
+                        <img
+                          src={selectedItem.picture1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>Official Receipt for Mayor's Permit</h3>
+                    <div className="proof">
+                      {selectedItem.mayorsPermit1 ? (
+                        <img
+                          src={selectedItem.mayorsPermit1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>BMPDC Certificate</h3>
+                    <div className="proof">
+                      {selectedItem.mpdc1 ? (
+                        <img
+                          src={selectedItem.mpdc1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="section">
+                    <h3>MEO Certification</h3>
+                    <div className="proof">
+                      {selectedItem.meo1 ? (
+                        <img
+                          src={selectedItem.meo1}
+                          alt="Proof of Payment"
+                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                    </div>
+                  </div>
+
+                  <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
                     </div>
-                  </div>
+
 
                   <div className="buttons">
                     <button
@@ -552,28 +613,6 @@ function App() {
                     >
                       On Process
                     </button>
-                    <button
-                      onClick={() =>
-                        handleStatusChange(selectedItem.id, "Rejected")
-                      }
-                      className="on-process-button"
-                      disabled={selectedItem.status === "Rejected"}
-                    >
-                      Rejected
-                    </button>
-
-                    <button onClick={openPdf}>Open PDF</button>
-
-                    {/* PDF Viewer */}
-                    {pdfFileUrl && (
-                      <div className="pdf-viewer">
-                        <Worker
-                          workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`}
-                        >
-                          <Viewer fileUrl={pdfFileUrl} />
-                        </Worker>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -581,7 +620,7 @@ function App() {
           </div>
         )}
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 }
