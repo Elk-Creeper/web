@@ -377,150 +377,173 @@ function App() {
                                             &times;
                                         </span>
                                     </div>
-                                    <p>This registration form is requested by {selectedItem.m_name}.</p>
+                                    <p>This registration form is requested by {selectedItem.userName}.</p>
 
-                                    {/* Child's Information */}
+                                    {/* Person's Information */}
                                     <div className="section">
                                         <h3>Child's Information</h3>
                                         <div className="form-grid">
+
                                             <div className="form-group">
-                                                <label>Name of Child</label>
-                                                <div className="placeholder">{selectedItem.childname}</div>
+                                                <label>Name</label>
+                                                <div className="placeholder">{selectedItem.name}</div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Birth date</label>
+                                                <label>Sex</label>
+                                                <div className="placeholder">{selectedItem.sex}</div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Date of Death</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_birthdate && selectedItem.c_birthdate.toDate
-                                                        ? selectedItem.c_birthdate.toDate().toLocaleString()
+                                                    {selectedItem.dateDeath && selectedItem.dateDeath.toDate
+                                                        ? selectedItem.dateDeath.toDate().toLocaleString()
                                                         : "Invalid Date"}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Birth Place</label>
+                                                <label>Date of Birth</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_birthplace}
+                                                    {selectedItem.dateBirth && selectedItem.dateBirth.toDate
+                                                        ? selectedItem.dateBirth.toDate().toLocaleString()
+                                                        : "Invalid Date"}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Sex</label>
+                                                <label>Age at the Time of Death</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_sex}
+                                                    {selectedItem.age}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Type of Birth</label>
+                                                <label>Place of Death</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_typeofbirth}
+                                                    {selectedItem.place}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Weight</label>
+                                                <label>Civil Status</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_weight}
+                                                    {selectedItem.civilstat}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Birth Order</label>
+                                                <label>Religion/Religious Sect</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_birthorder}
+                                                    {selectedItem.religion}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Residence</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.residence}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Occupation</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.occupation}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Name of Father</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.fatherName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Maiden Name of Mother</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.motherName}
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
 
-                                    {/* Mother's Information */}
+                                    {/* Medical Certificate */}
                                     <div className="section">
-                                        <h3>Mother's Information</h3>
+                                        <h3>Medical Certificate</h3>
                                         <div className="form-grid">
-                                            <div className="form-group">
-                                                <label>Mother's Name</label>
+
+                                        <div className="form-group">
+                                                <label>Does the deceased aged 0 - 7 </label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_name}
+                                                    {selectedItem.forChild}
                                                 </div>
                                             </div>
 
                                             <div className="form-group">
-                                                <label>Mother's Age at the time of Birth</label>
+                                                <label>Causes of Death</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_age}
+                                                    {selectedItem.causeOfDeath}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Occupation</label>
+                                                <label>Maternal Condition</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_occur}
+                                                    {selectedItem.maternalCondi}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Citizenship</label>
+                                                <label>Death by External Causes</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_citizenship}
+                                                    {selectedItem.externalCause}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Religion</label>
+                                                <label>Autopsy</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_religion}
+                                                    {selectedItem.autopsy}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Total Children</label>
+                                                <label>Attendant</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_totchild}
+                                                    {selectedItem.attendant}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Corpse Disposal</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.corpseDis}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Name and Address of Cemetery or Crematory</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.addOfCemetery}
                                                 </div>
                                             </div>
                                             {/* Add more mother fields here */}
                                         </div>
                                     </div>
 
-                                    {/* Father's Information */}
-                                    <div className="section">
-                                        <h3>Father's Information</h3>
-                                        <div className="form-grid">
-                                            <div className="form-group">
-                                                <label>Father's Name</label>
-                                                <div className="placeholder">{selectedItem.f_name}</div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Age at the time of Birth</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_age}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Occupation</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_occur}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Citizenship</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_citizenship}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Religion</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_religion}
-                                                </div>
-                                            </div>
-                                            {/* Add more father fields here */}
-                                        </div>
-                                    </div>
+ 
 
-                                    {/* Other Information */}
-                                    <div className="section">
-                                        <h3>Other Information</h3>
-                                        <div className="form-grid">
-                                            <div className="form-group">
-                                                <label>Place of Marriage</label>
-                                                <div className="placeholder">{selectedItem.f_placemarried}</div>
-                                            </div>
-                                            {/* Add more other fields here */}
-                                        </div>
-                                    </div>
 
                                     <div className="section">
                                         <h3>Proof of Payment</h3>

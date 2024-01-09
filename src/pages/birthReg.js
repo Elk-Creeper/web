@@ -245,13 +245,13 @@ function App() {
                 <a href="/appointments">Appointments</a>
               </li>
               <li>
-                <a href="/transactions">News</a>
+                <a href="/news">News</a>
               </li>
               <li>
-                <a href="/transactions">About</a>
+                <a href="/">About</a>
               </li>
               <li>
-                <a href="/transactions">Settings</a>
+                <a href="/">Settings</a>
               </li>
             </ul>
           </nav>
@@ -437,58 +437,85 @@ function App() {
                       &times;
                     </span>
                   </div>
-                  <p>
-                    This registration form is requested by{" "}
-                    {selectedItem.userName}.
-                  </p>
+                  <p>This registration form is requested by {selectedItem.userName}.</p>
 
                   {/* Child's Information */}
                   <div className="section">
                     <h3>Child's Information</h3>
                     <div className="form-grid">
+
                       <div className="form-group">
-                        <label>Name of Child</label>
+                        <label>First Name</label>
                         <div className="placeholder">
-                          {selectedItem.childname}
+                          {selectedItem.c_fname}
                         </div>
                       </div>
+
                       <div className="form-group">
-                        <label>Birth date</label>
+                        <label>Middle Name</label>
                         <div className="placeholder">
-                          {selectedItem.c_birthdate &&
-                          selectedItem.c_birthdate.toDate
-                            ? selectedItem.c_birthdate.toDate().toLocaleString()
-                            : "Invalid Date"}
+                          {selectedItem.c_mname}
                         </div>
                       </div>
+
                       <div className="form-group">
-                        <label>Birth Place</label>
+                        <label>Last Name</label>
                         <div className="placeholder">
-                          {selectedItem.c_birthplace}
+                          {selectedItem.c_lname}
                         </div>
                       </div>
+
                       <div className="form-group">
                         <label>Sex</label>
                         <div className="placeholder">{selectedItem.c_sex}</div>
                       </div>
+
+                      <div className="form-group">
+                        <label>Birth Date</label>
+                        <div className="placeholder">
+                          {selectedItem.birthdate &&
+                          selectedItem.birthdate.toDate
+                            ? selectedItem.birthdate.toDate().toLocaleString()
+                            : "Invalid Date"}
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Birth of Place</label>
+                        <div className="placeholder">
+                          {selectedItem.c_birthplace}
+                        </div>
+                      </div>
+
                       <div className="form-group">
                         <label>Type of Birth</label>
                         <div className="placeholder">
                           {selectedItem.c_typeofbirth}
                         </div>
                       </div>
+
                       <div className="form-group">
-                        <label>Weight</label>
+                        <label>If Multiple Birth, Child was</label>
                         <div className="placeholder">
-                          {selectedItem.c_weight}
-                        </div>
+                         {selectedItem.c_multiple ? selectedItem.c_multiple : "  "}
+                         </div>
                       </div>
+
+
                       <div className="form-group">
                         <label>Birth Order</label>
                         <div className="placeholder">
                           {selectedItem.c_birthorder}
                         </div>
                       </div>
+
+                      <div className="form-group">
+                        <label>Weight</label>
+                        <div className="placeholder">
+                          {selectedItem.c_weight}
+                        </div>
+                      </div>
+
                     </div>
                   </div>
 
@@ -496,37 +523,53 @@ function App() {
                   <div className="section">
                     <h3>Mother's Information</h3>
                     <div className="form-grid">
+
                       <div className="form-group">
                         <label>Mother's Name</label>
                         <div className="placeholder">{selectedItem.m_name}</div>
                       </div>
 
                       <div className="form-group">
-                        <label>Mother's Age at the time of Birth</label>
-                        <div className="placeholder">{selectedItem.m_age}</div>
+                        <label>Mother's Citizenship</label>
+                        <div className="placeholder">{selectedItem.m_citizenship}</div>
                       </div>
+
+                      <div className="form-group">
+                        <label>Mother's Religion/Religious Sect</label>
+                        <div className="placeholder">{selectedItem.m_religion}</div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Total number of children born alive</label>
+                        <div className="placeholder">{selectedItem.bornAlive}</div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>No. of children still living including this birth</label>
+                        <div className="placeholder">{selectedItem.childStillLiving}</div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>No. of children born alive but are now dead</label>
+                        <div className="placeholder">{selectedItem.childAliveButNowDead}</div>
+                      </div>
+
                       <div className="form-group">
                         <label>Mother's Occupation</label>
                         <div className="placeholder">
                           {selectedItem.m_occur}
                         </div>
                       </div>
+
                       <div className="form-group">
-                        <label>Mother's Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.m_citizenship}
-                        </div>
+                        <label>Mother's Age at the time of Birth</label>
+                        <div className="placeholder">{selectedItem.m_age}</div>
                       </div>
+
                       <div className="form-group">
-                        <label>Mother's Religion</label>
+                        <label>Mother's Residence</label>
                         <div className="placeholder">
-                          {selectedItem.m_religion}
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <label>Total Children</label>
-                        <div className="placeholder">
-                          {selectedItem.m_totchild}
+                          {selectedItem.m_residence}
                         </div>
                       </div>
                       {/* Add more mother fields here */}
@@ -537,30 +580,42 @@ function App() {
                   <div className="section">
                     <h3>Father's Information</h3>
                     <div className="form-grid">
+
                       <div className="form-group">
                         <label>Father's Name</label>
                         <div className="placeholder">{selectedItem.f_name}</div>
                       </div>
-                      <div className="form-group">
-                        <label>Father's Age at the time of Birth</label>
-                        <div className="placeholder">{selectedItem.f_age}</div>
-                      </div>
-                      <div className="form-group">
-                        <label>Father's Occupation</label>
-                        <div className="placeholder">
-                          {selectedItem.f_occur}
-                        </div>
-                      </div>
+
                       <div className="form-group">
                         <label>Father's Citizenship</label>
                         <div className="placeholder">
                           {selectedItem.f_citizenship}
                         </div>
                       </div>
+
                       <div className="form-group">
-                        <label>Father's Religion</label>
+                        <label>Father's Religion/Religious Sect</label>
                         <div className="placeholder">
                           {selectedItem.f_religion}
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Father's Occupation</label>
+                        <div className="placeholder">
+                          {selectedItem.f_occur}
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Father's Age at the time of Birth</label>
+                        <div className="placeholder">{selectedItem.f_age}</div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Father's Residence</label>
+                        <div className="placeholder">
+                          {selectedItem.f_residence}
                         </div>
                       </div>
                       {/* Add more father fields here */}
@@ -571,12 +626,30 @@ function App() {
                   <div className="section">
                     <h3>Other Information</h3>
                     <div className="form-grid">
+
+                      <div className="form-group">
+                        <label>Date of Marriage</label>
+                        <div className="placeholder">
+                        {selectedItem.mpDate&& selectedItem.mpDate.toDate
+                       ? selectedItem.mpDate.toDate().toLocaleString()
+                       : "Invalid Date"}
+                        </div>
+                      </div>
+
                       <div className="form-group">
                         <label>Place of Marriage</label>
                         <div className="placeholder">
-                          {selectedItem.f_placemarried}
+                          {selectedItem.mpPlace}
                         </div>
                       </div>
+
+                      <div className="form-group">
+                        <label>Attendant</label>
+                        <div className="placeholder">
+                          {selectedItem.attendant}
+                        </div>
+                      </div>
+
                       {/* Add more other fields here */}
                     </div>
                   </div>

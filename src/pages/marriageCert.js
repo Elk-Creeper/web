@@ -227,7 +227,7 @@ function App() {
                 </div>
 
                 <div className="containers">
-                    <h1>Registration of Death Certificate</h1>
+                    <h1>Registration of Marriage Certificate</h1>
                 </div>
 
                 <div className="search-container">
@@ -377,150 +377,263 @@ function App() {
                                             &times;
                                         </span>
                                     </div>
-                                    <p>This registration form is requested by {selectedItem.m_name}.</p>
+                                    <p>This registration form is requested by {selectedItem.userName}.</p>
 
-                                    {/* Child's Information */}
+                                    {/* Husband's Information */}
                                     <div className="section">
-                                        <h3>Child's Information</h3>
+                                        <h3>Husband's Information</h3>
                                         <div className="form-grid">
+
                                             <div className="form-group">
-                                                <label>Name of Child</label>
-                                                <div className="placeholder">{selectedItem.childname}</div>
+                                                <label>Husband's Name</label>
+                                                <div className="placeholder">{selectedItem.h_name}</div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Birth date</label>
+                                                <label>Husband's Date of Birth</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_birthdate && selectedItem.c_birthdate.toDate
-                                                        ? selectedItem.c_birthdate.toDate().toLocaleString()
+                                                    {selectedItem.h_dateBirth && selectedItem.h_dateBirth.toDate
+                                                        ? selectedItem.h_dateBirth.toDate().toLocaleString()
                                                         : "Invalid Date"}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Birth Place</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.c_birthplace}
-                                                </div>
+                                                <label>Husband's Age</label>
+                                                <div className="placeholder">{selectedItem.h_age}</div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Sex</label>
+                                                <label>Husband's Birth Place</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.c_sex}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Type of Birth</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.c_typeofbirth}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Weight</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.c_weight}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Birth Order</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.c_birthorder}
+                                                    {selectedItem.h_placeBirth}
                                                 </div>
                                             </div>
 
+                                            <div className="form-group">
+                                                <label>Husband's Sex</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_sex}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Residence</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_residence}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Religion/Religious Sect</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_religion}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Civil Status</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_civilstat}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Name of Father</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_fatherName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Father Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.hf_citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Mother's Maiden Name</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_motherName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Husband's Mother Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.hm_citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Name of Person/Wali who gave Consent or Advice</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_personName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Relationship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.h_relationship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Residence</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.hp_residence}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* Mother's Information */}
+                                    {/* Wife's Information */}
                                     <div className="section">
-                                        <h3>Mother's Information</h3>
+                                        <h3>Wife's Information</h3>
                                         <div className="form-grid">
+
                                             <div className="form-group">
-                                                <label>Mother's Name</label>
+                                                <label>Wife's Name</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_name}
+                                                    {selectedItem.w_name}
                                                 </div>
                                             </div>
 
                                             <div className="form-group">
-                                                <label>Mother's Age at the time of Birth</label>
+                                                <label>Wife's Date of Birth</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_age}
+                                                    {selectedItem.w_dateBirth && selectedItem.w_dateBirth.toDate
+                                                        ? selectedItem.w_dateBirth.toDate().toLocaleString()
+                                                        : "Invalid Date"}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Occupation</label>
+                                                <label>Wife's Place of Birth</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_occur}
+                                                    {selectedItem.w_placeBirth}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Citizenship</label>
+                                                <label>Wife's Sex</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_citizenship}
+                                                    {selectedItem.w_sex}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Mother's Religion</label>
+                                                <label>Wife's Citizenship</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_religion}
+                                                    {selectedItem.w_citizenship}
                                                 </div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Total Children</label>
+                                                <label>Wife's Residence</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.m_totchild}
+                                                    {selectedItem.w_residence}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Religion/Religious sect</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_religion}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Civil Status</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_civilstat}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Name of Father</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_fatherName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Father Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.wf_citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Mother Maiden Name</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_motherName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Wife's Mother Citizenship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.wm_citizenship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Name of Person/Wali who gave Consent or Advice</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_personName}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Relationship</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.w_relationship}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label>Residence</label>
+                                                <div className="placeholder">
+                                                    {selectedItem.wp_residence}
                                                 </div>
                                             </div>
                                             {/* Add more mother fields here */}
                                         </div>
                                     </div>
 
-                                    {/* Father's Information */}
+                                    {/* Others Information */}
                                     <div className="section">
-                                        <h3>Father's Information</h3>
+                                        <h3>Other Information</h3>
                                         <div className="form-grid">
+
                                             <div className="form-group">
-                                                <label>Father's Name</label>
-                                                <div className="placeholder">{selectedItem.f_name}</div>
+                                                <label>Place of Marriage</label>
+                                                <div className="placeholder">{selectedItem.h_placeMarriage}</div>
                                             </div>
+
                                             <div className="form-group">
-                                                <label>Father's Age at the time of Birth</label>
+                                                <label>Date of Marriage</label>
                                                 <div className="placeholder">
-                                                    {selectedItem.f_age}
+                                                {selectedItem.w_dateMarriage && selectedItem.w_dateMarriage.toDate
+                                                        ? selectedItem.w_dateMarriage.toDate().toLocaleString()
+                                                        : "Invalid Date"}
                                                 </div>
                                             </div>
-                                            <div className="form-group">
-                                                <label>Father's Occupation</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_occur}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Citizenship</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_citizenship}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Father's Religion</label>
-                                                <div className="placeholder">
-                                                    {selectedItem.f_religion}
-                                                </div>
-                                            </div>
+
                                             {/* Add more father fields here */}
                                         </div>
                                     </div>
 
-                                    {/* Other Information */}
-                                    <div className="section">
-                                        <h3>Other Information</h3>
-                                        <div className="form-grid">
-                                            <div className="form-group">
-                                                <label>Place of Marriage</label>
-                                                <div className="placeholder">{selectedItem.f_placemarried}</div>
-                                            </div>
-                                            {/* Add more other fields here */}
-                                        </div>
-                                    </div>
 
                                     <div className="section">
                                         <h3>Proof of Payment</h3>
