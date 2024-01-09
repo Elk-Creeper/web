@@ -59,7 +59,7 @@ const footerStyle = {
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   border: "1px solid #1e7566",
-  width: "2500px",
+  width: "7000px",
   marginTop: "20px",
  
 };
