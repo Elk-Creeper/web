@@ -452,7 +452,7 @@ function App() {
                 ) : (
                   filteredData.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.userName}</td>
+                      <td>{`${item.userName || "N/A"} ${item.userLastName || ""}`.trim() || "N/A"}</td>
                       <td>{item.userBarangay}</td>
                       <td>{item.userEmail}</td>
                       <td>

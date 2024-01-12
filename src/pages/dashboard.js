@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import './dashboard.css';
-import Calendar from './Calendar';
-import image4 from '../assets/adminpic.png';
-import image5 from '../assets/adminpic.png';
-import logo from '../assets/logo.png';
-import Footer from '../components/footer';
-import notification from '../assets/icons/Notification.png';
+import React, { useState, useEffect } from "react";
+import "./dashboard.css";
+import Calendar from "./Calendar";
+import image4 from "../assets/adminpic.png";
+import image5 from "../assets/adminpic.png";
+import logo from "../assets/logo.png";
+import Footer from "../components/footer";
+import notification from "../assets/icons/Notification.png";
 import useAuth from "../components/useAuth";
+import Select from "react-select";
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, orderBy, query, limit } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  limit,
+  where,
+} from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -19,7 +28,7 @@ const firebaseConfig = {
   storageBucket: "muniserve-4dc11.appspot.com",
   messagingSenderId: "874813480248",
   appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT"
+  measurementId: "G-LS66HXR3GT",
 };
 
 // Initialize Firebase
@@ -27,20 +36,20 @@ const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 
 const Dashboard = ({ count }) => {
-
   // State to hold the fetched data
   const [data, setData] = useState([]);
   const [localData, setLocalData] = useState([]);
 
   // Function for the account name
   const { user } = useAuth();
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const fetchUserEmail = () => {
       if (user) {
         const email = user.email;
-        const truncatedEmail = email.length > 5 ? `${email.substring(0, 5)}...` : email;
+        const truncatedEmail =
+          email.length > 5 ? `${email.substring(0, 5)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -51,7 +60,11 @@ const Dashboard = ({ count }) => {
   // Function to fetch data from Firestore
   const fetchData = async () => {
     try {
-      const appointmentsQuery = query(collection(firestore, "appointments"), orderBy("date", "desc"), limit(2)); // Limit to the latest 5 appointments
+      const appointmentsQuery = query(
+        collection(firestore, "appointments"),
+        orderBy("date", "desc"),
+        limit(2)
+      ); // Limit to the latest 5 appointments
       const querySnapshot = await getDocs(appointmentsQuery);
       const items = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -84,6 +97,53 @@ const Dashboard = ({ count }) => {
 
   const formattedTime = currentDateTime.toLocaleTimeString();
 
+  const [pendingTransactions, setPendingTransactions] = useState([]);
+
+  // Function to fetch data from Firestore
+  const fetchPendingTransactions = async () => {
+    try {
+      const collections = [
+        "birth_reg",
+        "marriage_reg",
+        "job",
+        "businessPermit",
+        "marriageCert",
+        "deathCert",
+        "appointments",
+      ];
+  
+      const pendingTransactions = [];
+  
+      for (const collectionName of collections) {
+        const collectionRef = collection(firestore, collectionName);
+        const querySnapshot = await getDocs(
+          query(collectionRef, where("status", "==", "Pending"))
+        );
+  
+        const transactions = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            collection: collectionName,
+            status: "Pending",
+            ...data,
+          };
+        });
+  
+        pendingTransactions.push(...transactions);
+      }
+  
+      setPendingTransactions(pendingTransactions);
+    } catch (error) {
+      console.error("Error fetching pending transactions: ", error);
+    }
+  };
+  
+  useEffect(() => {
+    // Fetch pending transactions when the component mounts
+    fetchPendingTransactions();
+  }, []);
+
   return (
     <div className="container">
       <div className="header">
@@ -108,10 +168,18 @@ const Dashboard = ({ count }) => {
                 <a href="/job">Job Application</a>
               </div>
             </li>
-            <li><a href="/appointments">Appointments</a></li>
-            <li><a href="/news">News</a></li>
-            <li><a href="/transactions">About</a></li>
-            <li><a href="/transactions">Settings</a></li>
+            <li>
+              <a href="/appointments">Appointments</a>
+            </li>
+            <li>
+              <a href="/news">News</a>
+            </li>
+            <li>
+              <a href="/transactions">About</a>
+            </li>
+            <li>
+              <a href="/transactions">Settings</a>
+            </li>
           </ul>
         </nav>
 
@@ -128,41 +196,82 @@ const Dashboard = ({ count }) => {
         </div>
       </div>
 
-      <div className="clock">
-        <h4>Good day, It's</h4>
-        <h2>{formattedTime}</h2>
-      </div>
+      <div className="center">
+        <div className="clock" style={{ marginLeft: "60px" }}>
+          <h4>Good day, It's</h4>
+          <h2>{formattedTime}</h2>
+        </div>
 
-    <div className='center'>
-      <div className='subhead'  style={{ marginLeft: '-120px' }}>
-        Appointments
-      </div>
-      <div className="subhead">
-        <div className="requests"  style={{ marginLeft: '-190px' }}>
-          {data.map((item) => (
-            <div key={item.id} className="request-item">
-              <div className="title">
-                <img src={logo} alt="logo" />
-                <h5>Appointment</h5>
-                <h3>{new Date(item.createdAt.seconds * 1000).toLocaleDateString()}</h3>
+        <div className="subhead">
+          <div className="columns-container">
+            <div className="column">
+              <div style={{ marginLeft: "-190px" }}>Appointments</div>
+              <div className="requests" style={{ marginLeft: "-190px" }}>
+                {data.map((item) => (
+                  <div key={item.id} className="request-item">
+                    <div className="title">
+                      <img src={logo} alt="logo" />
+                      <h5>Appointment</h5>
+                      <h3>
+                        {new Date(
+                          item.createdAt.seconds * 1000
+                        ).toLocaleDateString()}
+                      </h3>
+                    </div>
+                    <p>
+                      {item.name} requested for {item.personnel} from{" "}
+                      {item.department} for an appointment on{" "}
+                      {new Date(item.date.seconds * 1000).toLocaleDateString()}{" "}
+                      at{" "}
+                      {new Date(item.time.seconds * 1000).toLocaleTimeString()}{" "}
+                      regarding {item.reason}. Check the application for
+                      approval.
+                    </p>
+                    <a href="./appointments">
+                      <button className="check">Check Now</button>
+                    </a>
+                  </div>
+                ))}
               </div>
-              <p>
-                {item.name} requested for {item.personnel} from {item.department} for an appointment on {new Date(item.date.seconds * 1000).toLocaleDateString()} at {new Date(item.time.seconds * 1000).toLocaleTimeString()} regarding {item.reason}.
-                Check the application for approval.
-              </p>
-              <a href='./appointments'><button className='check'>Check Now</button></a>
             </div>
-          ))}
+
+            {/* Second Column */}
+            <div className="column">
+              <div className="subhead" style={{ marginLeft: "50px" }}>
+                <table className="transaction-table">
+                  <thead>
+                    <tr>
+                      <th>User Name</th>
+                      <th>Service Type</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pendingTransactions.map((transactions) => (
+                      <tr key={transactions.id}>
+                        <td>{transactions.userName || "N/A"}</td>
+                        <td>{transactions.serviceType || "N/A"}</td>
+                        <td>{transactions.status || "N/A"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Third Column */}
+            <div className="column">
+              <div style={{ marginLeft: "60px" }}>
+                <Calendar />
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={{ marginLeft: '60px' }}>
-          <Calendar />
-        </div>
-      </div>
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
-}
+};
 
 export default Dashboard;

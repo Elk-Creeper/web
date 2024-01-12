@@ -174,7 +174,6 @@ h2 {
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
-  
 }
 
 .requests {
@@ -182,12 +181,10 @@ h2 {
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
-  margin-left: 200px;
+  margin-left: 60px;
   text-align: justify;
   width: 450px;
 }
-
-
 
 /* CSS for each request item */
 .request-item {
@@ -312,8 +309,43 @@ h2 {
   box-sizing: border-box; /* Consider this line */
 }
 
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.columns-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px; /* Set your desired max-width */
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.column {
+  flex: 1;
+  margin-left: 20px; /* Adjust spacing between columns as needed */
+}
 
 .footer p {
   margin: 0;
+}
+
+/* Add these styles to dashboard.css */
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: -200px;
+  width: 400px;
+}
+
+.transaction-table th, .transaction-table td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
 }

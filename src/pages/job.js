@@ -424,7 +424,7 @@ function App() {
                   filteredData.map((item) => (
                     <tr key={item.id}>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {item.name}
+                        {`${item.userName || "N/A"} ${item.userLastName || ""}`.trim() || "N/A"}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
                         {item.createdAt && item.createdAt.toDate
