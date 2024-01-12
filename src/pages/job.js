@@ -4,14 +4,21 @@ import {
   getFirestore,
   collection,
   getDocs,
+  orderBy,
+  query,
+  limit,
   doc,
   updateDoc,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Import Firebase Storage related functions
 import "./transactions.css";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
-import { FaSearch } from "react-icons/fa"; // Import icons
+import { FaSearch } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import { onSnapshot } from "firebase/firestore";
 import Footer from '../components/footer';
@@ -41,6 +48,8 @@ function App() {
   const [selectedMonthFilter, setSelectedMonthFilter] = useState("");
   const [selectedDayFilter, setSelectedDayFilter] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
+  const [textInput, setTextInput] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true); //automatic pending
 
   const storage = getStorage();
 
@@ -71,6 +80,7 @@ function App() {
         try {
           const items = querySnapshot.docs.map((doc) => ({
             id: doc.id,
+            status: "Pending",
             ...doc.data(),
           }));
 
@@ -85,6 +95,12 @@ function App() {
 
           setData(items);
           setLoading(false);
+
+          if (initialLoad) {
+            setSelectedStatusFilter("Pending");
+            setInitialLoad(false);
+          }
+          
         } catch (error) {
           console.error("Error fetching data: ", error);
           setLoading(false);
@@ -186,6 +202,43 @@ function App() {
 
   const handleStatusFilterChange = (event) => {
     setSelectedStatusFilter(event.target.value);
+  };
+
+  const handleTextChange = (event) => {
+    setTextInput(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (selectedItem) {
+        // If there is a selected item, update its remarks
+        const appointmentRef = doc(firestore, "job", selectedItem.id);
+        await updateDoc(appointmentRef, {
+          remarks: textInput,
+        });
+  
+        // Update the selected item with the new remarks
+        setSelectedItem((prevItem) => ({
+          ...prevItem,
+          remarks: textInput,
+        }));
+  
+        console.log("Remarks updated for ID: ", selectedItem.id);
+      } else {
+        // If there is no selected item, add a new document with the remarks
+        const remarksCollectionRef = collection(firestore, "job");
+        const newRemarksDocRef = await addDoc(remarksCollectionRef, {
+          remarks: textInput,
+        });
+  
+        console.log("Remarks added with ID: ", newRemarksDocRef.id);
+      }
+  
+      // Optionally, you can clear the textarea after submitting.
+      setTextInput("");
+    } catch (error) {
+      console.error("Error updating/adding remarks: ", error);
+    }
   };
 
   return (
@@ -473,21 +526,12 @@ function App() {
                   <div className="buttons">
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "Completed")
+                        handleStatusChange(selectedItem.id, "Approved")
                       }
                       className="completed-button"
-                      disabled={selectedItem.status === "Completed"}
+                      disabled={selectedItem.status === "Approved"}
                     >
-                      Completed
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleStatusChange(selectedItem.id, "On Process")
-                      }
-                      className="on-process-button"
-                      disabled={selectedItem.status === "On Process"}
-                    >
-                      On Process
+                      Approved
                     </button>
                     <button
                       onClick={() =>
@@ -499,6 +543,23 @@ function App() {
                       Rejected
                     </button>
                   </div>
+
+                  <div className="remarks">
+                    <label>Remarks</label>
+                    <textarea
+                      id="textArea"
+                      value={textInput}
+                      onChange={handleTextChange}
+                      placeholder="Type here your remarks.."
+                      rows={4}
+                      cols={50}
+                      className="input-remarks"
+                    />
+                  </div>
+                  <button onClick={handleSubmit} className="submit-button">
+                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
+                  </button>
+
                 </div>
               </div>
             </div>

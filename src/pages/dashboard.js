@@ -109,7 +109,7 @@ const Dashboard = ({ count }) => {
               </div>
             </li>
             <li><a href="/appointments">Appointments</a></li>
-            <li><a href="/transactions">News</a></li>
+            <li><a href="/news">News</a></li>
             <li><a href="/transactions">About</a></li>
             <li><a href="/transactions">Settings</a></li>
           </ul>
@@ -134,15 +134,6 @@ const Dashboard = ({ count }) => {
       </div>
 
     <div className='center'>
-      <div className="news">
-        News
-      </div>
-
-      <div className="image-admin">
-        <img src={image4} alt="adminpic.png" />
-        <img src={image5} alt="adminpic.png" />
-      </div>
-
       <div className='subhead'  style={{ marginLeft: '-120px' }}>
         Appointments
       </div>

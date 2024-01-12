@@ -9,19 +9,21 @@ import {
   limit,
   doc,
   updateDoc,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import "./marriageCert.css";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
-import Sidebar from "../components/sidebar";
-import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { FaSearch, FaSend } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from "lodash";
 import jsPDF from "jspdf";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import useAuth from "../components/useAuth";
-import Footer from '../components/footer';
+import Footer from "../components/footer";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -49,6 +51,11 @@ function App() {
   const [selectedDayFilter, setSelectedDayFilter] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [pdfFileUrl, setPdfFileUrl] = useState(null);
+  const [textInput, setTextInput] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true); //automatic pending
+  const handleTextChange = (event) => {
+    setTextInput(event.target.value);
+  };
 
   // Function for the account name
   const { user } = useAuth();
@@ -91,6 +98,7 @@ function App() {
 
           items.push({
             id: doc.id,
+            status: "Pending",
             ...data,
           });
         }
@@ -101,6 +109,12 @@ function App() {
 
         setData(items);
         setLoading(false);
+
+        if (initialLoad) {
+          setSelectedStatusFilter("Pending");
+          setInitialLoad(false);
+        }
+
       } else {
         console.log("No documents found in the 'birth_reg' collection.");
         setLoading(false);
@@ -157,32 +171,32 @@ function App() {
 
   const filteredData = data.filter((item) => {
     const matchesSearch =
-      item.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.userBarangay.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.userEmail.toLowerCase().includes(searchQuery.toLowerCase());
-
+      item.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.userBarangay?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.userEmail?.toLowerCase().includes(searchQuery.toLowerCase());
+  
     const matchesYear = selectedYearFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getFullYear() == selectedYearFilter
       : true;
-
+  
     const matchesMonth = selectedMonthFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getMonth() + 1 == selectedMonthFilter
       : true;
-
+  
     const matchesDay = selectedDayFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getDate() == selectedDayFilter
       : true;
-
+  
     const matchesStatus = selectedStatusFilter
-      ? item.status.toLowerCase() == selectedStatusFilter.toLowerCase()
+      ? item.status?.toLowerCase() == selectedStatusFilter.toLowerCase()
       : true;
-
+  
     return (
       matchesSearch &&
       matchesYear &&
@@ -191,6 +205,7 @@ function App() {
       matchesStatus
     );
   });
+  
 
   const handleYearFilterChange = (event) => {
     setSelectedYearFilter(event.target.value);
@@ -216,6 +231,39 @@ function App() {
     debouncedFetchData();
   };
 
+  const handleSubmit = async () => {
+    try {
+      if (selectedItem) {
+        // If there is a selected item, update its remarks
+        const appointmentRef = doc(firestore, "birth_reg", selectedItem.id);
+        await updateDoc(appointmentRef, {
+          remarks: textInput,
+        });
+  
+        // Update the selected item with the new remarks
+        setSelectedItem((prevItem) => ({
+          ...prevItem,
+          remarks: textInput,
+        }));
+  
+        console.log("Remarks updated for ID: ", selectedItem.id);
+      } else {
+        // If there is no selected item, add a new document with the remarks
+        const remarksCollectionRef = collection(firestore, "birth_reg");
+        const newRemarksDocRef = await addDoc(remarksCollectionRef, {
+          remarks: textInput,
+        });
+  
+        console.log("Remarks added with ID: ", newRemarksDocRef.id);
+      }
+  
+      // Optionally, you can clear the textarea after submitting.
+      setTextInput("");
+    } catch (error) {
+      console.error("Error updating/adding remarks: ", error);
+    }
+  };
+  
   return (
     <div>
       <div className="container">
@@ -394,22 +442,22 @@ function App() {
               <tbody>
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan="6" style={{ textAlign: "center" }}>
+                    <td colSpan="7" style={{ textAlign: "center" }}>
                       No matching records found.
                     </td>
                   </tr>
                 ) : (
                   filteredData.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.userName}</td>
-                      <td>{item.userBarangay}</td>
-                      <td>{item.userEmail}</td>
+                      <td>{item.userName || "N/A"}</td>
+                      <td>{item.userBarangay || "N/A"}</td>
+                      <td>{item.userEmail || "N/A"}</td>
                       <td>
                         {item.createdAt && item.createdAt.toDate
                           ? item.createdAt.toDate().toLocaleString()
                           : "Invalid Date"}
                       </td>
-                      <td>{item.status}</td>
+                      <td>{item.status || "N/A"}</td>
                       <td>
                         <button
                           onClick={() => openDetailsModal(item)}
@@ -437,13 +485,15 @@ function App() {
                       &times;
                     </span>
                   </div>
-                  <p>This registration form is requested by {selectedItem.userName}.</p>
+                  <p>
+                    This registration form is requested by{" "}
+                    {selectedItem.userName}.
+                  </p>
 
                   {/* Child's Information */}
                   <div className="section">
                     <h3>Child's Information</h3>
                     <div className="form-grid">
-
                       <div className="form-group">
                         <label>First Name</label>
                         <div className="placeholder">
@@ -467,7 +517,7 @@ function App() {
 
                       <div className="form-group">
                         <label>Sex</label>
-                        <div className="placeholder">{selectedItem.c_sex}</div>
+                        <div className="placeholder">{selectedItem.sex}</div>
                       </div>
 
                       <div className="form-group">
@@ -483,24 +533,25 @@ function App() {
                       <div className="form-group">
                         <label>Birth of Place</label>
                         <div className="placeholder">
-                          {selectedItem.c_birthplace}
+                          {selectedItem.birthplace}
                         </div>
                       </div>
 
                       <div className="form-group">
                         <label>Type of Birth</label>
                         <div className="placeholder">
-                          {selectedItem.c_typeofbirth}
+                          {selectedItem.typeofbirth}
                         </div>
                       </div>
 
                       <div className="form-group">
                         <label>If Multiple Birth, Child was</label>
                         <div className="placeholder">
-                         {selectedItem.c_multiple ? selectedItem.c_multiple : "  "}
-                         </div>
+                          {selectedItem.c_multiple
+                            ? selectedItem.c_multiple
+                            : "  "}
+                        </div>
                       </div>
-
 
                       <div className="form-group">
                         <label>Birth Order</label>
@@ -515,7 +566,6 @@ function App() {
                           {selectedItem.c_weight}
                         </div>
                       </div>
-
                     </div>
                   </div>
 
@@ -523,7 +573,6 @@ function App() {
                   <div className="section">
                     <h3>Mother's Information</h3>
                     <div className="form-grid">
-
                       <div className="form-group">
                         <label>Mother's Name</label>
                         <div className="placeholder">{selectedItem.m_name}</div>
@@ -531,27 +580,41 @@ function App() {
 
                       <div className="form-group">
                         <label>Mother's Citizenship</label>
-                        <div className="placeholder">{selectedItem.m_citizenship}</div>
+                        <div className="placeholder">
+                          {selectedItem.m_citizenship}
+                        </div>
                       </div>
 
                       <div className="form-group">
                         <label>Mother's Religion/Religious Sect</label>
-                        <div className="placeholder">{selectedItem.m_religion}</div>
+                        <div className="placeholder">
+                          {selectedItem.m_religion}
+                        </div>
                       </div>
 
                       <div className="form-group">
                         <label>Total number of children born alive</label>
-                        <div className="placeholder">{selectedItem.bornAlive}</div>
+                        <div className="placeholder">
+                          {selectedItem.bornAlive}
+                        </div>
                       </div>
 
                       <div className="form-group">
-                        <label>No. of children still living including this birth</label>
-                        <div className="placeholder">{selectedItem.childStillLiving}</div>
+                        <label>
+                          No. of children still living including this birth
+                        </label>
+                        <div className="placeholder">
+                          {selectedItem.childStillLiving}
+                        </div>
                       </div>
 
                       <div className="form-group">
-                        <label>No. of children born alive but are now dead</label>
-                        <div className="placeholder">{selectedItem.childAliveButNowDead}</div>
+                        <label>
+                          No. of children born alive but are now dead
+                        </label>
+                        <div className="placeholder">
+                          {selectedItem.childAliveButNowDead}
+                        </div>
                       </div>
 
                       <div className="form-group">
@@ -580,7 +643,6 @@ function App() {
                   <div className="section">
                     <h3>Father's Information</h3>
                     <div className="form-grid">
-
                       <div className="form-group">
                         <label>Father's Name</label>
                         <div className="placeholder">{selectedItem.f_name}</div>
@@ -626,13 +688,12 @@ function App() {
                   <div className="section">
                     <h3>Other Information</h3>
                     <div className="form-grid">
-
                       <div className="form-group">
                         <label>Date of Marriage</label>
                         <div className="placeholder">
-                        {selectedItem.mpDate&& selectedItem.mpDate.toDate
-                       ? selectedItem.mpDate.toDate().toLocaleString()
-                       : "Invalid Date"}
+                          {selectedItem.mpDate && selectedItem.mpDate.toDate
+                            ? selectedItem.mpDate.toDate().toLocaleString()
+                            : "Invalid Date"}
                         </div>
                       </div>
 
@@ -674,7 +735,7 @@ function App() {
                   </div>
 
                   <div className="buttons">
-                  <button
+                    <button
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Approved")
                       }
@@ -711,13 +772,29 @@ function App() {
                       Rejected
                     </button>
                   </div>
+
+                  <div className="remarks">
+                    <label>Remarks</label>
+                    <textarea
+                      id="textArea"
+                      value={textInput}
+                      onChange={handleTextChange}
+                      placeholder="Type here your remarks.."
+                      rows={4}
+                      cols={50}
+                      className="input-remarks"
+                    />
+                  </div>
+                  <button onClick={handleSubmit} className="submit-button">
+                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -32,6 +32,7 @@ function App() {
     const [dateFilter, setDateFilter] = useState(""); // State for date filter
     const [personnelFilter, setPersonnelFilter] = useState(""); // State for personnel filter
     const [statusFilter, setStatusFilter] = useState(""); // State for status filter
+    const [initialLoad, setInitialLoad] = useState(true); //automatic pending
 
     // Function for the account name
     const { user } = useAuth();
@@ -71,6 +72,7 @@ function App() {
     
             setData(sortedData);
             setLocalData(sortedData); // Initialize localData with the sorted data
+
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
@@ -282,6 +284,10 @@ function App() {
                         <h1>{userEmail}</h1>
                     </div>
                     </div>
+                </div>
+
+                <div className="containers">
+                    <h1>APPOINTMENTS</h1>
                 </div>
                 
                 {/* Search input */}

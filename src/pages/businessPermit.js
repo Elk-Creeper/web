@@ -9,6 +9,8 @@ import {
   limit,
   doc,
   updateDoc,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import "./marriageCert.css";
@@ -16,12 +18,14 @@ import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
 import Sidebar from "../components/sidebar";
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from "lodash";
 import jsPDF from "jspdf";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import useAuth from "../components/useAuth";
 import Footer from '../components/footer';
+import Modal from "../pages/Modal";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -49,6 +53,13 @@ function App() {
   const [selectedDayFilter, setSelectedDayFilter] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [pdfFileUrl, setPdfFileUrl] = useState(null);
+  const [textInput, setTextInput] = useState('');
+  const handleTextChange = (event) => {setTextInput(event.target.value);};
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [initialLoad, setInitialLoad] = useState(true); //automatic pending
+  const handleImageClick = (image) => {
+    setSelectedImage(selectedImage === image ? null : image);
+  };
 
   // Function for the account name
   const { user } = useAuth();
@@ -91,6 +102,7 @@ function App() {
 
           items.push({
             id: doc.id,
+            status: "Pending",
             ...data,
           });
         }
@@ -101,6 +113,12 @@ function App() {
 
         setData(items);
         setLoading(false);
+
+        if (initialLoad) {
+          setSelectedStatusFilter("Pending");
+          setInitialLoad(false);
+        }
+
       } else {
         console.log("No documents found in the 'businessPermit' collection.");
         setLoading(false);
@@ -216,6 +234,39 @@ function App() {
     debouncedFetchData();
   };
 
+  const handleSubmit = async () => {
+    try {
+      if (selectedItem) {
+        // If there is a selected item, update its remarks
+        const appointmentRef = doc(firestore, "businessPermit", selectedItem.id);
+        await updateDoc(appointmentRef, {
+          remarks: textInput,
+        });
+  
+        // Update the selected item with the new remarks
+        setSelectedItem((prevItem) => ({
+          ...prevItem,
+          remarks: textInput,
+        }));
+  
+        console.log("Remarks updated for ID: ", selectedItem.id);
+      } else {
+        // If there is no selected item, add a new document with the remarks
+        const remarksCollectionRef = collection(firestore, "businessPermit");
+        const newRemarksDocRef = await addDoc(remarksCollectionRef, {
+          remarks: textInput,
+        });
+  
+        console.log("Remarks added with ID: ", newRemarksDocRef.id);
+      }
+  
+      // Optionally, you can clear the textarea after submitting.
+      setTextInput("");
+    } catch (error) {
+      console.error("Error updating/adding remarks: ", error);
+    }
+  };
+  
   return (
     <div>
       <div className="container">
@@ -467,126 +518,123 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="section">
+                  { /* Image filed*/}
+                  <div className="businesss">
+                  <div className="business-grid">
+
                     <h3>Cedula</h3>
-                    <div className="proof">
+                    <div className="proof"  onClick={() => handleImageClick(selectedItem.cedula1,selectedItem.cedula2)}>
                       {selectedItem.cedula1 ? (
                         <img
                           src={selectedItem.cedula1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No Cedula available</p>)}
+                      {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>Barangay Business Clearance</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.barangayClearance1)}>
                       {selectedItem.barangayClearance1 ? (
                         <img
                           src={selectedItem.barangayClearance1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No Barangay Business Clearance available</p>)}
+                      {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>DTI Registration (Single Proprietor)</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.dti1)}>
                       {selectedItem.dti1 ? (
                         <img
                           src={selectedItem.dti1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No DTI Registration available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>SEC Registration(Corporation & Partnership)</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.sec1)}>
                       {selectedItem.sec1 ? (
                         <img
                           src={selectedItem.sec1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No SEC Registration available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>Fire Safety Clearance</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.fire1)}>
                       {selectedItem.fire1 ? (
                         <img
                           src={selectedItem.fire1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No Fire Safety Clearance available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>Sanitary/Health Certificate</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.sanitary1)}>
                       {selectedItem.sanitary1 ? (
                         <img
                           src={selectedItem.sanitary1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No Sanitary/health Certificate available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>Police Clearance</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.police1)}>
                       {selectedItem.police1 ? (
                         <img
                           src={selectedItem.police1}
-                          alt="Proof of Payment"
-                          className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          alt="Proof of Sending"
+                          className="proof-image"/> ) : ( <p>No Police Clearance available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
+
                     <h3>Picture 2x2 (1 piece)</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.picture1)}>
                       {selectedItem.picture1 ? (
                         <img
                           src={selectedItem.picture1}
-                          alt="Proof of Payment"
+                          alt="Proof of Sending"
                           className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>Official Receipt for Mayor's Permit</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.mayorsPermit1)}>
                       {selectedItem.mayorsPermit1 ? (
                         <img
                           src={selectedItem.mayorsPermit1}
-                          alt="Proof of Payment"
+                          alt="Proof of Sending"
                           className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>BMPDC Certificate</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.mpdc1)}>
                       {selectedItem.mpdc1 ? (
                         <img
                           src={selectedItem.mpdc1}
-                          alt="Proof of Payment"
+                          alt="Proof of Sending"
                           className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
 
-                  <div className="section">
                     <h3>MEO Certification</h3>
-                    <div className="proof">
+                    <div className="proof" onClick={() => handleImageClick(selectedItem.meo1)}>
                       {selectedItem.meo1 ? (
                         <img
                           src={selectedItem.meo1}
-                          alt="Proof of Payment"
+                          alt="Proof of Sending"
                           className="proof-image"/> ) : ( <p>No payment proof available</p>)}
+                          {selectedImage && (<Modal image={selectedImage} onClose={() => setSelectedImage(null)} />)}
                     </div>
-                  </div>
+                    </div>
+                 </div>
+
 
                   <div className="form-group">
                       <label>Status of Appointment</label>
@@ -594,7 +642,25 @@ function App() {
                     </div>
 
 
-                  <div className="buttons">
+                    <div className="buttons">
+                    <button
+                      onClick={() =>
+                        handleStatusChange(selectedItem.id, "Approved")
+                      }
+                      className="completed-button"
+                      disabled={selectedItem.status === "Approved"}
+                    >
+                      Approved
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(selectedItem.id, "On Process")
+                      }
+                      className="on-process-button"
+                      disabled={selectedItem.status === "On Process"}
+                    >
+                      On Process
+                    </button>
                     <button
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Completed")
@@ -606,14 +672,30 @@ function App() {
                     </button>
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "On Process")
+                        handleStatusChange(selectedItem.id, "Rejected")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "On Process"}
+                      disabled={selectedItem.status === "Rejected"}
                     >
-                      On Process
+                      Rejected
                     </button>
                   </div>
+
+                  <div className="remarks">
+                    <label>Remarks</label>
+                    <textarea
+                      id="textArea"
+                      value={textInput}
+                      onChange={handleTextChange}
+                      placeholder="Type here your remarks.."
+                      rows={4}
+                      cols={50}
+                      className="input-remarks"
+                    />
+                  </div>
+                  <button onClick={handleSubmit} className="submit-button">
+                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
+                  </button>
                 </div>
               </div>
             </div>
