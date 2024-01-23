@@ -8,6 +8,8 @@ import logo from '../assets/logo.png';
 import notification from '../assets/icons/Notification.png';
 import useAuth from "../components/useAuth";
 import Footer from '../components/footer';
+
+
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -254,7 +256,7 @@ function App() {
                     <nav className="horizontal-nav">
                     <ul>
                         <li>
-                        <a href="dashboard">Home</a>
+                        <a href="/home">Home</a>
                         </li>
                         <li className="dropdown">
                         <a>Services</a>
@@ -267,7 +269,7 @@ function App() {
                         </div>
                         </li>
                         <li><a href="/appointments">Appointments</a></li>
-                        <li><a href="/transactions">News</a></li>
+                        <li><a href="/news">News</a></li>
                         <li><a href="/transactions">About</a></li>
                         <li><a href="/transactions">Settings</a></li>
                     </ul>

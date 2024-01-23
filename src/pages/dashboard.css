@@ -125,6 +125,8 @@ body, html {
   font-size: 13px;
   color: #fff;
   font-weight: 400;
+  margin-left: -10px;
+  margin-bottom: 15px;
 }
 
 .center {
@@ -337,7 +339,7 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: -200px;
-  width: 400px;
+  width: 500px;
 }
 
 .transaction-table th, .transaction-table td {
@@ -347,5 +349,14 @@ h2 {
 }
 
 .transaction-table th {
-  background-color: #f2f2f2;
+  background-color: #10643e; 
+  color: white;
+}
+
+.transaction-table tbody tr:nth-child(even) {
+  background-color: #fff; 
+}
+
+.transaction-table tbody tr:nth-child(odd) {
+  background-color: #ffffff; 
 }

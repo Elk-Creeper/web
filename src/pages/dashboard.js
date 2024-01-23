@@ -49,7 +49,7 @@ const Dashboard = ({ count }) => {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}..` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -102,19 +102,19 @@ const Dashboard = ({ count }) => {
   // Function to fetch data from Firestore
   const fetchPendingTransactions = async () => {
     try {
-      const collections = [
-        "birth_reg",
-        "marriage_reg",
-        "job",
-        "businessPermit",
-        "marriageCert",
-        "deathCert",
-        "appointments",
-      ];
+      const collectionDisplayNames = {
+        birth_reg: "Birth Registration",
+        marriage_reg: "Marriage Registration",
+        job: "Job",
+        businessPermit: "Business Permit",
+        marriageCert: "Marriage Certificate",
+        deathCert: "Death Certificate",
+        appointments: "Appointments",
+      };
   
       const pendingTransactions = [];
   
-      for (const collectionName of collections) {
+      for (const collectionName of Object.keys(collectionDisplayNames)) {
         const collectionRef = collection(firestore, collectionName);
         const querySnapshot = await getDocs(
           query(collectionRef, where("status", "==", "Pending"))
@@ -125,6 +125,7 @@ const Dashboard = ({ count }) => {
           return {
             id: doc.id,
             collection: collectionName,
+            collectionDisplayName: collectionDisplayNames[collectionName],
             status: "Pending",
             ...data,
           };
@@ -143,6 +144,7 @@ const Dashboard = ({ count }) => {
     // Fetch pending transactions when the component mounts
     fetchPendingTransactions();
   }, []);
+  
 
   return (
     <div className="container">
@@ -250,7 +252,7 @@ const Dashboard = ({ count }) => {
                     {pendingTransactions.map((transactions) => (
                       <tr key={transactions.id}>
                         <td>{transactions.userName || "N/A"}</td>
-                        <td>{transactions.serviceType || "N/A"}</td>
+                        <td>{transactions.collectionDisplayName || "N/A"}</td>
                         <td>{transactions.status || "N/A"}</td>
                       </tr>
                     ))}

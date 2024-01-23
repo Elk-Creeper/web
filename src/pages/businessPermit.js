@@ -280,7 +280,7 @@ function App() {
           <nav className="horizontal-nav">
             <ul>
               <li>
-                <a href="dashboard">Home</a>
+                <a href="/home">Home</a>
               </li>
               <li className="dropdown">
                 <a>Services</a>
