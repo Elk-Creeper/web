@@ -1,0 +1,31 @@
+.container .content {
+    margin-top: 60px;
+    padding: 50px;
+}
+
+.content h2 {
+    color: black;
+    padding-top: 0;
+    margin-top: 0;
+    font-size: 27px;
+  }
+  
+  /* Paragraph styling */
+  .content p {
+    line-height: 1.6;
+    color: #555;
+    text-indent: 20px;
+    font-size: 18px;
+    text-align: justify;
+  }
+  
+  /* Mission heading styling */
+  .content h3 {
+    color: #333;
+    margin-top: 20px;
+    font-size: 27px;
+  }
+  
+  .content li{
+    font-size: 18px;
+  }

@@ -7,7 +7,9 @@ import logo from "../assets/logo.png";
 import Footer from "../components/footer";
 import notification from "../assets/icons/Notification.png";
 import useAuth from "../components/useAuth";
-import Select from "react-select";
+import Chart from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
+import "apexcharts";
 
 import { initializeApp } from "firebase/app";
 import {
@@ -39,6 +41,10 @@ const Dashboard = ({ count }) => {
   // State to hold the fetched data
   const [data, setData] = useState([]);
   const [localData, setLocalData] = useState([]);
+  const [dayTransactions, setDayTransactions] = useState(0);
+  const [weekTransactions, setWeekTransactions] = useState(0);
+  const [monthTransactions, setMonthTransactions] = useState(0);
+  const [yearTransactions, setYearTransactions] = useState(0);
 
   // Function for the account name
   const { user } = useAuth();
@@ -78,7 +84,17 @@ const Dashboard = ({ count }) => {
   };
 
   useEffect(() => {
-    // Fetch data when the component mounts
+    // Fetch and count transactions for the day
+    fetchTransactions("day");
+
+    // Fetch and count transactions for the week
+    fetchTransactions("week");
+
+    // Fetch and count transactions for the month
+    fetchTransactions("month");
+
+    // Fetch and count transactions for the year
+    fetchTransactions("year");
     fetchData();
   }, []);
 
@@ -106,20 +122,19 @@ const Dashboard = ({ count }) => {
         birth_reg: "Birth Registration",
         marriage_reg: "Marriage Registration",
         job: "Job",
-        businessPermit: "Business Permit",
         marriageCert: "Marriage Certificate",
         deathCert: "Death Certificate",
         appointments: "Appointments",
       };
-  
+
       const pendingTransactions = [];
-  
+
       for (const collectionName of Object.keys(collectionDisplayNames)) {
         const collectionRef = collection(firestore, collectionName);
         const querySnapshot = await getDocs(
           query(collectionRef, where("status", "==", "Pending"))
         );
-  
+
         const transactions = querySnapshot.docs.map((doc) => {
           const data = doc.data();
           return {
@@ -130,21 +145,332 @@ const Dashboard = ({ count }) => {
             ...data,
           };
         });
-  
+
         pendingTransactions.push(...transactions);
       }
-  
+
       setPendingTransactions(pendingTransactions);
     } catch (error) {
       console.error("Error fetching pending transactions: ", error);
     }
   };
-  
+
   useEffect(() => {
     // Fetch pending transactions when the component mounts
     fetchPendingTransactions();
   }, []);
-  
+
+  const fetchTransactions = async (timeInterval, customDate) => {
+    const currentDate = customDate || new Date();
+    let startDate;
+    let count; // Declare count variable
+
+    switch (timeInterval) {
+      case "day":
+        startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate()
+        );
+        break;
+      case "week":
+        startDate = getStartOfWeek(currentDate);
+        break;
+      case "month":
+        startDate = getStartOfMonth(currentDate);
+        break;
+      case "year":
+        startDate = getStartOfYear(currentDate);
+        break;
+      default:
+        startDate = currentDate;
+    }
+
+    const transactions = await getTransactions(startDate, currentDate);
+    count = transactions.length; // Assign a value to count
+    updateTransactionCount(timeInterval, count);
+  };
+
+  const getStartOfWeek = (date) => {
+    const dayOfWeek = date.getDay(); // 0 is Sunday, 1 is Monday, etc.
+    const startDate = new Date(date);
+    startDate.setDate(date.getDate() - dayOfWeek); // Move to the start of the current week
+    return startDate;
+  };
+
+  const getStartOfMonth = (date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  };
+
+  const getStartOfYear = (date) => {
+    return new Date(date.getFullYear(), 0, 1);
+  };
+
+  const getTransactions = async (startDate, endDate) => {
+    const birthRegQuery = query(
+      collection(firestore, "birth_reg"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+    const marriageCertQuery = query(
+      collection(firestore, "marriageCert"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+    const deathCertQuery = query(
+      collection(firestore, "deathCert"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+    const jobQuery = query(
+      collection(firestore, "job"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+    const appointmentsQuery = query(
+      collection(firestore, "appointments"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+
+    const birthRegSnapshot = await getDocs(birthRegQuery);
+    const marriageCertSnapshot = await getDocs(marriageCertQuery);
+    const deathCertSnapshot = await getDocs(deathCertQuery);
+    const jobSnapshot = await getDocs(jobQuery);
+    const appointmentsSnapshot = await getDocs(appointmentsQuery);
+
+    const birthRegTransactions = birthRegSnapshot.docs.map((doc) => doc.data());
+    const marriageCertTransactions = marriageCertSnapshot.docs.map((doc) =>
+      doc.data()
+    );
+    const deathCertTransactions = deathCertSnapshot.docs.map((doc) =>
+      doc.data()
+    );
+    const jobTransactions = jobSnapshot.docs.map((doc) => doc.data());
+    const appointmentsTransaction = appointmentsSnapshot.docs.map((doc) =>
+      doc.data()
+    );
+
+    const allTransactions = [
+      ...birthRegTransactions,
+      ...marriageCertTransactions,
+      ...deathCertTransactions,
+      ...jobTransactions,
+      ...appointmentsTransaction,
+    ];
+
+    return allTransactions;
+  };
+
+  const updateTransactionCount = (timeInterval, count) => {
+    switch (timeInterval) {
+      case "day":
+        setDayTransactions(count);
+        break;
+      case "week":
+        setWeekTransactions(count);
+        break;
+      case "month":
+        setMonthTransactions(count);
+        break;
+      case "year":
+        setYearTransactions(count);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const chartData = {
+    day: {
+      series: [dayTransactions],
+      options: {
+        chart: {
+          type: "radialBar",
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 5,
+              size: "50%",
+              background: "transparent",
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: "front",
+            },
+            dataLabels: {
+              name: {
+                show: true,
+                fontSize: "10px",
+                fontWeight: "light",
+                color: "#000",
+                offsetY: -5,
+              },
+              value: {
+                show: true,
+                offsetY: 5,
+                color: "blue",
+                fontSize: "25px",
+                fontWeight: "bold",
+                formatter: function (val) {
+                  return val;
+                },
+              },
+            },
+          },
+        },
+        fill: {
+          colors: ["#F2233B"],
+        },
+        labels: ["Today"],
+      },
+    },
+    week: {
+      series: [weekTransactions],
+      options: {
+        chart: {
+          type: "radialBar",
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 5,
+              size: "50%",
+              background: "transparent",
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: "front",
+            },
+            dataLabels: {
+              name: {
+                show: true,
+                fontSize: "10px",
+                fontWeight: "light",
+                color: "#000",
+                offsetY: -5,
+              },
+              value: {
+                show: true,
+                offsetY: 5,
+                color: "blue",
+                fontSize: "25px",
+                fontWeight: "bold",
+                formatter: function (val) {
+                  return val;
+                },
+              },
+            },
+          },
+        },
+        fill: {
+          colors: ["#4B07C0"],
+        },
+        labels: ["This Week"],
+      },
+    },
+    month: {
+      series: [monthTransactions],
+      options: {
+        chart: {
+          type: "radialBar",
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 5,
+              size: "50%",
+              background: "transparent",
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: "front",
+            },
+            dataLabels: {
+              name: {
+                show: true,
+                fontSize: "10px",
+                fontWeight: "light",
+                color: "#000",
+                offsetY: -5,
+              },
+              value: {
+                show: true,
+                offsetY: 5,
+                color: "blue",
+                fontSize: "25px",
+                fontWeight: "bold",
+                formatter: function (val) {
+                  return val;
+                },
+              },
+            },
+          },
+        },
+        fill: {
+          colors: ["#FF7247"], // Change the color of the radial bar
+        },
+        labels: ["This Month"],
+      },
+    },
+    year: {
+      series: [yearTransactions],
+      options: {
+        chart: {
+          type: "radialBar",
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 5,
+              size: "50%",
+              background: "transparent",
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: "front",
+            },
+            dataLabels: {
+              name: {
+                show: true,
+                fontSize: "10px",
+                fontWeight: "light",
+                color: "#000",
+                offsetY: -5,
+              },
+              value: {
+                show: true,
+                offsetY: 5,
+                color: "blue",
+                fontSize: "25px",
+                fontWeight: "bold",
+                formatter: function (val) {
+                  return val;
+                },
+              },
+            },
+          },
+        },
+        fill: {
+          colors: ["#00C853"], // Change the color of the radial bar for the year
+        },
+        labels: ["This Year"],
+      },
+    },
+  };
 
   return (
     <div className="container">
@@ -166,7 +492,6 @@ const Dashboard = ({ count }) => {
                 <a href="/birthReg">Certificate of Live Birth</a>
                 <a href="/marriageCert">Marriage Certificate</a>
                 <a href="/deathCert">Death Certificate</a>
-                <a href="/businessPermit">Business Permit</a>
                 <a href="/job">Job Application</a>
               </div>
             </li>
@@ -177,7 +502,7 @@ const Dashboard = ({ count }) => {
               <a href="/news">News</a>
             </li>
             <li>
-              <a href="/transactions">About</a>
+              <a href="/about">About</a>
             </li>
             <li>
               <a href="/transactions">Settings</a>
@@ -199,7 +524,7 @@ const Dashboard = ({ count }) => {
       </div>
 
       <div className="center">
-        <div className="clock" style={{ marginLeft: "60px" }}>
+        <div className="clock" style={{ marginLeft: "110px" }}>
           <h4>Good day, It's</h4>
           <h2>{formattedTime}</h2>
         </div>
@@ -207,8 +532,8 @@ const Dashboard = ({ count }) => {
         <div className="subhead">
           <div className="columns-container">
             <div className="column">
-              <div style={{ marginLeft: "-190px" }}>Appointments</div>
-              <div className="requests" style={{ marginLeft: "-190px" }}>
+              <div style={{ marginLeft: "-180px" }}>Appointments</div>
+              <div className="requests" style={{ marginLeft: "-180px" }}>
                 {data.map((item) => (
                   <div key={item.id} className="request-item">
                     <div className="title">
@@ -239,32 +564,93 @@ const Dashboard = ({ count }) => {
 
             {/* Second Column */}
             <div className="column">
-              <div className="subhead" style={{ marginLeft: "50px" }}>
+              <div className="reports">
+                <div className="report">
+                  <div className="day">
+                    <Chart
+                      options={chartData.day.options}
+                      series={chartData.day.series}
+                      type="radialBar"
+                      height="200"
+                    />
+                  </div>
+                  <div className="week">
+                    <Chart
+                      options={chartData.week.options}
+                      series={chartData.week.series}
+                      type="radialBar"
+                      height="200"
+                    />
+                  </div>
+                  <div className="month">
+                    <Chart
+                      options={chartData.month.options}
+                      series={chartData.month.series}
+                      type="radialBar"
+                      height="200"
+                    />
+                  </div>
+                  <div className="year">
+                    <Chart
+                      options={chartData.year.options}
+                      series={chartData.year.series}
+                      type="radialBar"
+                      height="200"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="subhead"
+                style={{ marginLeft: "90px", marginTop: "180px" }}
+              >
                 <table className="transaction-table">
+                  <caption
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    LIST OF ALL PENDING TRANSACTIONS
+                  </caption>
                   <thead>
                     <tr>
-                      <th>User Name</th>
-                      <th>Service Type</th>
-                      <th>Status</th>
+                      <th>No.</th>
+                      <th style={{ fontSize: "17px" }}>User Name</th>
+                      <th style={{ fontSize: "17px" }}>Service Type</th>
+                      <th style={{ fontSize: "17px" }}>Date of Application</th>
+                      <th style={{ fontSize: "17px" }}>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {pendingTransactions.map((transactions) => (
-                      <tr key={transactions.id}>
-                        <td>{transactions.userName || "N/A"}</td>
-                        <td>{transactions.collectionDisplayName || "N/A"}</td>
-                        <td>{transactions.status || "N/A"}</td>
-                      </tr>
-                    ))}
+                    {pendingTransactions
+                      .sort(
+                        (a, b) =>
+                          b.createdAt.toMillis() - a.createdAt.toMillis()
+                      ) // Sort by createdAt timestamp
+                      .map((transactions, index) => (
+                        <tr key={transactions.id}>
+                          <td>{index + 1}</td>
+                          <td style={{ minWidth: "200px", fontSize: "15px" }}>
+                            {transactions.userName || "N/A"}
+                          </td>
+                          <td style={{ minWidth: "200px", fontSize: "15px" }}>
+                            {transactions.collectionDisplayName || "N/A"}
+                          </td>
+                          <td style={{ minWidth: "230px", fontSize: "15px" }}>
+                            {transactions.createdAt &&
+                            transactions.createdAt.toDate
+                              ? transactions.createdAt.toDate().toLocaleString()
+                              : "Invalid Date"}
+                          </td>
+                          <td style={{ minWidth: "150px", fontSize: "15px" }}>
+                            {transactions.status || "N/A"}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-
-            {/* Third Column */}
-            <div className="column">
-              <div style={{ marginLeft: "60px" }}>
-                <Calendar />
               </div>
             </div>
           </div>

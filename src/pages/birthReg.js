@@ -285,7 +285,6 @@ function App() {
                   <a href="/birthReg">Certificate of Live Birth</a>
                   <a href="/marriageCert">Marriage Certificate</a>
                   <a href="/deathCert">Death Certificate</a>
-                  <a href="/businessPermit">Business Permit</a>
                   <a href="/job">Job Application</a>
                 </div>
               </li>
@@ -549,14 +548,16 @@ function App() {
                         <div className="placeholder">
                           {selectedItem.c_multiple
                             ? selectedItem.c_multiple
-                            : "  "}
+                            : "N/A"}
                         </div>
                       </div>
 
                       <div className="form-group">
                         <label>Birth Order</label>
                         <div className="placeholder">
-                          {selectedItem.c_birthorder}
+                        {selectedItem.c_birthorder
+                            ? selectedItem.c_birthorder
+                            : "N/A"}
                         </div>
                       </div>
 
@@ -716,18 +717,6 @@ function App() {
                   </div>
 
                   <div className="section">
-                    <h3>Proof of Payment</h3>
-                    <div className="proof">
-                      {selectedItem.payment ? (
-                        <img
-                          src={selectedItem.payment}
-                          alt="Proof of Payment"
-                          className="proof-image"
-                        />
-                      ) : (
-                        <p>No payment proof available</p>
-                      )}
-                    </div>
                     <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
@@ -739,8 +728,7 @@ function App() {
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Approved")
                       }
-                      className="completed-button"
-                      disabled={selectedItem.status === "Approved"}
+                      className="on-process-button"
                     >
                       Approved
                     </button>
@@ -749,7 +737,6 @@ function App() {
                         handleStatusChange(selectedItem.id, "On Process")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "On Process"}
                     >
                       On Process
                     </button>
@@ -757,8 +744,7 @@ function App() {
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Completed")
                       }
-                      className="completed-button"
-                      disabled={selectedItem.status === "Completed"}
+                      className="on-process-button"
                     >
                       Completed
                     </button>
@@ -767,7 +753,6 @@ function App() {
                         handleStatusChange(selectedItem.id, "Rejected")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "Rejected"}
                     >
                       Rejected
                     </button>

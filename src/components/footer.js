@@ -22,21 +22,6 @@ const Footer = () => {
             </li>
             <li>
               <span style={departmentStyle}>
-                Bicol Region General Hospital <br /> and Geriatric
-                Medical Center <span style={{ paddingLeft: "139px" }}>:{" "}</span>
-                <span style={{ paddingLeft: "25px" }}> 09517652444 </span>  <br /> (BRGHGMC)
-              </span>
-            </li>
-            <li>
-              <span style={departmentStyle}>
-                Bicol Medical Center (BMC Hospital)  <span style={{ paddingLeft: "5px" }}>:{" "}</span>
-                <span style={{ paddingLeft: "10px" }}>
-                  09610376590 </span> <span style={{ paddingLeft: "410px" }}> 09971291858
-                </span>
-              </span>
-            </li>
-            <li>
-              <span style={departmentStyle}>
                 PNP MPS Del Gallego <span style={{ paddingLeft: "192px" }}>:{" "}</span>
                 <span style={{ paddingLeft: "23px" }}> 09985985972 </span>
               </span>

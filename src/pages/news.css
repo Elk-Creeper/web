@@ -359,4 +359,8 @@ h5 {
   cursor: pointer;
 }
 
-
+.search-containers {
+  position: relative;
+  display: flex;
+  margin-top: 90px;
+}

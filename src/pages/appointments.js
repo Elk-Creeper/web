@@ -264,7 +264,6 @@ function App() {
                             <a href="/birthReg">Certificate of Live Birth</a>
                             <a href="/marriageCert">Marriage Certificate</a>
                             <a href="/deathCert">Death Certificate</a>
-                            <a href="/businessPermit">Business Permit</a>
                             <a href="/job">Job Application</a>
                         </div>
                         </li>
@@ -293,7 +292,7 @@ function App() {
                 </div>
                 
                 {/* Search input */}
-                <div className="search-containers">
+                <div className="search-containerss">
                     <FaSearch className="search-icon"></FaSearch>
                     <input
                         type="text"
@@ -371,14 +370,14 @@ function App() {
                     </div>
                 </div>
 
-                <table {...getTableProps()} className="tables" style={{ border: "1px solid black" }}>
+                <table {...getTableProps()} className="tables" style={{ border: "1px solid black", marginBottom: "30px" }}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
                                     <th
                                         {...column.getHeaderProps()}
-                                        style={{ borderBottom: "1px solid black" }}
+                                        style={{ border: "1px solid black", fontSize: "16px" }}
                                     >
                                         {column.render("Header")}
                                     </th>

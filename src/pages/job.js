@@ -262,7 +262,6 @@ function App() {
                   <a href="/birthReg">Certificate of Live Birth</a>
                   <a href="/marriageCert">Marriage Certificate</a>
                   <a href="/deathCert">Death Certificate</a>
-                  <a href="/businessPermit">Business Permit</a>
                   <a href="/job">Job Application</a>
                 </div>
               </li>
