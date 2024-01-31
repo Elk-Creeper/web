@@ -23,6 +23,8 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
 import { format } from 'date-fns'; // Import the format function from date-fns
+import CopyMarriageCertificateForm from './CopyMarriageCertificateForm';
+import MarriageRegistrationForm from './MarriageRegistrationForm';
 
 
 // Firebase configuration
@@ -85,6 +87,12 @@ function App() {
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [textInput, setTextInput] = useState("");
   const [initialLoad, setInitialLoad] = useState(true); //automatic pending
+
+  const [selectedItemForForm, setSelectedItemForForm] = useState(null);
+  const [showMarriageCertificateForm, setShowMarriageCertificateForm] = useState(false);
+  const [showDefaultModal, setShowDefaultModal] = useState(false);
+  const [selectedForm, setSelectedForm] = useState(null);
+
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
   };
@@ -151,6 +159,15 @@ function App() {
   const openDetailsModal = async (item) => {
     setSelectedItem(item);
     setTableVisible(false);
+
+    // Additional logic to handle form rendering based on collectionType
+    if (item.collectionType === 'Request Copy of Marriage Certificate') {
+      // Render CopyMarriageCertificateForm
+      setSelectedForm(<CopyMarriageCertificateForm selectedItem={item} />);
+    } else if (item.collectionType === 'Marriage Registration') {
+      // Render MarriageRegistrationForm
+      setSelectedForm(<MarriageRegistrationForm selectedItem={item} />);
+    }
   };
 
   const closeDetailsModal = () => {
@@ -1432,8 +1449,18 @@ function App() {
                         {item.status}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                        <button
-                          onClick={() => openDetailsModal(item)}
+                      <button
+                          onClick={() => {
+                            openDetailsModal(item);
+                            // Additional logic to handle form rendering based on collectionType
+                            if (item.collectionType === 'marriageCert') {
+                              // Render CopyMarriageCertificateForm
+                              setSelectedForm(<CopyMarriageCertificateForm selectedItem={item} />);
+                            } else if (item.collectionType === 'marriage_reg') {
+                              // Render MarriageRegistrationForm
+                              setSelectedForm(<MarriageRegistrationForm selectedItem={item} />);
+                            }
+                          }}
                           className="view-button"
                         >
                           View
@@ -1458,311 +1485,26 @@ function App() {
                       &times;
                     </span>
                   </div>
-                  <p>
-                    This registration form is requested by{" "}
-                    {selectedItem.userName}.
-                  </p>
+                  
 
-                  {/* Husband's Information */}
-                  <div className="section">
-                    <h3>Husband's Information</h3>
-                    <div className="form-grid">
-                      <div className="form-group">
-                        <label>Husband's First Name</label>
-                        <div className="placeholder">
-                          {selectedItem.h_fname}
-                        </div>
-                      </div>
+                  {selectedForm && selectedForm}
 
-                      <div className="form-group">
-                        <label>Husband's Middle Name</label>
-                        <div className="placeholder">
-                          {selectedItem.h_fname}
-                        </div>
-                      </div>
+                  {selectedItem.collectionType === 'marriageCert' && (
+                    <CopyMarriageCertificateForm
+                      selectedItem={selectedItem}
+                    // Pass other necessary props
+                    />
+                  )}
 
-                      <div className="form-group">
-                        <label>Husband's Last Name</label>
-                        <div className="placeholder">
-                          {selectedItem.h_lname}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Date of Birth</label>
-                        <div className="placeholder">
-                          {selectedItem.h_dateBirth &&
-                          selectedItem.h_dateBirth.toDate
-                            ? formatDate(selectedItem.h_dateBirth.toDate())
-                            : "Invalid Date"}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Age</label>
-                        <div className="placeholder">{selectedItem.h_age}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Birth Place</label>
-                        <div className="placeholder">
-                          {selectedItem.h_placeBirth}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Sex</label>
-                        <div className="placeholder">{selectedItem.h_sex}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.h_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Residence</label>
-                        <div className="placeholder">
-                          {selectedItem.h_residence}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Religion/Religious Sect</label>
-                        <div className="placeholder">
-                          {selectedItem.h_religion}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Civil Status</label>
-                        <div className="placeholder">
-                          {selectedItem.h_civilstat}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Name of Father</label>
-                        <div className="placeholder">
-                          {selectedItem.h_fatherName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Father Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.hf_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Mother's Maiden Name</label>
-                        <div className="placeholder">
-                          {selectedItem.h_motherName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Husband's Mother Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.hm_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>
-                          Name of Person/Wali who gave Consent or Advice
-                        </label>
-                        <div className="placeholder">
-                          {selectedItem.h_personName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Relationship</label>
-                        <div className="placeholder">
-                          {selectedItem.h_relationship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Residence</label>
-                        <div className="placeholder">
-                          {selectedItem.hp_residence}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Wife's Information */}
-                  <div className="section">
-                    <h3>Wife's Information</h3>
-                    <div className="form-grid">
-                      <div className="form-group">
-                        <label>Wife's First Name</label>
-                        <div className="placeholder">
-                          {selectedItem.w_fname}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Middle Name</label>
-                        <div className="placeholder">
-                          {selectedItem.w_fname}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Last Name</label>
-                        <div className="placeholder">
-                          {selectedItem.w_lname}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Date of Birth</label>
-                        <div className="placeholder">
-                          {selectedItem.w_dateBirth &&
-                          selectedItem.w_dateBirth.toDate
-                            ? formatDate(selectedItem.w_dateBirth.toDate())
-                            : "Invalid Date"}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Place of Birth</label>
-                        <div className="placeholder">
-                          {selectedItem.w_placeBirth}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Sex</label>
-                        <div className="placeholder">{selectedItem.w_sex}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.w_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Residence</label>
-                        <div className="placeholder">
-                          {selectedItem.w_residence}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Religion/Religious sect</label>
-                        <div className="placeholder">
-                          {selectedItem.w_religion}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Civil Status</label>
-                        <div className="placeholder">
-                          {selectedItem.w_civilstat}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Name of Father</label>
-                        <div className="placeholder">
-                          {selectedItem.w_fatherName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Father Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.wf_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Mother Maiden Name</label>
-                        <div className="placeholder">
-                          {selectedItem.w_motherName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Wife's Mother Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.wm_citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>
-                          Name of Person/Wali who gave Consent or Advice
-                        </label>
-                        <div className="placeholder">
-                          {selectedItem.w_personName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Relationship</label>
-                        <div className="placeholder">
-                          {selectedItem.w_relationship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Residence</label>
-                        <div className="placeholder">
-                          {selectedItem.wp_residence}
-                        </div>
-                      </div>
-                      {/* Add more mother fields here */}
-                    </div>
-                  </div>
-
-                  {/* Others Information */}
-                  <div className="section">
-                    <h3>Other Information</h3>
-                    <div className="form-grid">
-                      <div className="form-group">
-                        <label>Place of Marriage</label>
-                        <div className="placeholder">
-                          {selectedItem.w_placeMarriage}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Date of Marriage</label>
-                        <div className="placeholder">
-                          {selectedItem.w_dateMarriage &&
-                          selectedItem.w_dateMarriage.toDate
-                            ? formatDate(selectedItem.w_dateMarriage.toDate())
-                            : "Invalid Date"}
-                        </div>
-                      </div>
-
-                      {/* Add more father fields here */}
-                    </div>
-                  </div>
+                  {selectedItem.collectionType === 'marriage_reg' && (
+                    <MarriageRegistrationForm
+                      selectedItem={selectedItem}
+                    // Pass other necessary props
+                    />
+                  )}
 
                   <div className="section">
-                    <h3>Proof of Payment</h3>
-                    <div className="proof">
-                      {selectedItem.payment ? (
-                        <img
-                          src={selectedItem.payment}
-                          alt="Proof of Payment"
-                          className="proof-image"
-                        />
-                      ) : (
-                        <p>No payment proof available</p>
-                      )}
-                    </div>
+                    
                     <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
@@ -1828,11 +1570,6 @@ function App() {
                     Submit
                   </button>
 
-                  <div>
-                      <button onClick={generateCustomizedForm} className="open-pdf-button-container">
-                        Generate Form
-                      </button>
-                  </div>
 
                 </div>
               </div>

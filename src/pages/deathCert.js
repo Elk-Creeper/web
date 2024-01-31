@@ -22,6 +22,8 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
 import jsPDF from "jspdf";
+import DeathRegistrationForm from "./DeathRegistrationForm";
+import DeathCertificateForm from "./DeathCertificateForm";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -82,8 +84,13 @@ function App() {
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [initialLoad, setInitialLoad] = useState(true); //automatic pending
 
+  const [selectedItemForForm, setSelectedItemForForm] = useState(null);
+  const [showMarriageCertificateForm, setShowMarriageCertificateForm] = useState(false);
+  const [showDefaultModal, setShowDefaultModal] = useState(false);
+  const [selectedForm, setSelectedForm] = useState(null);
+
   const collectionTypeMap = {
-    deathCert: "Request  Copy of Death Certificate",
+    deathCert: "Death Certificate",
     death_reg: "Death Registration",
   };
 
@@ -145,6 +152,15 @@ function App() {
   const openDetailsModal = async (item) => {
     setSelectedItem(item);
     setTableVisible(false);
+
+    // Additional logic to handle form rendering based on collectionType
+    if (item.collectionType === 'Death Registration') {
+      // Render 
+      setSelectedForm(<DeathRegistrationForm selectedItem={item} />);
+    } else if (item.collectionType === 'Death Certificate') {
+      // Render 
+      setSelectedForm(<DeathCertificateForm selectedItem={item} />);
+    }
   };
 
   const closeDetailsModal = () => {
@@ -1031,8 +1047,18 @@ function App() {
                         {item.status}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                        <button
-                          onClick={() => openDetailsModal(item)}
+                      <button
+                          onClick={() => {
+                            openDetailsModal(item);
+                            // Additional logic to handle form rendering based on collectionType
+                            if (item.collectionType === 'deathCert') {
+                              // Render 
+                              setSelectedForm(<DeathCertificateForm selectedItem={item} />);
+                            } else if (item.collectionType === 'death_reg') {
+                              // Render 
+                              setSelectedForm(<DeathRegistrationForm selectedItem={item} />);
+                            }
+                          }}
                           className="view-button"
                         >
                           View
@@ -1057,182 +1083,28 @@ function App() {
                       &times;
                     </span>
                   </div>
-                  <p>
-                    This registration form is requested by{" "}
-                    {selectedItem.userName}.
-                  </p>
+                  
 
-                  {/* Person's Information */}
-                  <div className="section">
-                    <h3>Child's Information</h3>
-                    <div className="form-grid">
-                      <div className="form-group">
-                        <label>Name</label>
-                        <div className="placeholder">{selectedItem.name}</div>
-                      </div>
+                  {selectedForm && selectedForm}
 
-                      <div className="form-group">
-                        <label>Sex</label>
-                        <div className="placeholder">{selectedItem.sex}</div>
-                      </div>
+                  {selectedItem.collectionType === 'marriageCert' && (
+                    <DeathCertificateForm
+                      selectedItem={selectedItem}
+                    // Pass other necessary props
+                    />
+                  )}
 
-                      <div className="form-group">
-                        <label>Date of Death</label>
-                        <div className="placeholder">
-                          {selectedItem.dateDeath &&
-                          selectedItem.dateDeath.toDate
-                            ? selectedItem.dateDeath.toDate().toLocaleString()
-                            : "Invalid Date"}
-                        </div>
-                      </div>
+                  {selectedItem.collectionType === 'marriage_reg' && (
+                    <DeathRegistrationForm
+                      selectedItem={selectedItem}
+                    // Pass other necessary props
+                    />
+                  )}
 
-                      <div className="form-group">
-                        <label>Date of Birth</label>
-                        <div className="placeholder">
-                          {selectedItem.dateBirth &&
-                          selectedItem.dateBirth.toDate
-                            ? selectedItem.dateBirth.toDate().toLocaleString()
-                            : "Invalid Date"}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Age at the Time of Death</label>
-                        <div className="placeholder">{selectedItem.age}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Place of Death</label>
-                        <div className="placeholder">{selectedItem.place}</div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Civil Status</label>
-                        <div className="placeholder">
-                          {selectedItem.civilstat}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Religion/Religious Sect</label>
-                        <div className="placeholder">
-                          {selectedItem.religion}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Citizenship</label>
-                        <div className="placeholder">
-                          {selectedItem.citizenship}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Residence</label>
-                        <div className="placeholder">
-                          {selectedItem.residence}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Occupation</label>
-                        <div className="placeholder">
-                          {selectedItem.occupation}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Name of Father</label>
-                        <div className="placeholder">
-                          {selectedItem.fatherName}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Maiden Name of Mother</label>
-                        <div className="placeholder">
-                          {selectedItem.motherName}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Medical Certificate */}
-                  <div className="section">
-                    <h3>Medical Certificate</h3>
-                    <div className="form-grid">
-                      <div className="form-group">
-                        <label>Does the deceased aged 0 - 7 </label>
-                        <div className="placeholder">
-                          {selectedItem.forChild}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Causes of Death</label>
-                        <div className="placeholder">
-                          {selectedItem.causeOfDeath}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Maternal Condition</label>
-                        <div className="placeholder">
-                          {selectedItem.maternalCondi}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Death by External Causes</label>
-                        <div className="placeholder">
-                          {selectedItem.externalCause}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Autopsy</label>
-                        <div className="placeholder">
-                          {selectedItem.autopsy}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Attendant</label>
-                        <div className="placeholder">
-                          {selectedItem.attendant}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Corpse Disposal</label>
-                        <div className="placeholder">
-                          {selectedItem.corpseDis}
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <label>Name and Address of Cemetery or Crematory</label>
-                        <div className="placeholder">
-                          {selectedItem.addOfCemetery}
-                        </div>
-                      </div>
-                      {/* Add more mother fields here */}
-                    </div>
-                  </div>
+                  
 
                   <div className="section">
-                    <h3>Proof of Payment</h3>
-                    <div className="proof">
-                      {selectedItem.payment ? (
-                        <img
-                          src={selectedItem.payment}
-                          alt="Proof of Payment"
-                          className="proof-image"
-                        />
-                      ) : (
-                        <p>No payment proof available</p>
-                      )}
-                    </div>
+                      
                     <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
@@ -1297,11 +1169,7 @@ function App() {
                     />{" "}
                     Submit
                   </button>
-                  <div>
-                  <button onClick={generateCustomizedForm} className="open-pdf-button-container">
-                      Generate Form
-                  </button>
-                  </div>
+                  
                 </div>
               </div>
             </div>
