@@ -50,7 +50,7 @@ const NewsForm = () => {
     const fetchUserEmail = () => {
       if (user) {
         const email = user.email;
-        const truncatedEmail = email.length > 5 ? `${email.substring(0, 5)}...` : email;
+        const truncatedEmail = email.length > 11 ? `${email.substring(0, 11)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -316,7 +316,7 @@ const NewsForm = () => {
             </li>
             <li><a href="/appointments">Appointments</a></li>
             <li><a href="/news">News</a></li>
-            <li><a href="/transactions">About</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/transactions">Settings</a></li>
           </ul>
         </nav>

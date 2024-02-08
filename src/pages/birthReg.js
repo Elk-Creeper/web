@@ -24,6 +24,8 @@ import jsPDF from "jspdf";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
+//import { Table, Pagination } from "react-bootstrap";
+//import "bootstrap/dist/css/bootstrap.min.css";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -66,7 +68,7 @@ function App() {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -114,7 +116,6 @@ function App() {
           setSelectedStatusFilter("Pending");
           setInitialLoad(false);
         }
-
       } else {
         console.log("No documents found in the 'birth_reg' collection.");
         setLoading(false);
@@ -133,11 +134,15 @@ function App() {
   const openDetailsModal = async (item) => {
     setSelectedItem(item);
     setTableVisible(false);
+    // Hide the search container
+    document.querySelector(".search-container").style.display = "none";
   };
 
   const closeDetailsModal = () => {
     setSelectedItem(null);
     setTableVisible(true);
+    // Show the search container
+    document.querySelector(".search-container").style.display = "flex";
   };
 
   const handleStatusChange = async (id, newStatus) => {
@@ -174,29 +179,29 @@ function App() {
       item.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.userBarangay?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.userEmail?.toLowerCase().includes(searchQuery.toLowerCase());
-  
+
     const matchesYear = selectedYearFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getFullYear() == selectedYearFilter
       : true;
-  
+
     const matchesMonth = selectedMonthFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getMonth() + 1 == selectedMonthFilter
       : true;
-  
+
     const matchesDay = selectedDayFilter
       ? item.createdAt &&
         item.createdAt.toDate &&
         item.createdAt.toDate().getDate() == selectedDayFilter
       : true;
-  
+
     const matchesStatus = selectedStatusFilter
       ? item.status?.toLowerCase() == selectedStatusFilter.toLowerCase()
       : true;
-  
+
     return (
       matchesSearch &&
       matchesYear &&
@@ -205,7 +210,6 @@ function App() {
       matchesStatus
     );
   });
-  
 
   const handleYearFilterChange = (event) => {
     setSelectedYearFilter(event.target.value);
@@ -239,13 +243,13 @@ function App() {
         await updateDoc(appointmentRef, {
           remarks: textInput,
         });
-  
+
         // Update the selected item with the new remarks
         setSelectedItem((prevItem) => ({
           ...prevItem,
           remarks: textInput,
         }));
-  
+
         console.log("Remarks updated for ID: ", selectedItem.id);
       } else {
         // If there is no selected item, add a new document with the remarks
@@ -253,17 +257,30 @@ function App() {
         const newRemarksDocRef = await addDoc(remarksCollectionRef, {
           remarks: textInput,
         });
-  
+
         console.log("Remarks added with ID: ", newRemarksDocRef.id);
       }
-  
+
       // Optionally, you can clear the textarea after submitting.
       setTextInput("");
     } catch (error) {
       console.error("Error updating/adding remarks: ", error);
     }
   };
-  
+
+  /*const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const itemsPerPage = 11;
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const currentItems = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );*/
+
   return (
     <div>
       <div className="container">
@@ -295,7 +312,7 @@ function App() {
                 <a href="/news">News</a>
               </li>
               <li>
-                <a href="/">About</a>
+                <a href="/about">About</a>
               </li>
               <li>
                 <a href="/">Settings</a>
@@ -324,7 +341,7 @@ function App() {
           <FaSearch className="search-icon"></FaSearch>
           <input
             type="text"
-            placeholder="Search by Name"
+            placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -426,16 +443,18 @@ function App() {
             >
               <thead>
                 <tr style={{ borderBottom: "1px solid black" }}>
-                  <th style={{ borderBottom: "1px solid black" }}>
+                  <th style={{ border: "1px solid black" }}>No.</th>
+                  <th style={{ border: "1px solid black" }}>
                     Name of Applicant
                   </th>
-                  <th style={{ borderBottom: "1px solid black" }}>Residency</th>
-                  <th style={{ borderBottom: "1px solid black" }}>Contact</th>
-                  <th style={{ borderBottom: "1px solid black" }}>
+                  <th style={{ border: "1px solid black" }}>Name of Child</th>
+                  <th style={{ border: "1px solid black" }}>Residency</th>
+                  <th style={{ border: "1px solid black" }}>Contact</th>
+                  <th style={{ border: "1px solid black" }}>
                     Date of Application
                   </th>
-                  <th style={{ borderBottom: "1px solid black" }}>Status</th>
-                  <th style={{ borderBottom: "1px solid black" }}>Action</th>
+                  <th style={{ border: "1px solid black" }}>Status</th>
+                  <th style={{ border: "1px solid black" }}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -446,18 +465,34 @@ function App() {
                     </td>
                   </tr>
                 ) : (
-                  filteredData.map((item) => (
+                  filteredData.map((item, index) => (
                     <tr key={item.id}>
-                      <td>{`${item.userName || "N/A"} ${item.userLastName || ""}`.trim() || "N/A"}</td>
-                      <td>{item.userBarangay || "N/A"}</td>
-                      <td>{item.userEmail || "N/A"}</td>
-                      <td>
+                      <td style={{ border: "1px solid black" }}>{index + 1}</td>
+                      <td style={{ border: "1px solid black" }}>
+                        {`${item.userName || "N/A"} ${
+                          item.userLastName || ""
+                        }`.trim() || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid black" }}>
+                        {`${item.c_fname || "N/A"} ${item.c_mname || "N/A"} ${
+                          item.c_lname || ""
+                        }`.trim() || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid black" }}>
+                        {item.userBarangay || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid black" }}>
+                        {item.userEmail || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid black" }}>
                         {item.createdAt && item.createdAt.toDate
                           ? item.createdAt.toDate().toLocaleString()
                           : "Invalid Date"}
                       </td>
-                      <td>{item.status || "N/A"}</td>
-                      <td>
+                      <td style={{ border: "1px solid black" }}>
+                        {item.status || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid black" }}>
                         <button
                           onClick={() => openDetailsModal(item)}
                           className="view-button"
@@ -555,7 +590,7 @@ function App() {
                       <div className="form-group">
                         <label>Birth Order</label>
                         <div className="placeholder">
-                        {selectedItem.c_birthorder
+                          {selectedItem.c_birthorder
                             ? selectedItem.c_birthorder
                             : "N/A"}
                         </div>
@@ -694,7 +729,7 @@ function App() {
                         <div className="placeholder">
                           {selectedItem.mpDate && selectedItem.mpDate.toDate
                             ? selectedItem.mpDate.toDate().toLocaleString()
-                            : "Invalid Date"}
+                            : "Not Married"}
                         </div>
                       </div>
 
@@ -771,7 +806,11 @@ function App() {
                     />
                   </div>
                   <button onClick={handleSubmit} className="submit-button">
-                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
+                    <FontAwesomeIcon
+                      icon={faPaperPlane}
+                      style={{ marginLeft: "5px" }}
+                    />{" "}
+                    Submit
                   </button>
                 </div>
               </div>

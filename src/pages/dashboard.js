@@ -22,6 +22,7 @@ import {
   where,
 } from "firebase/firestore";
 
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -45,6 +46,8 @@ const Dashboard = ({ count }) => {
   const [weekTransactions, setWeekTransactions] = useState(0);
   const [monthTransactions, setMonthTransactions] = useState(0);
   const [yearTransactions, setYearTransactions] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [itemsPerPage] = useState(15);
 
   // Function for the account name
   const { user } = useAuth();

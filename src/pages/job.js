@@ -62,7 +62,7 @@ function App() {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -126,7 +126,7 @@ function App() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const appointmentRef = doc(firestore, "deathCert", id);
+      const appointmentRef = doc(firestore, "job", id);
       await updateDoc(appointmentRef, {
         status: newStatus,
       });
@@ -272,7 +272,7 @@ function App() {
                 <a href="/news">News</a>
               </li>
               <li>
-                <a href="/transactions">About</a>
+                <a href="/about">About</a>
               </li>
               <li>
                 <a href="/transactions">Settings</a>
@@ -527,7 +527,7 @@ function App() {
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Approved")
                       }
-                      className="completed-button"
+                      className="on-process-button"
                       disabled={selectedItem.status === "Approved"}
                     >
                       Approved
@@ -555,6 +555,7 @@ function App() {
                       className="input-remarks"
                     />
                   </div>
+                  
                   <button onClick={handleSubmit} className="submit-button">
                     <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
                   </button>

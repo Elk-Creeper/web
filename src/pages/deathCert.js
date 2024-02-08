@@ -69,7 +69,7 @@ function App() {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -869,7 +869,7 @@ function App() {
                 <a href="/news">News</a>
               </li>
               <li>
-                <a href="/transactions">About</a>
+                <a href="/about">About</a>
               </li>
               <li>
                 <a href="/transactions">Settings</a>
@@ -1116,7 +1116,7 @@ function App() {
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Approved")
                       }
-                      className="completed-button"
+                      className="on-process-button"
                       disabled={selectedItem.status === "Approved"}
                     >
                       Approved
@@ -1134,7 +1134,7 @@ function App() {
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Completed")
                       }
-                      className="completed-button"
+                      className="on-process-button"
                       disabled={selectedItem.status === "Completed"}
                     >
                       Completed

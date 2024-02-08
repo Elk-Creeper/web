@@ -22,10 +22,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
-import { format } from 'date-fns'; // Import the format function from date-fns
-import CopyMarriageCertificateForm from './CopyMarriageCertificateForm';
-import MarriageRegistrationForm from './MarriageRegistrationForm';
-
+import { format } from "date-fns"; // Import the format function from date-fns
+import CopyMarriageCertificateForm from "./CopyMarriageCertificateForm";
+import MarriageRegistrationForm from "./MarriageRegistrationForm";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -52,7 +51,7 @@ function drawDottedBox(pdfDoc, x, y, size) {
 }
 
 function formatDate(date) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { year: "numeric", month: "long", day: "numeric" };
   return date.toLocaleDateString(undefined, options);
 }
 
@@ -72,7 +71,7 @@ function App() {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 5 ? `${email.substring(0, 5)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}...` : email;
         setUserEmail(truncatedEmail);
       }
     };
@@ -89,7 +88,8 @@ function App() {
   const [initialLoad, setInitialLoad] = useState(true); //automatic pending
 
   const [selectedItemForForm, setSelectedItemForForm] = useState(null);
-  const [showMarriageCertificateForm, setShowMarriageCertificateForm] = useState(false);
+  const [showMarriageCertificateForm, setShowMarriageCertificateForm] =
+    useState(false);
   const [showDefaultModal, setShowDefaultModal] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
 
@@ -161,10 +161,10 @@ function App() {
     setTableVisible(false);
 
     // Additional logic to handle form rendering based on collectionType
-    if (item.collectionType === 'Request Copy of Marriage Certificate') {
+    if (item.collectionType === "Request Copy of Marriage Certificate") {
       // Render CopyMarriageCertificateForm
       setSelectedForm(<CopyMarriageCertificateForm selectedItem={item} />);
-    } else if (item.collectionType === 'Marriage Registration') {
+    } else if (item.collectionType === "Marriage Registration") {
       // Render MarriageRegistrationForm
       setSelectedForm(<MarriageRegistrationForm selectedItem={item} />);
     }
@@ -181,6 +181,13 @@ function App() {
       await updateDoc(appointmentRef, {
         status: newStatus,
       });
+
+      // Update the corresponding item in the data state
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
 
       setSelectedItem((prevItem) => ({
         ...prevItem,
@@ -344,11 +351,46 @@ function App() {
     }
   };
 
-  const generateMarriageCertificateForm = (h_fname, h_mname, h_lname, h_age, h_citizenship, h_civilstat, h_dateBirth, h_fatherName, h_motherName,
-    h_personName, h_placeBirth, h_relationship, h_religion, h_residence, h_sex, hf_citizenship, hm_citizenship, hp_residence, 
-  w_fname, w_mname, w_lname, w_age, w_citizenship, w_civilstat, w_dateBirth, w_dateMarriage, w_fatherName, w_motherName,
- w_personName, w_placeBirth, w_placeMarriage, w_relationship, w_religion, w_residence, w_sex, wf_citizenship, wm_citizenship, wp_residence) => {
-
+  const generateMarriageCertificateForm = (
+    h_fname,
+    h_mname,
+    h_lname,
+    h_age,
+    h_citizenship,
+    h_civilstat,
+    h_dateBirth,
+    h_fatherName,
+    h_motherName,
+    h_personName,
+    h_placeBirth,
+    h_relationship,
+    h_religion,
+    h_residence,
+    h_sex,
+    hf_citizenship,
+    hm_citizenship,
+    hp_residence,
+    w_fname,
+    w_mname,
+    w_lname,
+    w_age,
+    w_citizenship,
+    w_civilstat,
+    w_dateBirth,
+    w_dateMarriage,
+    w_fatherName,
+    w_motherName,
+    w_personName,
+    w_placeBirth,
+    w_placeMarriage,
+    w_relationship,
+    w_religion,
+    w_residence,
+    w_sex,
+    wf_citizenship,
+    wm_citizenship,
+    wp_residence
+  ) => {
     const pdfWidth = 8.5 * 25.4; // Convert inches to mm (1 inch = 25.4 mm)
     const pdfHeight = 15 * 25.4;
 
@@ -482,7 +524,7 @@ function App() {
     pdfDoc.text(`(First)`, 51, 57);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_fname ? h_fname.toUpperCase() : ''}`, 65, 57);
+    pdfDoc.text(`${h_fname ? h_fname.toUpperCase() : ""}`, 65, 57);
     // Draw a line after the word
     pdfDoc.line(58, 58, 121, 58);
 
@@ -493,7 +535,7 @@ function App() {
     pdfDoc.text(`(First)`, 124, 57);
     pdfDoc.setFontSize(10);
     pdfDoc.setTextColor("#000000");
-    pdfDoc.text(`${w_fname ? w_fname.toUpperCase() : ''}`, 139, 57);
+    pdfDoc.text(`${w_fname ? w_fname.toUpperCase() : ""}`, 139, 57);
     // Draw a line after the word
     pdfDoc.line(131, 58, 193, 58);
 
@@ -504,7 +546,7 @@ function App() {
     pdfDoc.text("(Middle)", 51, 62);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_mname ? w_mname.toUpperCase() : ''}`, 65, 62);
+    pdfDoc.text(`${h_mname ? w_mname.toUpperCase() : ""}`, 65, 62);
     // Draw a line after the word
     pdfDoc.line(62, 63, 121, 63);
 
@@ -515,7 +557,7 @@ function App() {
     pdfDoc.text("(Middle)", 124, 62);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${w_mname ? w_mname.toUpperCase() : ''}`, 139, 62);
+    pdfDoc.text(`${w_mname ? w_mname.toUpperCase() : ""}`, 139, 62);
     // Draw a line after the word
     pdfDoc.line(135, 63, 193, 63);
 
@@ -526,7 +568,7 @@ function App() {
     pdfDoc.text("(Last)", 51, 67);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_lname ? h_lname.toUpperCase() : ''}`, 65, 67);
+    pdfDoc.text(`${h_lname ? h_lname.toUpperCase() : ""}`, 65, 67);
     // Draw a line after the word
     pdfDoc.line(58, 68, 121, 68);
 
@@ -537,7 +579,7 @@ function App() {
     pdfDoc.text("(Last)", 124, 67);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${w_lname ? w_lname.toUpperCase() : ''}`, 139, 67);
+    pdfDoc.text(`${w_lname ? w_lname.toUpperCase() : ""}`, 139, 67);
     // Draw a line after the word
     pdfDoc.line(131, 68, 193, 68);
 
@@ -573,7 +615,7 @@ function App() {
     pdfDoc.setFontSize(10);
     const timestamp = 1642041321000;
     const dateOfBirth = new Date(timestamp);
-    const formattedDateOfBirth = format(dateOfBirth, 'dd/MM/yy');
+    const formattedDateOfBirth = format(dateOfBirth, "dd/MM/yy");
     pdfDoc.text(formattedDateOfBirth, 60, 78);
 
     // Draw a vertical line before "Name of Contracting Parties" text
@@ -641,8 +683,8 @@ function App() {
     pdfDoc.text("(Country)", 108, 83);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_placeBirth ? h_placeBirth.toUpperCase() : ''}`, 53, 88);
-    pdfDoc.text(`${w_placeBirth ? w_placeBirth.toUpperCase() : ''}`, 126, 88);
+    pdfDoc.text(`${h_placeBirth ? h_placeBirth.toUpperCase() : ""}`, 53, 88);
+    pdfDoc.text(`${w_placeBirth ? w_placeBirth.toUpperCase() : ""}`, 126, 88);
 
     //Wife
     pdfDoc.setFontSize(8);
@@ -678,7 +720,7 @@ function App() {
     pdfDoc.text("(Sex)", 53, 93);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_sex ? h_sex.toUpperCase() : ''}`, 55, 98);
+    pdfDoc.text(`${h_sex ? h_sex.toUpperCase() : ""}`, 55, 98);
 
     // Draw a vertical line
     const verticalLinesss = 75;
@@ -692,7 +734,7 @@ function App() {
     pdfDoc.text("(Citizenship)", 77, 93);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_citizenship ? h_citizenship.toUpperCase() : ''}`, 79, 98);
+    pdfDoc.text(`${h_citizenship ? h_citizenship.toUpperCase() : ""}`, 79, 98);
 
     //Wife
     pdfDoc.setFontSize(8);
@@ -701,7 +743,7 @@ function App() {
     pdfDoc.text("(Sex)", 126, 93);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${w_sex ? w_sex.toUpperCase() : ''}`, 129, 98);
+    pdfDoc.text(`${w_sex ? w_sex.toUpperCase() : ""}`, 129, 98);
 
     // Draw a vertical line
     const vertical = 150;
@@ -715,7 +757,7 @@ function App() {
     pdfDoc.text("(Citizenship)", 152, 93);
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${w_citizenship ? w_citizenship.toUpperCase() : ''}`, 154, 98);
+    pdfDoc.text(`${w_citizenship ? w_citizenship.toUpperCase() : ""}`, 154, 98);
 
     //5th Part
     pdfDoc.setFontSize(9);
@@ -736,7 +778,7 @@ function App() {
     );
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(8);
-    pdfDoc.text(`${h_residence ? h_residence .toUpperCase() : ''}`, 52, 108);
+    pdfDoc.text(`${h_residence ? h_residence.toUpperCase() : ""}`, 52, 108);
 
     //Wife
     pdfDoc.setFontSize(7);
@@ -749,7 +791,7 @@ function App() {
     );
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(8);
-    pdfDoc.text(`${w_residence ? w_residence .toUpperCase() : ''}`, 126, 108);
+    pdfDoc.text(`${w_residence ? w_residence.toUpperCase() : ""}`, 126, 108);
 
     //6th Part
     pdfDoc.setFontSize(9);
@@ -758,8 +800,8 @@ function App() {
     pdfDoc.text("6. Religion/", 17, 114);
     pdfDoc.text("    Religious Sect", 22, 118);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_religion ? h_religion .toUpperCase() : ''}`, 65, 117);
-    pdfDoc.text(`${w_religion ? w_religion .toUpperCase() : ''}`, 145, 117);
+    pdfDoc.text(`${h_religion ? h_religion.toUpperCase() : ""}`, 65, 117);
+    pdfDoc.text(`${w_religion ? w_religion.toUpperCase() : ""}`, 145, 117);
     drawThinBorderLine(pdfDoc, 110, lineWidthss, lineHeightss, margin);
 
     //7th Part
@@ -768,8 +810,8 @@ function App() {
     pdfDoc.setTextColor("#000000");
     pdfDoc.text("7. Civil Status", 17, 126);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_civilstat ? h_civilstat .toUpperCase() : ''}`, 68, 126);
-    pdfDoc.text(`${w_civilstat ? w_civilstat .toUpperCase() : ''}`, 153, 126);
+    pdfDoc.text(`${h_civilstat ? h_civilstat.toUpperCase() : ""}`, 68, 126);
+    pdfDoc.text(`${w_civilstat ? w_civilstat.toUpperCase() : ""}`, 153, 126);
 
     drawThinBorderLine(pdfDoc, 120, lineWidthss, lineHeightss, margin);
 
@@ -779,8 +821,8 @@ function App() {
     pdfDoc.setTextColor("#000000");
     pdfDoc.text("8. Name of Father", 17, 136);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_fatherName ? h_fatherName .toUpperCase() : ''}`, 60, 138);
-    pdfDoc.text(`${w_fatherName ? w_fatherName .toUpperCase() : ''}`, 130, 138);
+    pdfDoc.text(`${h_fatherName ? h_fatherName.toUpperCase() : ""}`, 60, 138);
+    pdfDoc.text(`${w_fatherName ? w_fatherName.toUpperCase() : ""}`, 130, 138);
     drawThinBorderLine(pdfDoc, 130, lineWidthss, lineHeightss, margin);
 
     // Set text color to red
@@ -821,8 +863,16 @@ function App() {
     pdfDoc.setTextColor("#000000");
     pdfDoc.text("9. Citizenship", 17, 146);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${hf_citizenship ? hf_citizenship .toUpperCase() : ''}`, 65, 146);
-    pdfDoc.text(`${wf_citizenship ? wf_citizenship .toUpperCase() : ''}`, 135, 146);
+    pdfDoc.text(
+      `${hf_citizenship ? hf_citizenship.toUpperCase() : ""}`,
+      65,
+      146
+    );
+    pdfDoc.text(
+      `${wf_citizenship ? wf_citizenship.toUpperCase() : ""}`,
+      135,
+      146
+    );
     drawThinBorderLine(pdfDoc, 140, lineWidthss, lineHeightss, margin);
 
     //10th Part
@@ -832,8 +882,8 @@ function App() {
     pdfDoc.text("10. Maiden Name", 17, 154);
     pdfDoc.text("      of Mother", 17, 158);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_motherName ? h_motherName .toUpperCase() : ''}`, 60, 157);
-    pdfDoc.text(`${w_motherName ? w_motherName .toUpperCase() : ''}`, 133, 157);
+    pdfDoc.text(`${h_motherName ? h_motherName.toUpperCase() : ""}`, 60, 157);
+    pdfDoc.text(`${w_motherName ? w_motherName.toUpperCase() : ""}`, 133, 157);
     drawThinBorderLine(pdfDoc, 150, lineWidthss, lineHeightss, margin);
 
     // Set text color to red
@@ -873,8 +923,16 @@ function App() {
     pdfDoc.setFont("normal");
     pdfDoc.text("11. Citizenships", 17, 166);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${hm_citizenship ? hm_citizenship .toUpperCase() : ''}`, 68, 166);
-    pdfDoc.text(`${wm_citizenship ? wm_citizenship .toUpperCase() : ''}`, 150, 166);
+    pdfDoc.text(
+      `${hm_citizenship ? hm_citizenship.toUpperCase() : ""}`,
+      68,
+      166
+    );
+    pdfDoc.text(
+      `${wm_citizenship ? wm_citizenship.toUpperCase() : ""}`,
+      150,
+      166
+    );
     drawThinBorderLine(pdfDoc, 160, lineWidthss, lineHeightss, margin);
 
     //12th Part
@@ -885,8 +943,8 @@ function App() {
     pdfDoc.text("      Wali Who Gave", 17, 176);
     pdfDoc.text("      Consent or Advice", 17, 179);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_personName ? h_personName .toUpperCase() : ''}`, 60, 177);
-    pdfDoc.text(`${w_personName ? w_personName .toUpperCase() : ''}`, 132, 177);
+    pdfDoc.text(`${h_personName ? h_personName.toUpperCase() : ""}`, 60, 177);
+    pdfDoc.text(`${w_personName ? w_personName.toUpperCase() : ""}`, 132, 177);
     drawThinBorderLine(pdfDoc, 170, lineWidthss, lineHeightss, margin);
 
     // Set text color to red
@@ -926,8 +984,16 @@ function App() {
     pdfDoc.setFont("normal");
     pdfDoc.text("13. Relationship", 17, 186);
     pdfDoc.setFontSize(10);
-    pdfDoc.text(`${h_relationship ? h_relationship .toUpperCase() : ''}`, 68, 187);
-    pdfDoc.text(`${w_relationship ? w_relationship .toUpperCase() : ''}`, 145, 187);
+    pdfDoc.text(
+      `${h_relationship ? h_relationship.toUpperCase() : ""}`,
+      68,
+      187
+    );
+    pdfDoc.text(
+      `${w_relationship ? w_relationship.toUpperCase() : ""}`,
+      145,
+      187
+    );
     drawThinBorderLine(pdfDoc, 180, lineWidthss, lineHeightss, margin);
 
     //14th Part
@@ -949,8 +1015,7 @@ function App() {
     );
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(8);
-    pdfDoc.text(`${hp_residence ? hp_residence .toUpperCase() : ''}`, 52, 198);
-
+    pdfDoc.text(`${hp_residence ? hp_residence.toUpperCase() : ""}`, 52, 198);
 
     //Wife
     pdfDoc.setFontSize(7);
@@ -963,7 +1028,7 @@ function App() {
     );
     pdfDoc.setTextColor("#000000");
     pdfDoc.setFontSize(8);
-    pdfDoc.text(`${wp_residence ? wp_residence .toUpperCase() : ''}`, 125, 198);
+    pdfDoc.text(`${wp_residence ? wp_residence.toUpperCase() : ""}`, 125, 198);
 
     const lineWidthsss = pdfDoc.internal.pageSize.width - 2 * margin;
     const lineHeightsss = 0.3; // Thin border size
@@ -974,7 +1039,11 @@ function App() {
     pdfDoc.setFont("normal");
     pdfDoc.setTextColor("#000000");
     pdfDoc.text("15. Place of Marriage: ", 17, 205);
-    pdfDoc.text(`${w_placeMarriage ? w_placeMarriage.toUpperCase() : ''}`, 50, 204);
+    pdfDoc.text(
+      `${w_placeMarriage ? w_placeMarriage.toUpperCase() : ""}`,
+      50,
+      204
+    );
     drawDottedLine(pdfDoc, 47, 205, 198, 205, 0.1);
 
     pdfDoc.setFontSize(7);
@@ -1229,14 +1298,86 @@ function App() {
 
   const generateCustomizedForm = () => {
     if (selectedItem) {
-      const { h_fname, h_mname, h_lname, h_age, h_citizenship, h_civilstat, h_dateBirth, h_fatherName, h_motherName,
-      h_personName, h_placeBirth, h_relationship, h_religion, h_residence, h_sex, hf_citizenship, hm_citizenship, hp_residence, 
-    w_fname, w_mname, w_lname, w_age, w_citizenship, w_civilstat, w_dateBirth, w_dateMarriage, w_fatherName, w_motherName,
-   w_personName, w_placeBirth, w_placeMarriage, w_relationship, w_religion, w_residence, w_sex, wf_citizenship, wm_citizenship, wp_residence} = selectedItem;
-      generateMarriageCertificateForm(h_fname, h_mname, h_lname, h_age, h_citizenship, h_civilstat, h_dateBirth, h_fatherName, h_motherName,
-        h_personName, h_placeBirth, h_relationship, h_religion, h_residence, h_sex, hf_citizenship, hm_citizenship, hp_residence, 
-      w_fname, w_mname, w_lname, w_age, w_citizenship, w_civilstat, w_dateBirth, w_dateMarriage, w_fatherName, w_motherName,
-     w_personName, w_placeBirth, w_placeMarriage, w_relationship, w_religion, w_residence, w_sex, wf_citizenship, wm_citizenship, wp_residence);
+      const {
+        h_fname,
+        h_mname,
+        h_lname,
+        h_age,
+        h_citizenship,
+        h_civilstat,
+        h_dateBirth,
+        h_fatherName,
+        h_motherName,
+        h_personName,
+        h_placeBirth,
+        h_relationship,
+        h_religion,
+        h_residence,
+        h_sex,
+        hf_citizenship,
+        hm_citizenship,
+        hp_residence,
+        w_fname,
+        w_mname,
+        w_lname,
+        w_age,
+        w_citizenship,
+        w_civilstat,
+        w_dateBirth,
+        w_dateMarriage,
+        w_fatherName,
+        w_motherName,
+        w_personName,
+        w_placeBirth,
+        w_placeMarriage,
+        w_relationship,
+        w_religion,
+        w_residence,
+        w_sex,
+        wf_citizenship,
+        wm_citizenship,
+        wp_residence,
+      } = selectedItem;
+      generateMarriageCertificateForm(
+        h_fname,
+        h_mname,
+        h_lname,
+        h_age,
+        h_citizenship,
+        h_civilstat,
+        h_dateBirth,
+        h_fatherName,
+        h_motherName,
+        h_personName,
+        h_placeBirth,
+        h_relationship,
+        h_religion,
+        h_residence,
+        h_sex,
+        hf_citizenship,
+        hm_citizenship,
+        hp_residence,
+        w_fname,
+        w_mname,
+        w_lname,
+        w_age,
+        w_citizenship,
+        w_civilstat,
+        w_dateBirth,
+        w_dateMarriage,
+        w_fatherName,
+        w_motherName,
+        w_personName,
+        w_placeBirth,
+        w_placeMarriage,
+        w_relationship,
+        w_religion,
+        w_residence,
+        w_sex,
+        wf_citizenship,
+        wm_citizenship,
+        wp_residence
+      );
     }
   };
 
@@ -1271,7 +1412,7 @@ function App() {
                 <a href="/news">News</a>
               </li>
               <li>
-                <a href="/transactions">About</a>
+                <a href="/about">About</a>
               </li>
               <li>
                 <a href="/transactions">Settings</a>
@@ -1429,7 +1570,9 @@ function App() {
                   filteredData.map((item) => (
                     <tr key={item.id}>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {`${item.userName || "N/A"} ${item.userLastName || ""}`.trim() || "N/A"}
+                        {`${item.userName || "N/A"} ${
+                          item.userLastName || ""
+                        }`.trim() || "N/A"}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
                         {item.collectionType}
@@ -1449,16 +1592,22 @@ function App() {
                         {item.status}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                      <button
+                        <button
                           onClick={() => {
                             openDetailsModal(item);
                             // Additional logic to handle form rendering based on collectionType
-                            if (item.collectionType === 'marriageCert') {
+                            if (item.collectionType === "marriageCert") {
                               // Render CopyMarriageCertificateForm
-                              setSelectedForm(<CopyMarriageCertificateForm selectedItem={item} />);
-                            } else if (item.collectionType === 'marriage_reg') {
+                              setSelectedForm(
+                                <CopyMarriageCertificateForm
+                                  selectedItem={item}
+                                />
+                              );
+                            } else if (item.collectionType === "marriage_reg") {
                               // Render MarriageRegistrationForm
-                              setSelectedForm(<MarriageRegistrationForm selectedItem={item} />);
+                              setSelectedForm(
+                                <MarriageRegistrationForm selectedItem={item} />
+                              );
                             }
                           }}
                           className="view-button"
@@ -1485,26 +1634,24 @@ function App() {
                       &times;
                     </span>
                   </div>
-                  
 
                   {selectedForm && selectedForm}
 
-                  {selectedItem.collectionType === 'marriageCert' && (
+                  {selectedItem.collectionType === "marriageCert" && (
                     <CopyMarriageCertificateForm
                       selectedItem={selectedItem}
-                    // Pass other necessary props
+                      // Pass other necessary props
                     />
                   )}
 
-                  {selectedItem.collectionType === 'marriage_reg' && (
+                  {selectedItem.collectionType === "marriage_reg" && (
                     <MarriageRegistrationForm
                       selectedItem={selectedItem}
-                    // Pass other necessary props
+                      // Pass other necessary props
                     />
                   )}
 
                   <div className="section">
-                    
                     <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
@@ -1514,16 +1661,24 @@ function App() {
                   <div className="buttons">
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "Approved")
+                        handleStatusChange(
+                          selectedItem.id,
+                          "Approved",
+                          selectedItem.collectionType
+                        )
                       }
-                      className="completed-button"
+                      className="on-process-button"
                       disabled={selectedItem.status === "Approved"}
                     >
                       Approved
                     </button>
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "On Process")
+                        handleStatusChange(
+                          selectedItem.id,
+                          "On Process",
+                          selectedItem.collectionType
+                        )
                       }
                       className="on-process-button"
                       disabled={selectedItem.status === "On Process"}
@@ -1532,16 +1687,24 @@ function App() {
                     </button>
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "Completed")
+                        handleStatusChange(
+                          selectedItem.id,
+                          "Completed",
+                          selectedItem.collectionType
+                        )
                       }
-                      className="completed-button"
+                      className="on-process-button"
                       disabled={selectedItem.status === "Completed"}
                     >
                       Completed
                     </button>
                     <button
                       onClick={() =>
-                        handleStatusChange(selectedItem.id, "Rejected")
+                        handleStatusChange(
+                          selectedItem.id,
+                          "Rejected",
+                          selectedItem.collectionType
+                        )
                       }
                       className="on-process-button"
                       disabled={selectedItem.status === "Rejected"}
@@ -1569,8 +1732,12 @@ function App() {
                     />{" "}
                     Submit
                   </button>
-
-
+                  
+                  <div>
+                  <button onClick={generateCustomizedForm} className="open-pdf-button-container">
+                      Generate Form
+                  </button>
+                  </div>
                 </div>
               </div>
             </div>
