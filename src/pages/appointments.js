@@ -427,7 +427,7 @@ function App() {
                 <textarea
                 ref={textareaRef}
                 id="textArea"
-                value={textInput}  // Use defaultValue instead of value
+                defaultValue={selectedAppointment.remarks || ""}  // Use defaultValue instead of value
                 onChange={handleTextChange}
                 placeholder="Type here your remarks.."
                 rows={4}
@@ -435,6 +435,7 @@ function App() {
                 className="input-remarks"
                 />
               </div>
+
               <button onClick={handleSubmit} className="submit-button">
                 <FontAwesomeIcon
                   icon={faPaperPlane}

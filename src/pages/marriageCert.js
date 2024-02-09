@@ -302,7 +302,6 @@ function App() {
         }
       }
 
-      // Optionally, you can clear the textarea after submitting.
       setTextInput("");
     } catch (error) {
       console.error("Error updating/adding remarks: ", error);
@@ -1292,6 +1291,248 @@ function App() {
     pdfDoc.text("7W", 174, 358);
     drawDottedBox(pdfDoc, 174, 359, 5);
 
+    // Move to the back of the document
+    pdfDoc.addPage();
+
+    // Back of the form
+    pdfDoc.setDrawColor(borderColor);
+    pdfDoc.setLineWidth(formBorderWidth);
+
+    pdfDoc.rect(
+      margin,
+      margin,
+      pdfDoc.internal.pageSize.width - 2 * margin,
+      pdfDoc.internal.pageSize.height - 2 * margin
+    );
+
+    // Set font and other properties for the back of the form
+    pdfDoc.setFontSize(8);
+    pdfDoc.setFont("normal");
+    pdfDoc.setTextColor("#000000");
+    pdfDoc.text("20b. WITNESSES (Print Name and Sign):", 17, 19);
+    drawDottedLine(pdfDoc, 17, 30, 65, 30, 0.1);
+    drawDottedLine(pdfDoc, 68, 30, 115, 30, 0.1);
+    drawDottedLine(pdfDoc, 118, 30, 198, 30, 0.1);
+
+    drawDottedLine(pdfDoc, 17, 40, 65, 40, 0.1);
+    drawDottedLine(pdfDoc, 68, 40, 115, 40, 0.1);
+    drawDottedLine(pdfDoc, 118, 40, 198, 40, 0.1);
+
+   drawThinBorderLine(pdfDoc, 43, lineWidthss, lineHeightss, margin);
+
+   pdfDoc.setFont("Bold");
+   pdfDoc.setFontSize(10);
+   pdfDoc.text("AFFIDAVIT OF SOLEMNIZING OFFICER", 75, 48);
+
+   pdfDoc.setFontSize(8);
+   pdfDoc.text("I,", 30, 57);
+   pdfDoc.line(33, 58, 77, 58);
+   pdfDoc.text(", of legal age, Solemnizing Officer of", 78, 57);
+   pdfDoc.line(121, 58, 169, 58);
+   pdfDoc.text("with address at", 171, 57);
+   pdfDoc.line(17, 63, 73, 63);
+   pdfDoc.text(", after having sworn to in accordance with law, do hereby depose and say:", 74, 63);
+   pdfDoc.text("1. That I have solemnized the marriage between", 17, 67);
+   pdfDoc.line(72, 68, 118, 68);
+   pdfDoc.text("and", 119, 68);
+   pdfDoc.line(124, 68, 170, 68);
+   pdfDoc.text("2.", 17, 71);
+   drawDottedBox(pdfDoc, 21, 69, 4);
+   pdfDoc.text("a. That  I  have  ascertained  the  qualification  of  the  contracting  parties  and  have  found  no  leagl  impediment  for  them  to", 27, 71);
+   pdfDoc.text("marry as required by Article 34 of the family Code;", 29, 74);
+   drawDottedBox(pdfDoc, 21, 75, 4);
+   pdfDoc.text("b. That this marriage was performed in articulo mortis or at the point of death;", 27, 79);
+   drawDottedBox(pdfDoc, 21, 84, 4);
+   pdfDoc.text("c. That the contracting party/ies", 27, 83);
+   pdfDoc.line(64, 84, 103, 84);
+   pdfDoc.text("and", 104, 83);
+   pdfDoc.line(109, 84, 148, 84);
+   pdfDoc.text(", being at the point of", 149, 83);
+   pdfDoc.text("death and physically unable to sign the foregoing certificate of marriage by signature or mark, one of the witnesses to the marriage;", 29, 87);
+   pdfDoc.text("sign for him or her by writing the dying party's name and beneath it, the witness' own signature preceded by the preposition 'By';", 29, 90);
+   drawDottedBox(pdfDoc, 21, 92, 4);
+   pdfDoc.text("d. That the residence of either party is so located that there is no means of transportation to enable concerned party/parties to appear", 27, 95);
+   pdfDoc.text("personally before the civil registrar.", 30, 98);
+   drawDottedBox(pdfDoc, 21, 99, 4);
+   pdfDoc.text("e. That the marriage was among Muslims or among members of the Ethnic Cultural Communities and that the marriage was solemnized", 27, 102);
+   pdfDoc.text("in accordance with their customs and practices", 30, 105);
+   pdfDoc.text("3. That I took the necessary steps to ascertain the ages and relationship of the contracting parties and that neither of them are under any legal", 17, 109);
+   pdfDoc.text("impediment to marry each other;", 20, 112);
+   pdfDoc.text("4. That I am executing this affidavit to attest to the truthfulness of the foregoing statements for all legal intents and purposes", 17, 116);
+
+   pdfDoc.text("  In   Truth   whereof,   I   have  affixed   my  signature  below  this", 30, 123);
+   pdfDoc.line(107, 124, 120, 124);
+   pdfDoc.text("day of", 121, 123);
+   pdfDoc.line(128, 124, 167, 124);
+   pdfDoc.line(169, 124, 182, 124);
+   pdfDoc.text("at", 183, 123);
+   pdfDoc.line(17, 129, 82, 129);
+   pdfDoc.text(",  Philippines.", 82, 128);
+
+   
+   pdfDoc.line(130, 135, 198, 135);
+   pdfDoc.text("(Signature Over Printed Name of Affidavit)", 133, 138);
+
+   pdfDoc.setFont("bold");
+   pdfDoc.text("SUBSCRIBED AND SWORN", 24, 143);
+
+   pdfDoc.text("to before me this", 61, 143);
+   pdfDoc.line(84, 143, 99, 143);
+   pdfDoc.text("day of", 104, 143);
+   pdfDoc.line(114, 143, 179, 143);
+   pdfDoc.line(180, 143, 192, 143);
+   pdfDoc.text("at", 195, 154);
+   pdfDoc.line(17, 151, 77, 151);
+   pdfDoc.text(",   Philippines,", 78, 150);
+   pdfDoc.text("affiant  who  exhibited  to  me  his/her  CTC/valid  ID",100,150);
+   pdfDoc.line(163, 151, 198, 151);
+   pdfDoc.text("issued on", 17, 157);
+   pdfDoc.line(29, 158, 74, 158);
+   pdfDoc.line(76, 158, 98, 158);
+   pdfDoc.text("at", 99, 157);
+   pdfDoc.line(103, 158, 168, 158);
+
+   pdfDoc.setFontSize(9);
+   pdfDoc.line(34, 167, 97, 167);
+   pdfDoc.text("Signature of the Administering Officer", 40, 170);
+
+   pdfDoc.setFontSize(9);
+   pdfDoc.line(119, 167, 190, 167);
+   pdfDoc.text("Position/ Title/ Designation", 144, 170);
+
+   pdfDoc.setFontSize(9);
+   pdfDoc.line(34, 177, 97, 177);
+   pdfDoc.text("Name in Print", 55, 180);
+
+   pdfDoc.setFontSize(9);
+   pdfDoc.line(119, 177, 190, 177);
+   pdfDoc.text("Address", 150, 180);
+
+   drawThinBorderLine(pdfDoc, 185, lineWidthss, lineHeightss, margin);
+
+
+   pdfDoc.setFont("Bold");
+   pdfDoc.setFontSize(10);
+   pdfDoc.text("AFFIDAVIT FOR DELAYED REGISTRATION OF MARRIAGE", 57, 190);
+
+   pdfDoc.setFontSize(8);
+   pdfDoc.text("I,", 25, 198);
+   pdfDoc.line(28, 198, 110, 198);
+   pdfDoc.text(", of legal age, single/married/divorced/widow/widower, with residence and", 111, 198);
+   pdfDoc.text("postal address", 17, 203);
+   pdfDoc.line(34, 203, 196, 203);
+   pdfDoc.line(17, 208, 66, 208);
+   pdfDoc.text(", after having duly sworn in accordance with law do hereby depose and say:", 67, 208);
+   pdfDoc.text("1.   That I am the applicant for the delayed registration of", 17, 213);
+   drawDottedBox(pdfDoc, 21, 215, 3);
+   pdfDoc.text("my marriage with", 27, 217);
+   pdfDoc.line(48, 218, 86, 218);
+   pdfDoc.text("in", 87, 217);
+   pdfDoc.line(90, 218, 125, 218);
+   pdfDoc.text("on", 126, 217);
+   pdfDoc.line(130, 218, 170, 218);
+   drawDottedBox(pdfDoc, 21, 220, 3);
+   pdfDoc.text("the marriage between ", 27, 222);
+   pdfDoc.line(51, 223, 96, 223);
+   pdfDoc.text("and", 97, 222);
+   pdfDoc.line(102, 223, 150, 223);
+   pdfDoc.text("in", 151, 222);
+   pdfDoc.line(21, 227, 53, 227);
+   pdfDoc.text("on", 54, 227);
+   pdfDoc.line(58, 227, 89, 227);
+   pdfDoc.text("2.   That said marriage was solemnized by", 17, 233);
+   pdfDoc.line(64, 233, 138, 233);
+   pdfDoc.text("(Solemnizing Officer's name) under", 140, 233);
+   pdfDoc.text("a.", 37, 239);
+   drawDottedBox(pdfDoc, 40, 238, 3);
+   pdfDoc.text("religious ceremony", 45, 239);
+   pdfDoc.text("b.", 71, 239);
+   drawDottedBox(pdfDoc, 74, 238, 3);
+   pdfDoc.text("civil ceremony", 78, 239);
+   pdfDoc.text("c.",100, 239);
+   drawDottedBox(pdfDoc, 103, 238, 3);
+   pdfDoc.text("Muslim rites", 107, 239);
+   pdfDoc.text("d.", 127, 239);
+   drawDottedBox(pdfDoc, 130, 238, 3);
+   pdfDoc.text("tribal rites", 134, 239);
+   pdfDoc.text("3.   That the marriage was solemnized:", 17, 245);
+   drawDottedBox(pdfDoc, 27, 248, 3);
+   pdfDoc.text("a. with marriage license no.", 32, 250);
+   pdfDoc.line(63, 251, 92, 251);
+   pdfDoc.text("issued on", 93, 250);
+   pdfDoc.line(104, 251, 134, 251);
+   pdfDoc.text("at", 135, 250);
+   pdfDoc.line(137, 251, 180, 251);
+   drawDottedBox(pdfDoc, 27, 253, 3);
+   pdfDoc.text("b. under Article ", 32, 255);
+   pdfDoc.line(50, 256, 65, 256);
+   pdfDoc.text("(marriage of exceptional character);", 66, 255);
+   pdfDoc.text("4.   (If the applicant is either the wife or husband) That I am a citizen of", 17, 260);
+   pdfDoc.line(98, 261, 150, 261);
+   pdfDoc.text("and my spouse is a citizen of", 151, 260);
+   pdfDoc.line(22, 265, 70, 265);
+   pdfDoc.text("   (If the applicant is either the wife or husband) That the wife is a citizen of", 19, 270);
+   pdfDoc.line(105, 271, 150, 271);
+   pdfDoc.text("and my spouse is a citizen of", 151, 270);
+   pdfDoc.text("is a citizen of", 19, 275);
+   pdfDoc.line(34, 276, 89, 276);
+   pdfDoc.text("5.   That the reason for the delay in registering our/their marriage is", 17, 280);
+   pdfDoc.line(94, 281, 145, 281);
+   pdfDoc.text("6.   That I am executing this affidavit to attest the truthfulness of the foregoing statements for all legal intents and purposes.", 17, 285);
+   pdfDoc.text("  In   Truth   whereof,   I   have  affixed   my  signature  below  this", 30, 292);
+   pdfDoc.line(107, 293, 120, 293);
+   pdfDoc.text("day of", 121, 292);
+   pdfDoc.line(128, 293, 167, 293);
+   pdfDoc.line(169, 293, 182, 293);
+   pdfDoc.text("at", 183, 292);
+   pdfDoc.line(17, 298, 82, 298);
+   pdfDoc.text(",  Philippines.", 82, 298);
+
+   pdfDoc.line(130, 307, 198, 307);
+   pdfDoc.text("(Signature Over Printed Name of Affidavit)", 137, 310);
+
+      pdfDoc.setFont("bold")
+   pdfDoc.text("SUBSCRIBED AND SWORN" , 24, 317);
+
+   pdfDoc.text("to before me this", 69, 317);
+   pdfDoc.line(94, 318, 102, 318);
+   pdfDoc.text("day of", 104, 317);
+   pdfDoc.line(114, 318, 179, 318);
+   pdfDoc.line(180, 318, 192, 318);
+   pdfDoc.text("at", 195, 317);
+   pdfDoc.line(17, 323, 77, 323);
+   pdfDoc.text(",   Philippines,", 78, 322);
+   pdfDoc.text("affiant  who  exhibited  to  me  his/her  CTC/valid  ID", 96, 322);
+   pdfDoc.line(17, 328, 74, 328);
+   pdfDoc.text("issued on", 75, 327);
+   pdfDoc.line(90, 328, 125, 328);
+   pdfDoc.line(126, 328, 137, 328);
+   pdfDoc.text("at", 139, 327);
+   pdfDoc.line(143, 328, 198, 328);
+
+     pdfDoc.setFontSize(9);
+     pdfDoc.line(17, 340, 95, 340);
+     pdfDoc.text("Signature of the Administering Officer", 28, 345);
+
+     pdfDoc.setFontSize(9);
+     pdfDoc.line(119, 340, 199, 340);
+     pdfDoc.text("Position/ Title/ Designation", 144, 345);
+
+     pdfDoc.setFontSize(9);
+     pdfDoc.line(17, 355, 95, 355);
+     pdfDoc.text("Name in Print", 45, 360);
+
+     pdfDoc.setFontSize(9);
+     pdfDoc.line(119, 355, 199, 355);
+     pdfDoc.text("Address", 150, 360);
+
+
+
+
+
+
+
+
     // Save the PDF or open in a new window
     pdfDoc.save("Certificate of Marriage.pdf");
   };
@@ -1640,14 +1881,12 @@ function App() {
                   {selectedItem.collectionType === "marriageCert" && (
                     <CopyMarriageCertificateForm
                       selectedItem={selectedItem}
-                      // Pass other necessary props
                     />
                   )}
 
                   {selectedItem.collectionType === "marriage_reg" && (
                     <MarriageRegistrationForm
                       selectedItem={selectedItem}
-                      // Pass other necessary props
                     />
                   )}
 
@@ -1732,11 +1971,14 @@ function App() {
                     />{" "}
                     Submit
                   </button>
-                  
+
                   <div>
-                  <button onClick={generateCustomizedForm} className="open-pdf-button-container">
+                    <button
+                      onClick={generateCustomizedForm}
+                      className="open-pdf-button-container"
+                    >
                       Generate Form
-                  </button>
+                    </button>
                   </div>
                 </div>
               </div>

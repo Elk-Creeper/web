@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import Calendar from "./Calendar";
-import image4 from "../assets/adminpic.png";
-import image5 from "../assets/adminpic.png";
 import logo from "../assets/logo.png";
 import Footer from "../components/footer";
 import notification from "../assets/icons/Notification.png";
@@ -10,6 +7,9 @@ import useAuth from "../components/useAuth";
 import Chart from "react-apexcharts";
 import ReactApexChart from "react-apexcharts";
 import "apexcharts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
+import Gravatar from "react-gravatar";
 
 import { initializeApp } from "firebase/app";
 import {
@@ -21,7 +21,6 @@ import {
   limit,
   where,
 } from "firebase/firestore";
-
 
 // Firebase configuration
 const firebaseConfig = {
@@ -46,8 +45,9 @@ const Dashboard = ({ count }) => {
   const [weekTransactions, setWeekTransactions] = useState(0);
   const [monthTransactions, setMonthTransactions] = useState(0);
   const [yearTransactions, setYearTransactions] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Function for the account name
   const { user } = useAuth();
@@ -475,6 +475,11 @@ const Dashboard = ({ count }) => {
     },
   };
 
+  // Function to toggle dropdown
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -522,7 +527,25 @@ const Dashboard = ({ count }) => {
 
           <div className="account-name">
             <h1>{userEmail}</h1>
+            <div className="dropdown-arrow" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faCaretDown} />
+            </div>
           </div>
+          {dropdownOpen && (
+              <div className="modal-content">
+                <ul>
+                  <li>
+                    <a href="/account-settings">Account Settings</a>
+                  </li>
+                  <li>
+                    <a href="/login">Logout</a>
+                  </li>
+                </ul>
+                <button className="close-button" onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
         </div>
       </div>
 

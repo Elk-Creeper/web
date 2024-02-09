@@ -40,7 +40,7 @@ function Login() {
       await signInWithEmailAndPassword(auth, email, password);
 
       // If successful, navigate to the dashboard
-      history.push("/dashboard");
+      history.push("/home");
     } catch (error) {
       setError("Invalid email or password");
     }
@@ -120,11 +120,7 @@ function Login() {
           <div className="forgot-password">
       <Link to="/forgot-password">Forgot Password?</Link>
     </div>
-        
-
-          <h6>
-            Don't have an account yet? <Link to="/signup">Signup</Link>
-          </h6>
+          
         </div>
       </div>
     </div>
