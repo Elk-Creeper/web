@@ -32,6 +32,18 @@ function Login() {
   const history = useHistory();
   const auth = getAuth();
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // If user is already logged in, redirect to home
+        history.push("/home");
+      }
+    });
+
+    // Unsubscribe from the auth state listener when the component unmounts
+    return unsubscribe;
+  }, [auth, history]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,6 +71,13 @@ function Login() {
       clearInterval(timer);
     };
   }, [currentImage, images]);
+
+  // Clear email and password fields when the user logs out
+  const handleLogout = () => {
+    setEmail("");
+    setPassword("");
+    // Additional logout logic if needed
+  };
 
   return (
     <div className="App">
@@ -118,8 +137,8 @@ function Login() {
           </form>
           
           <div className="forgot-password">
-      <Link to="/forgot-password">Forgot Password?</Link>
-    </div>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
           
         </div>
       </div>

@@ -8,9 +8,9 @@ import Chart from "react-apexcharts";
 import ReactApexChart from "react-apexcharts";
 import "apexcharts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Gravatar from "react-gravatar";
-
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -48,6 +48,7 @@ const Dashboard = ({ count }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const history = useHistory();
 
   // Function for the account name
   const { user } = useAuth();
@@ -480,6 +481,14 @@ const Dashboard = ({ count }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    history.push("/login"); // Redirect to the login page after logout
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -512,8 +521,13 @@ const Dashboard = ({ count }) => {
             <li>
               <a href="/about">About</a>
             </li>
-            <li>
-              <a href="/transactions">Settings</a>
+            <li className="dropdown">
+              <a>Settings</a>
+              <div className="dropdown-content">
+                <a href="/faq">FAQ</a>
+                <a href="/help">Help</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+              </div>
             </li>
           </ul>
         </nav>
@@ -532,20 +546,20 @@ const Dashboard = ({ count }) => {
             </div>
           </div>
           {dropdownOpen && (
-              <div className="modal-content">
-                <ul>
-                  <li>
-                    <a href="/account-settings">Account Settings</a>
-                  </li>
-                  <li>
-                    <a href="/login">Logout</a>
-                  </li>
-                </ul>
-                <button className="close-button" onClick={toggleDropdown}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
-            )}
+            <div className="modal-content">
+              <ul>
+                <li>
+                  <a href="/account-settings">Account Settings</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </ul>
+              <button className="close-buttons" onClick={toggleDropdown}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import './news.css';
 import Sidebar from "../components/sidebar";
 import { FaSearch, FaPlus, FaEdit, FaTrashAlt, FaThumbsUp, FaThumbsDown, FaImage } from 'react-icons/fa';
@@ -11,6 +12,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import NewsDetails from './newsDetails';
 import Footer from '../components/footer';
 import useAuth from "../components/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
@@ -41,6 +44,21 @@ const NewsForm = () => {
   const [photoFiles, setPhotoFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const fileInputRef = useRef(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const history = useHistory();
+
+  // Function to toggle dropdown
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    history.push('/login'); // Redirect to the login page after logout
+    window.scrollTo(0, 0);
+  };
 
   // Function for the account name
   const { user } = useAuth();
@@ -330,7 +348,25 @@ const NewsForm = () => {
 
           <div className="account-name">
             <h1>{userEmail}</h1>
+            <div className="dropdown-arrow" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faCaretDown} />
+            </div>
           </div>
+          {dropdownOpen && (
+              <div className="modal-content">
+                <ul>
+                  <li>
+                    <a href="/account-settings">Account Settings</a>
+                  </li>
+                  <li>
+                    <a onClick={handleLogout}>Logout</a>
+                  </li>
+                </ul>
+                <button className="close-buttons" onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
         </div>
       </div>
 

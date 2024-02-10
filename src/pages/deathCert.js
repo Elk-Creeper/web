@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
 import {
     getFirestore,
@@ -17,13 +18,14 @@ import "./birthReg.css";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
 import { FaSearch } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
 import jsPDF from "jspdf";
 import DeathRegistrationForm from "./DeathRegistrationForm";
 import DeathCertificateForm from "./DeathCertificateForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -56,6 +58,9 @@ function App() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableVisible, setTableVisible] = useState(true);
   const [textInput, setTextInput] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const history = useHistory();
+
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
   };
@@ -69,13 +74,17 @@ function App() {
       if (user) {
         const email = user.email;
         const truncatedEmail =
-          email.length > 11 ? `${email.substring(0, 11)}...` : email;
+          email.length > 11 ? `${email.substring(0, 11)}..` : email;
         setUserEmail(truncatedEmail);
+      } else {
+        // Reset email state when user logs out
+        setUserEmail("");
       }
     };
-
+  
     fetchUserEmail();
   }, [user]);
+  
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYearFilter, setSelectedYearFilter] = useState("");
@@ -170,15 +179,24 @@ function App() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const appointmentRef = doc(firestore, "death_reg", id);
-      await updateDoc(appointmentRef, {
-        status: newStatus,
-      });
-
-      setSelectedItem((prevItem) => ({
-        ...prevItem,
-        status: newStatus,
-      }));
+      // Determine the collection name based on the selected item's collectionType
+      const collectionName =
+        selectedItem.collectionType === "Death Registration"
+          ? "death_reg"
+          : "deathCert";
+  
+      // Update the status for the selected item in the appropriate collection
+      await updateDoc(doc(firestore, collectionName, id), { status: newStatus });
+  
+      // Update the corresponding item in the data state
+      setData(prevData =>
+        prevData.map(item =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+  
+      // Update the selected item's status
+      setSelectedItem(prevItem => ({ ...prevItem, status: newStatus }));
     } catch (error) {
       console.error("Error updating status: ", error);
     }
@@ -838,6 +856,19 @@ function App() {
     }
   };
   
+  // Function to toggle dropdown
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    history.push('/login'); // Redirect to the login page after logout
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div>
       <div className="container">
@@ -878,16 +909,34 @@ function App() {
           </nav>
 
           <div className="icons">
-            <img
-              src={notification}
-              alt="Notification.png"
-              className="notif-icon"
-            />
+          <img
+            src={notification}
+            alt="Notification.png"
+            className="notif-icon"
+          />
 
-            <div className="account-name">
-              <h1>{userEmail}</h1>
+          <div className="account-name">
+            <h1>{userEmail}</h1>
+            <div className="dropdown-arrow" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faCaretDown} />
             </div>
           </div>
+          {dropdownOpen && (
+              <div className="modal-content">
+                <ul>
+                  <li>
+                    <a href="/account-settings">Account Settings</a>
+                  </li>
+                  <li>
+                    <a onClick={handleLogout}>Logout</a>
+                  </li>
+                </ul>
+                <button className="close-buttons" onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
+        </div>
         </div>
 
         <div className="containers">

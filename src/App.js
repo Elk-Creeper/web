@@ -7,9 +7,8 @@ function App() {
   return (
     <Router>
       <Route exact path="/">
-        <Redirect to="/login" />
+        <Redirect to="/login" component={Login} />
       </Route>
-      <Route path="/login" component={Login} />
     </Router>
   );
 }

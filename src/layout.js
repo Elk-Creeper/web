@@ -13,8 +13,9 @@ import Birth from './pages/birthReg';
 import Marriage from './pages/marriageCert';
 import Death from './pages/deathCert';
 import JobApplication from './pages/job';
-import NewsForm from './pages/news';
-import NewsDetails from './pages/newsDetails';
+import FAQ from './pages/faq';
+import Helps from './pages/helps';
+import Privacy from './pages/privacy-policy';
 
 const Layout = () => {
     
@@ -33,8 +34,10 @@ const Layout = () => {
                         <Route path="/marriageCert" component={Marriage} />
                         <Route path="/deathCert" component={Death} />
                         <Route path="/job" component={JobApplication} />
-                        <Route path="/news" component={NewsForm} />
-                        <Route path="/news/:id" component={NewsDetails} />
+                        <Route path="/faq" component={FAQ} />
+                        <Route path="/helps" component={Helps} />
+                        <Route path="/privacy-policy" component={Privacy} />
+
                     </Switch>
                 </MainContent>
             </div>

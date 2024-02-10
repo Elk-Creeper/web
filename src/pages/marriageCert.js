@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -18,13 +19,13 @@ import jsPDF from "jspdf";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
 import { FaSearch } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
 import { format } from "date-fns"; // Import the format function from date-fns
 import CopyMarriageCertificateForm from "./CopyMarriageCertificateForm";
 import MarriageRegistrationForm from "./MarriageRegistrationForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faTimes, faPaperPlane  } from "@fortawesome/free-solid-svg-icons";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -61,6 +62,21 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableVisible, setTableVisible] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const history = useHistory();
+
+  // Function to toggle dropdown
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    history.push('/login'); // Redirect to the login page after logout
+    window.scrollTo(0, 0);
+  };
 
   // Function for the account name
   const { user } = useAuth();
@@ -175,24 +191,26 @@ function App() {
     setTableVisible(true);
   };
 
-  const handleStatusChange = async (id, newStatus, collectionName) => {
+  const handleStatusChange = async (id, newStatus) => {
     try {
-      const appointmentRef = doc(firestore, collectionName, id);
-      await updateDoc(appointmentRef, {
-        status: newStatus,
-      });
-
+      // Determine the collection name based on the selected item's collectionType
+      const collectionName =
+        selectedItem.collectionType === "Marriage Registration"
+          ? "marriage_reg"
+          : "marriageCert";
+  
+      // Update the status for the selected item in the appropriate collection
+      await updateDoc(doc(firestore, collectionName, id), { status: newStatus });
+  
       // Update the corresponding item in the data state
-      setData((prevData) =>
-        prevData.map((item) =>
+      setData(prevData =>
+        prevData.map(item =>
           item.id === id ? { ...item, status: newStatus } : item
         )
       );
-
-      setSelectedItem((prevItem) => ({
-        ...prevItem,
-        status: newStatus,
-      }));
+  
+      // Update the selected item's status
+      setSelectedItem(prevItem => ({ ...prevItem, status: newStatus }));
     } catch (error) {
       console.error("Error updating status: ", error);
     }
@@ -1662,16 +1680,34 @@ function App() {
           </nav>
 
           <div className="icons">
-            <img
-              src={notification}
-              alt="Notification.png"
-              className="notif-icon"
-            />
+          <img
+            src={notification}
+            alt="Notification.png"
+            className="notif-icon"
+          />
 
-            <div className="account-name">
-              <h1>{userEmail}</h1>
+          <div className="account-name">
+            <h1>{userEmail}</h1>
+            <div className="dropdown-arrow" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faCaretDown} />
             </div>
           </div>
+          {dropdownOpen && (
+              <div className="modal-content">
+                <ul>
+                  <li>
+                    <a href="/account-settings">Account Settings</a>
+                  </li>
+                  <li>
+                    <a onClick={handleLogout}>Logout</a>
+                  </li>
+                </ul>
+                <button className="close-buttons" onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
+        </div>
         </div>
 
         <div className="containers">

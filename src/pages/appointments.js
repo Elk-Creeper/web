@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -16,7 +17,7 @@ import notification from "../assets/icons/Notification.png";
 import useAuth from "../components/useAuth";
 import Footer from "../components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faTimes, faPaperPlane  } from "@fortawesome/free-solid-svg-icons";
 
 
 // Firebase configuration
@@ -48,7 +49,21 @@ function App() {
   const [showTable, setShowTable] = useState(true);
   const [showSearchContainer, setShowSearchContainer] = useState(true);
   const [textInput, setTextInput] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const history = useHistory();
   
+  // Function to toggle dropdown
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    history.push('/login'); // Redirect to the login page after logout
+    window.scrollTo(0, 0);
+  };
 
   // Function for the account name
   const { user } = useAuth();
@@ -490,16 +505,34 @@ function App() {
           </nav>
 
           <div className="icons">
-            <img
-              src={notification}
-              alt="Notification.png"
-              className="notif-icon"
-            />
+          <img
+            src={notification}
+            alt="Notification.png"
+            className="notif-icon"
+          />
 
-            <div className="account-name">
-              <h1>{userEmail}</h1>
+          <div className="account-name">
+            <h1>{userEmail}</h1>
+            <div className="dropdown-arrow" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faCaretDown} />
             </div>
           </div>
+          {dropdownOpen && (
+              <div className="modal-content">
+                <ul>
+                  <li>
+                    <a href="/account-settings">Account Settings</a>
+                  </li>
+                  <li>
+                    <a onClick={handleLogout}>Logout</a>
+                  </li>
+                </ul>
+                <button className="close-buttons" onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
+        </div>
         </div>
 
         <div className="containers">
