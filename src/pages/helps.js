@@ -92,7 +92,7 @@ const Dashboard = ({ count }) => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="dashboard">Home</a>
+              <a href="/home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
@@ -156,9 +156,9 @@ const Dashboard = ({ count }) => {
 
       <div className="headings">
         <h4
-          style={{ textAlign: "center", color: "black", marginBottom: "30px" }}
+          style={{ textAlign: "center", color: "black", marginBottom: "50px", textSize: "50px",  fontWeight: "bold" }}
         >
-          Help Center
+          HELP CENTER
         </h4>
       </div>
 
@@ -169,8 +169,8 @@ const Dashboard = ({ count }) => {
         </p>
 
         <section>
-          <ul>
-            <li>
+          <ul style={{ listStyle: "none" }}>
+            <li style={{ textDecoration: "none" }}>
               <strong>
                 1. <a href="#navigate">How to navigate the website:</a>
               </strong>{" "}
@@ -195,260 +195,369 @@ const Dashboard = ({ count }) => {
 
         <section>
           <h3>Can't Find What You Need?</h3>
-          <p>
+          <p style={{ marginTop: "10px" }}>
             If you can't find the information you need, feel free to contact our
             support team:
           </p>
-          <ul>
+          <ul style={{ listStyle: "none" }}>
             <li>
               Email: <a href="bytetech000@gmail.com">bytetech000@gmail.com</a>
             </li>
             <li>Phone: 09925691965</li>
           </ul>
-          <p>
+          <p style={{ marginBottom: "60px" }}>
             Our support team is available during business hours to assist you.
           </p>
         </section>
 
-        <section id="navigate">
-          <h3>How to Navigate the Website</h3>
-          <p>
-            Here's a step-by-step guide on navigating the various features
-            available to you:
-          </p>
-          <h4>1. Login:</h4>
-          <p>
-            Start by accessing the employee portal login page. Enter your
-            designated username and password to securely log in.
-          </p>
-          <h4>2. Dashboard:</h4>
-          <p>
-            Upon login, you'll be greeted by the dashboard, your central hub for
-            managing tasks and notifications. The dashboard provides an overview
-            of your daily activities, pending approvals, and any important
-            announcements.
-          </p>
-          <h4>3. Work Schedule:</h4>
-          <p>
-            Check your work schedule in the "Schedule" or "Work Calendar". Here,
-            you can view your shifts, breaks, and any upcoming events related to
-            your duties.
-          </p>
-          <h4>4. Appointments:</h4>
-          <p>
-            Navigate to the "Appointments" section to review and manage
-            scheduled appointments. Here, you can approve or disapprove
-            appointments based on availability and other relevant factors.
-          </p>
-          <h4>5. Service Requests:</h4>
-          <p>
-            Process service requests efficiently by accessing the "Service
-            Requests" section. Review incoming requests, update their status,
-            and ensure timely responses to citizen inquiries.
-          </p>
-          <h4>6. Transaction Records:</h4>
-          <p>
-            Check and manage transaction records in the dedicated "Transactions"
-            area. This section allows you to track and update the status of
-            various transactions, ensuring accurate and transparent
-            record-keeping.
-          </p>
-          <h4>7. News Management:</h4>
-          <p>
-            Stay connected with citizens by utilizing the "News" section. Here,
-            you can create, edit, and delete news articles. Keep the community
-            informed about important updates, events, and initiatives.
-          </p>
-          <h4>8. Profile Management:</h4>
-          <p>
-            Ensure that your personal information is up-to-date by navigating to
-            the "Profile" section. This includes contact details, emergency
-            contacts, and other relevant information.
-          </p>
-          <h4>9. Account Settings:</h4>
-          <p>
-            For account-related activities, navigate to the "Security" or
-            "Account Settings" section. Here, you can change your password and
-            update other security preferences.
-          </p>
-          <h4>10. FAQ and Support:</h4>
-          <p>
-            If you have questions or encounter issues, explore the "FAQ" section
-            for answers to common queries. For personalized assistance, contact
-            the IT support team using the provided contact details.
-          </p>
-          <h4>11. Logout:</h4>
-          <p>
-            Always conclude your session by securely logging out. This ensures
-            the confidentiality of sensitive information and maintains the
-            integrity of your account.
-          </p>
-        </section>
+        <div className="boxes">
+          <section
+            id="navigate"
+            style={{
+              padding: "10px",
+              marginBottom: "20px",
+              lineHeight: "5px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
+              borderRadius: "8px", // Add border radius for rounded corners
+              backgroundColor: "#ffffff", // Add background color
+            }}
+          >
+            <p   style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",}}>
+              Here's a step-by-step guide on navigating the various features
+              available to you:
+            </p>
+            <h4>1. Login:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              1. Start by accessing the employee portal login page. Enter your
+              designated username and password to securely log in.
+            </p>
+            <h4>2. Dashboard:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              2. Upon login, you'll be greeted by the dashboard, your central
+              hub for managing tasks and notifications. The dashboard provides
+              an overview of your daily activities, pending approvals, and any
+              important announcements.
+            </p>
+            <h4>3. Work Schedule:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              3. Check your work schedule in the "Schedule" or "Work Calendar".
+              Here, you can view your shifts, breaks, and any upcoming events
+              related to your duties.
+            </p>
+            <h4>4. Appointments:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              4. Navigate to the "Appointments" section to review and manage
+              scheduled appointments. Here, you can approve or disapprove
+              appointments based on availability and other relevant factors.
+            </p>
+            <h4>5. Service Requests:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              5. Process service requests efficiently by accessing the "Service
+              Requests" section. Review incoming requests, update their status,
+              and ensure timely responses to citizen inquiries.
+            </p>
+            <h4>6. Transaction Records:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              6. Check and manage transaction records in the dedicated
+              "Transactions" area. This section allows you to track and update
+              the status of various transactions, ensuring accurate and
+              transparent record-keeping.
+            </p>
+            <h4>7. News Management:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              7. Stay connected with citizens by utilizing the "News" section.
+              Here, you can create, edit, and delete news articles. Keep the
+              community informed about important updates, events, and
+              initiatives.
+            </p>
+            <h4>8. Profile Management:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              8. Ensure that your personal information is up-to-date by
+              navigating to the "Profile" section. This includes contact
+              details, emergency contacts, and other relevant information.
+            </p>
+            <h4>9. Account Settings:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              9. For account-related activities, navigate to the "Security" or
+              "Account Settings" section. Here, you can change your password and
+              update other security preferences.
+            </p>
+            <h4>10. FAQ and Support:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              10. If you have questions or encounter issues, explore the "FAQ"
+              section for answers to common queries. For personalized
+              assistance, contact the IT support team using the provided contact
+              details.
+            </p>
+            <h4>11. Logout:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              11. Always conclude your session by securely logging out. This
+              ensures the confidentiality of sensitive information and maintains
+              the integrity of your account.
+            </p>
+          </section>
 
-        <section id="settings">
-          <h3>Account Settings and Customization</h3>
-          <p>
-            This guide will help you personalize your experience and manage your
-            account settings efficiently.
-          </p>
-          <h4>1. Accessing Account Settings:</h4>
-          <p>
-            Begin by logging into the employee portal with your username and
-            password. Look for the "Account Settings" or "Profile" section.
-          </p>
-          <h4>2. Profile Information:</h4>
-          <p>
-            Update your personal information, including contact details and
-            emergency contacts. Ensure that all information is accurate and
-            up-to-date.
-          </p>
-          <h4>3. Security Settings:</h4>
-          <p>
-            In the "Security" section, you can enhance your account's security:
-            Change your password regularly for added protection. Enable
-            two-factor authentication if available for an extra layer of
-            security.
-          </p>
-          <h4>4. Email Preferences:</h4>
-          <p>
-            Manage email notifications and communication preferences. Choose the
-            types of emails you want to receive and the frequency of updates.
-          </p>
-          <h4>5. Save Changes:</h4>
-          <p>
-            After making adjustments, be sure to save your changes. Some
-            modifications may require you to log out and log back in for the
-            updates to take effect.
-          </p>
-          <h4>6. Help and Support:</h4>
-          <p>
-            If you encounter any challenges or have questions about account
-            settings, refer to the Help Center or FAQ section. For personalized
-            assistance, contact our IT support team using the provided contact
-            details.
-          </p>
-        </section>
+          <section
+            id="settings"
+            style={{
+              padding: "10px",
+              marginBottom: "20px",
+              lineHeight: "5px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
+              borderRadius: "8px", // Add border radius for rounded corners
+              backgroundColor: "#ffffff", // Add background color
+            }}
+          >
+            <h3 style={{ marginBottom: "20px" }}>
+              Account Settings and Customization
+            </h3>
+            <p style={{ marginBottom: "10px" }}>
+              This guide will help you personalize your experience and manage
+              your account settings efficiently.
+            </p>
+            <h4>1. Accessing Account Settings:</h4>
+            <p style={{ marginTop: "-10px" }}>
+             1. Begin by logging into the employee portal with your username and
+              password. Look for the "Account Settings" or "Profile" section.
+            </p>
+            <h4>2. Profile Information:</h4>
+            <p style={{ marginTop: "-10px" }}>
+             2. Update your personal information, including contact details and
+              emergency contacts. Ensure that all information is accurate and
+              up-to-date.
+            </p>
+            <h4>3. Security Settings:</h4>
+            <p style={{ marginTop: "-10px" }}>
+             3. In the "Security" section, you can enhance your account's
+              security: Change your password regularly for added protection.
+              Enable two-factor authentication if available for an extra layer
+              of security.
+            </p>
+            <h4>4. Email Preferences:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              4.Manage email notifications and communication preferences. Choose
+              the types of emails you want to receive and the frequency of
+              updates.
+            </p>
+            <h4>5. Save Changes:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              5. After making adjustments, be sure to save your changes. Some
+              modifications may require you to log out and log back in for the
+              updates to take effect.
+            </p>
+            <h4>6. Help and Support:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              6. If you encounter any challenges or have questions about account
+              settings, refer to the Help Center or FAQ section. For
+              personalized assistance, contact our IT support team using the
+              provided contact details.
+            </p>
+          </section>
 
-        <section id="troubleshoot">
-          <h3>Troubleshooting Common Issues</h3>
-          <p>
-            If you encounter issues while using the employee panel, follow these
-            steps to address common problems:
-          </p>
-          <h4>1. Login Issues:</h4>
-          <h4>Problem:</h4>
-          <p>Unable to log in.</p>
-          <h4>Solution:</h4>
-          <p>Verify that you are using the correct username and password.</p>
-          <p>Ensure that CAPS LOCK is turned off.</p>
-          <p>
-            If forgotten, use the "Forgot Password" option or contact IT support
-            for assistance.
-          </p>
-          <h4>2. Dashboard Not Loading:</h4>
-          <h4>Problem:</h4>
-          <p>Dashboard is not displaying.</p>
-          <h4>Solution:</h4>
-          <p>Check your internet connection.</p>
-          <p>Clear browser cache and cookies.</p>
-          <p>Try accessing the panel from a different browser or device.</p>
-          <h4>3. Slow Performance:</h4>
-          <h4>Problem:</h4>
-          <p>Panel is slow to respond.</p>
-          <h4>Solution:</h4>
-          <p>Close unnecessary tabs or applications.</p>
-          <p>Clear browser cache and history.</p>
-          <p>Ensure your device meets the platform's system requirements.</p>
-          <h4>4. Error Messages:</h4>
-          <h4>Problem:</h4>
-          <p>Encounter error messages.</p>
-          <h4>Solution:</h4>
-          <p>Note the error message and try to replicate the issue.</p>
-          <p>
-            Check the Help Center or contact IT support with details about the
-            error.
-          </p>
-          <h4>5. Appointment Approval Issues:</h4>
-          <h4>Problem:</h4>
-          <p>Unable to approve appointments.</p>
-          <h4>Solution:</h4>
-          <p>Ensure you have the necessary permissions.</p>
-          <p>Check for conflicting schedules or resource availability.</p>
-          <p>Review the appointment details for accuracy.</p>
-          <h4>6. Service Request Processing:</h4>
-          <h4>Problem:</h4>
-          <p> Issues with processing service requests.</p>
-          <h4>Solution:</h4>
-          <p>Verify that all required information is provided.</p>
-          <p>Check for any system notifications or updates.</p>
-          <p>Contact relevant departments for assistance if needed.</p>
-          <h4>7. News Management Problems:</h4>
-          <h4>Problem:</h4>
-          <p>Difficulty creating, editing, or deleting news.</p>
-          <h4>Solution:</h4>
-          <p>Confirm that you have the appropriate permissions.</p>
-          <p>Check for any restrictions on news creation or editing.</p>
-          <p>Review the content guidelines for news articles.</p>
-          <h4>8. System Downtime:</h4>
-          <h4>Problem:</h4>
-          <p>Platform is temporarily unavailable.</p>
-          <h4>Solution:</h4>
-          <p>Check for announcements or status updates on the platform.</p>
-          <p>
-            If the issue persists, contact IT support for further assistance.
-          </p>
-        </section>
+          <section
+            id="troubleshoot"
+            style={{
+              padding: "10px",
+              lineHeight: "5px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
+              borderRadius: "8px", // Add border radius for rounded corners
+              backgroundColor: "#ffffff", // Add background color
+            }}
+          >
+            <h3>Troubleshooting Common Issues</h3>
+            <p>
+              If you encounter issues while using the employee panel, follow
+              these steps to address common problems:
+            </p>
+            <h4>1. Login Issues:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              1. If, Unable to log in.
+            </p>
+            <p>
+              Verify that you are using the correct username and password.
+            </p>
+            <p>
+              Ensure that CAPS LOCK is turned off.
+            </p>
+            <p>
+              If forgotten, use the "Forgot Password" option or contact IT
+              support for assistance.
+            </p>
 
-        <section id="contact">
-          <h3>Contacting Support</h3>
-          <p>
-            {" "}
-            If you encounter challenges or have questions that require
-            assistance, follow these steps to get in touch with our dedicated
-            support team:
-          </p>
-          <h4>1. Help Center:</h4>
-          <p>
-            First Stop: Before reaching out to support, explore the Help Center
-            or Frequently Asked Questions (FAQ) section. Many common queries are
-            addressed here, and you might find a quick solution to your issue.
-          </p>
-          <h4>2. Contact Information:</h4>
-          <p>
-            IT Support: If you cannot find the answer in the Help Center,
-            contact our IT support team directly. Look for the provided contact
-            details, which may include phone numbers, or email addresses.
-          </p>
-          <h4>3. Provide Details:</h4>
-          <p>
-            Be Specific: When contacting support, be as specific as possible
-            about the issue you are facing. Include error messages, relevant
-            dates, and any steps you have taken to troubleshoot.
-          </p>
-          <h4>4. Office Hours:</h4>
-          <p>
-            Check Availability: Confirm the operating hours of the support team.
-            If it's outside regular office hours, check if there are alternative
-            methods for urgent issues.
-          </p>
-          <h4>5. Emergency Issues:</h4>
-          <p>
-            Emergency Contacts: For critical issues or emergencies, ensure you
-            have access to emergency contact information. Follow the established
-            protocols for urgent matters.
-          </p>
-          <h4>6. Feedback Channels:</h4>
-          <p>
-            User Feedback: If you have feedback or suggestions, consider using
-            designated channels within the platform. Your input is valuable for
-            ongoing improvements.
-          </p>
-          <h4>7. Follow-Up:</h4>
-          <p>
-            Stay Informed: After reaching out to support, stay informed about
-            the progress of your inquiry.
-          </p>
-        </section>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              2. If, Dashboard is not displaying.
+            </p>
+            <p>Check your internet connection.</p>
+            <p>Clear browser cache and cookies.</p>
+            <p>Try accessing the panel from a different browser or device.</p>
+            <h4>3. Slow Performance:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              3. If, Panel is slow to respond.
+            </p>
+            <p>Close unnecessary tabs or applications.</p>
+            <p>Clear browser cache and history.</p>
+            <p>Ensure your device meets the platform's system requirements.</p>
+            <h4>4. Error Messages:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              4. If, Encounter error messages.
+            </p>
+            <p>Note the error message and try to replicate the issue.</p>
+            <p>
+              Check the Help Center or contact IT support with details about the
+              error.
+            </p>
+            <h4>5. Appointment Approval Issues:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              5. If, Unable to approve appointments.
+            </p>
+            <p>Ensure you have the necessary permissions.</p>
+            <p>Check for conflicting schedules or resource availability.</p>
+            <p>Review the appointment details for accuracy.</p>
+            <h4>6. Service Request Processing:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              6. If, Issues with processing service requests.
+            </p>
+            <p>Verify that all required information is provided.</p>
+            <p>Check for any system notifications or updates.</p>
+            <p>Contact relevant departments for assistance if needed.</p>
+            <h4>7. News Management Problems:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              7. If, Difficulty creating, editing, or deleting news.
+            </p>
+            <p>Confirm that you have the appropriate permissions.</p>
+            <p>Check for any restrictions on news creation or editing.</p>
+            <p>Review the content guidelines for news articles.</p>
+            <h4>8. System Downtime:</h4>
+            <h4>Problem:</h4>
+            <p
+              style={{
+                marginTop: "-15px",
+                lineHeight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+             8. If, Platform is temporarily unavailable.
+            </p>
+            <p>Check for announcements or status updates on the platform.</p>
+            <p>
+              If the issue persists, contact IT support for further assistance.
+            </p>
+          </section>
+
+          <section
+            id="contact"
+            style={{
+              padding: "10px",
+              marginBottom: "20px",
+              lineHeight: "5px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
+              borderRadius: "8px", // Add border radius for rounded corners
+              backgroundColor: "#ffffff", // Add background color
+            }}
+          >
+            <h3>Contacting Support</h3>
+            <p>
+              {" "}
+              If you encounter challenges or have questions that require
+              assistance, follow these steps to get in touch with our dedicated
+              support team:
+            </p>
+            <h4>1. Help Center:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              First Stop: Before reaching out to support, explore the Help
+              Center or Frequently Asked Questions (FAQ) section. Many common
+              queries are addressed here, and you might find a quick solution to
+              your issue.
+            </p>
+            <h4>2. Contact Information:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              IT Support: If you cannot find the answer in the Help Center,
+              contact our IT support team directly. Look for the provided
+              contact details, which may include phone numbers, or email
+              addresses.
+            </p>
+            <h4>3. Provide Details:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              Be Specific: When contacting support, be as specific as possible
+              about the issue you are facing. Include error messages, relevant
+              dates, and any steps you have taken to troubleshoot.
+            </p>
+            <h4>4. Office Hours:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              Check Availability: Confirm the operating hours of the support
+              team. If it's outside regular office hours, check if there are
+              alternative methods for urgent issues.
+            </p>
+            <h4>5. Emergency Issues:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              Emergency Contacts: For critical issues or emergencies, ensure you
+              have access to emergency contact information. Follow the
+              established protocols for urgent matters.
+            </p>
+            <h4>6. Feedback Channels:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              User Feedback: If you have feedback or suggestions, consider using
+              designated channels within the platform. Your input is valuable
+              for ongoing improvements.
+            </p>
+            <h4>7. Follow-Up:</h4>
+            <p style={{ marginTop: "-10px" }}>
+              Stay Informed: After reaching out to support, stay informed about
+              the progress of your inquiry.
+            </p>
+          </section>
+        </div>
       </div>
 
       <Footer />

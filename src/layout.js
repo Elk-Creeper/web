@@ -16,6 +16,10 @@ import JobApplication from './pages/job';
 import FAQ from './pages/faq';
 import Helps from './pages/helps';
 import Privacy from './pages/privacy-policy';
+import Forgot from './pages/forgot-password';
+import History from './pages/history';
+import Account from './pages/accounts';
+
 
 const Layout = () => {
     
@@ -36,8 +40,10 @@ const Layout = () => {
                         <Route path="/job" component={JobApplication} />
                         <Route path="/faq" component={FAQ} />
                         <Route path="/helps" component={Helps} />
+                        <Route path="/history" component={History} />
                         <Route path="/privacy-policy" component={Privacy} />
-
+                        <Route path="/forgot-password" component={Forgot} />
+                        <Route path="/account-settings" component={Account} />
                     </Switch>
                 </MainContent>
             </div>

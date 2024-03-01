@@ -131,7 +131,7 @@ function Login() {
 
             {error && <div className="error-popup">{error}</div>}
 
-            <button type="submit" className="my-button">
+            <button className="my-buttons">
               Login
             </button>
           </form>

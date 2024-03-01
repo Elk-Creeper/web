@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
-  getDocs,
+  getDoc,
   orderBy,
   query,
   limit,
@@ -12,8 +12,9 @@ import {
   updateDoc,
   addDoc,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Import Firebase Storage related functions
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage"; // Import Firebase Storage related functions
 import "./transactions.css";
 import logo from "../assets/logo.png";
 import notification from "../assets/icons/Notification.png";
@@ -21,10 +22,9 @@ import { FaSearch } from "react-icons/fa";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../components/useAuth";
 import { onSnapshot } from "firebase/firestore";
-import Footer from '../components/footer';
+import Footer from "../components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
-
+import { faCaretDown, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -46,6 +46,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const [tableVisible, setTableVisible] = useState(true);
+  const [userDepartment, setUserDepartment] = useState("");
 
   const [searchQuery, setSearchQuery] = useState(""); // New state for the search query
   const [selectedYearFilter, setSelectedYearFilter] = useState("");
@@ -54,6 +55,9 @@ function App() {
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
   const [textInput, setTextInput] = useState("");
   const [initialLoad, setInitialLoad] = useState(true); //automatic pending
+  const [approvedButtonDisabled, setApprovedButtonDisabled] = useState(false);
+  const [rejectedButtonDisabled, setRejectedButtonDisabled] = useState(false);
+  const [hiredButtonDisabled, setHiredButtonDisabled] = useState(false);
 
   const storage = getStorage();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -67,7 +71,7 @@ function App() {
 
   const handleLogout = async () => {
     await logout(); // Call the logout function
-    history.push('/login'); // Redirect to the login page after logout
+    history.push("/login"); // Redirect to the login page after logout
     window.scrollTo(0, 0);
   };
 
@@ -118,7 +122,6 @@ function App() {
             setSelectedStatusFilter("Pending");
             setInitialLoad(false);
           }
-          
         } catch (error) {
           console.error("Error fetching data: ", error);
           setLoading(false);
@@ -134,30 +137,85 @@ function App() {
 
   const openDetailsModal = async (item) => {
     setSelectedItem(item);
-    setTableVisible(false); // Set the table to hide
+    setTableVisible(false);
+    // Hide the search container
+    document.querySelector(".search-container").style.display = "none";
   };
 
   const closeDetailsModal = () => {
     setSelectedItem(null);
     setTableVisible(true); // Set the table to show
+    document.querySelector(".search-container").style.display = "flex";
   };
+
+  useEffect(() => {
+  // Disable buttons based on the initial status
+  if (selectedItem && selectedItem.status) {
+    if (selectedItem.status === "Approved") {
+      setApprovedButtonDisabled(true);
+      setRejectedButtonDisabled(true);
+      setHiredButtonDisabled(false);
+    } else if (selectedItem.status === "Rejected") {
+      setApprovedButtonDisabled(true);
+      setRejectedButtonDisabled(true);
+      setHiredButtonDisabled(true);
+    } else if (selectedItem.status === "Hired") {
+      setApprovedButtonDisabled(true);
+      setRejectedButtonDisabled(true);
+      setHiredButtonDisabled(true);
+    }
+  }
+}, [selectedItem]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {
       const appointmentRef = doc(firestore, "job", id);
+  
+      // Get the current date and time
+      const currentDate = new Date();
+  
+      // Update the status of the selected item
       await updateDoc(appointmentRef, {
         status: newStatus,
       });
-
+  
+      // Add the status change to the histories collection
+      await addDoc(collection(firestore, "histories"), {
+        itemId: id,
+        status: newStatus,
+        timestamp: serverTimestamp(),
+        createdAt: selectedItem.createdAt,
+        serviceType: "Job Application", // Assuming serviceType is available in selectedItem
+        userName: selectedItem.name,
+        address: selectedItem.address,
+        // Include the user who performed the action
+        employee: user ? user.email : "Unknown", // Assuming you store user's email in user.email
+      });
+  
       setSelectedItem((prevItem) => ({
         ...prevItem,
         status: newStatus,
       }));
+  
+      // Disable buttons based on the new status
+      if (newStatus === "Approved") {
+        setApprovedButtonDisabled(true);
+        setRejectedButtonDisabled(true);
+        setHiredButtonDisabled(false);
+      } else if (newStatus === "Rejected") {
+        setApprovedButtonDisabled(false);
+        setRejectedButtonDisabled(true);
+        setHiredButtonDisabled(true);
+      } else if (newStatus === "Hired") {
+        setApprovedButtonDisabled(true);
+        setRejectedButtonDisabled(true);
+        setHiredButtonDisabled(true);
+      }
     } catch (error) {
       console.error("Error updating status: ", error);
     }
   };
-
+  
   const filteredData = data.filter((item) => {
     const getMonthName = (monthNumber) => {
       const monthNames = [
@@ -234,13 +292,13 @@ function App() {
         await updateDoc(appointmentRef, {
           remarks: textInput,
         });
-  
+
         // Update the selected item with the new remarks
         setSelectedItem((prevItem) => ({
           ...prevItem,
           remarks: textInput,
         }));
-  
+
         console.log("Remarks updated for ID: ", selectedItem.id);
       } else {
         // If there is no selected item, add a new document with the remarks
@@ -248,10 +306,10 @@ function App() {
         const newRemarksDocRef = await addDoc(remarksCollectionRef, {
           remarks: textInput,
         });
-  
+
         console.log("Remarks added with ID: ", newRemarksDocRef.id);
       }
-  
+
       // Optionally, you can clear the textarea after submitting.
       setTextInput("");
     } catch (error) {
@@ -292,26 +350,31 @@ function App() {
               <li>
                 <a href="/about">About</a>
               </li>
-              <li>
-                <a href="/transactions">Settings</a>
+              <li className="dropdown">
+                <a>Settings</a>
+                <div className="dropdown-content">
+                  <a href="/faq">FAQ</a>
+                  <a href="/helps">Help</a>
+                  <a href="/privacy-policy">Privacy Policy</a>
+                </div>
               </li>
             </ul>
           </nav>
 
           <div className="icons">
-          <img
-            src={notification}
-            alt="Notification.png"
-            className="notif-icon"
-          />
+            <img
+              src={notification}
+              alt="Notification.png"
+              className="notif-icon"
+            />
 
-          <div className="account-name">
-            <h1>{userEmail}</h1>
-            <div className="dropdown-arrow" onClick={toggleDropdown}>
-              <FontAwesomeIcon icon={faCaretDown} />
+            <div className="account-name">
+              <h1>{userEmail}</h1>
+              <div className="dropdown-arrow" onClick={toggleDropdown}>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </div>
             </div>
-          </div>
-          {dropdownOpen && (
+            {dropdownOpen && (
               <div className="modal-content">
                 <ul>
                   <li>
@@ -326,7 +389,7 @@ function App() {
                 </button>
               </div>
             )}
-        </div>
+          </div>
         </div>
 
         <div className="containers">
@@ -459,7 +522,9 @@ function App() {
                   filteredData.map((item) => (
                     <tr key={item.id}>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
-                        {`${item.userName || "N/A"} ${item.userLastName || ""}`.trim() || "N/A"}
+                        {`${item.userName || "N/A"} ${
+                          item.userLastName || ""
+                        }`.trim() || "N/A"}
                       </td>
                       <td style={{ padding: "8px", border: "1px solid black" }}>
                         {item.createdAt && item.createdAt.toDate
@@ -552,6 +617,40 @@ function App() {
                         <p>No payment proof available</p>
                       )}
                     </div>
+
+                    <div className="resume">
+                      <h3>Resume</h3>
+                      <div className="proof">
+                        {selectedItem &&
+                        selectedItem.documents &&
+                        selectedItem.documents.length > 0 ? (
+                          <div className="placeholder">
+                            {selectedItem.documents[0].name
+                              .toLowerCase()
+                              .endsWith(".pdf") ? (
+                              <a
+                                href={selectedItem.documents[0].url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {selectedItem.documents[0].name}
+                              </a>
+                            ) : (
+                              <a
+                                href={selectedItem.documents[0].url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                View Picture: {selectedItem.documents[0].name}
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <p>No resume available</p>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="form-group">
                       <label>Status of Appointment</label>
                       <div className="placeholder">{selectedItem.status}</div>
@@ -564,16 +663,25 @@ function App() {
                         handleStatusChange(selectedItem.id, "Approved")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "Approved"}
+                      disabled={approvedButtonDisabled }
                     >
                       Approved
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(selectedItem.id, "Hired")
+                      }
+                      className="on-process-button"
+                      disabled={hiredButtonDisabled }
+                    >
+                      Hired
                     </button>
                     <button
                       onClick={() =>
                         handleStatusChange(selectedItem.id, "Rejected")
                       }
                       className="on-process-button"
-                      disabled={selectedItem.status === "Rejected"}
+                      disabled={rejectedButtonDisabled }
                     >
                       Rejected
                     </button>
@@ -591,11 +699,14 @@ function App() {
                       className="input-remarks"
                     />
                   </div>
-                  
-                  <button onClick={handleSubmit} className="submit-button">
-                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginLeft: "5px" }} /> Submit 
-                  </button>
 
+                  <button onClick={handleSubmit} className="submit-button">
+                    <FontAwesomeIcon
+                      icon={faPaperPlane}
+                      style={{ marginLeft: "5px" }}
+                    />{" "}
+                    Submit
+                  </button>
                 </div>
               </div>
             </div>

@@ -309,7 +309,7 @@ const NewsForm = () => {
 
   return (
     <Router>
-      <div className="app-container">
+      <div className="app-container" style={{marginBottom: "50px"}}>
         <div className='container'>
         <div className="header">
         <img src={logo} alt="logo" className="SidebarLogo" />
@@ -332,10 +332,23 @@ const NewsForm = () => {
                 <a href="/job">Job Application</a>
               </div>
             </li>
-            <li><a href="/appointments">Appointments</a></li>
-            <li><a href="/news">News</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/transactions">Settings</a></li>
+            <li>
+              <a href="/appointments">Appointments</a>
+            </li>
+            <li>
+              <a href="/news">News</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li className="dropdown">
+              <a>Settings</a>
+              <div className="dropdown-content">
+                <a href="/faq">FAQ</a>
+                <a href="/helps">Help</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+              </div>
+            </li>
           </ul>
         </nav>
 
@@ -353,20 +366,20 @@ const NewsForm = () => {
             </div>
           </div>
           {dropdownOpen && (
-              <div className="modal-content">
-                <ul>
-                  <li>
-                    <a href="/account-settings">Account Settings</a>
-                  </li>
-                  <li>
-                    <a onClick={handleLogout}>Logout</a>
-                  </li>
-                </ul>
-                <button className="close-buttons" onClick={toggleDropdown}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
-            )}
+            <div className="modal-content">
+              <ul>
+                <li>
+                  <a href="/account-settings">Account Settings</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </ul>
+              <button className="close-buttons" onClick={toggleDropdown}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -387,13 +400,6 @@ const NewsForm = () => {
               <label>Filter:</label>
               <select value={selectedYearFilter} onChange={handleYearFilterChange} className="filter">
                 <option value="">Year</option>
-                <option value="2031">2031</option>
-                <option value="2030">2030</option>
-                <option value="2029">2029</option>
-                <option value="2028">2028</option>
-                <option value="2027">2027</option>
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
                 <option value="2024">2024</option>
                 <option value="2023">2023</option>
 
@@ -566,11 +572,6 @@ const NewsForm = () => {
             </div>
           )} 
         </div>
-
-        <Switch>
-          <Route path="/news/:id" component={NewsDetails} />
-        </Switch>
-
       </div>
       <Footer />
     </Router >

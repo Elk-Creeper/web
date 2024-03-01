@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./dashboard.css";
 import logo from "../assets/logo.png";
 import Footer from "../components/footer";
 import notification from "../assets/icons/Notification.png";
 import useAuth from "../components/useAuth";
-import Chart from "react-apexcharts";
-import ReactApexChart from "react-apexcharts";
-import "apexcharts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faTimes } from "@fortawesome/free-solid-svg-icons";
-import Gravatar from "react-gravatar";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -39,20 +34,12 @@ const firestore = getFirestore(app);
 
 const Dashboard = ({ count }) => {
   // State to hold the fetched data
-  const [data, setData] = useState([]);
-  const [localData, setLocalData] = useState([]);
-  const [dayTransactions, setDayTransactions] = useState(0);
-  const [weekTransactions, setWeekTransactions] = useState(0);
-  const [monthTransactions, setMonthTransactions] = useState(0);
-  const [yearTransactions, setYearTransactions] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15);
+  const [userEmail, setUserEmail] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const history = useHistory();
 
   // Function for the account name
   const { user } = useAuth();
-  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const fetchUserEmail = () => {
@@ -82,6 +69,41 @@ const Dashboard = ({ count }) => {
 
   return (
     <div className="container">
+      <style>
+        {`
+          .faq-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+          }
+
+          .faq-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+
+          . headings h4 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+          }
+
+          .faq-box h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333333;
+          }
+
+          .faq-box p {
+            margin-bottom: 0;
+            color: #666666;
+          }
+        `}
+      </style>
       <div className="header">
         <img src={logo} alt="logo" className="SidebarLogo" />
         <div className="SidebarTitle">
@@ -92,7 +114,7 @@ const Dashboard = ({ count }) => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="dashboard">Home</a>
+              <a href="/home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
@@ -155,28 +177,85 @@ const Dashboard = ({ count }) => {
       </div>
 
       <div className="headings">
-        <h4 style={{textAlign: "center",color: "black", marginBottom:"30px"}}>Frequently Asked Questions</h4>
+        <h4>Frequently Asked Questions</h4>
       </div>
-      
-      <div className="terms">
-        <h3>Question: 'How do I log in to the employee portal?'</h3> 
-        <p>To log in, visit [your employee panel URL] and enter your username and password. If you encounter login issues, use the "Forgot Password" option or contact IT support at bytetech000@gmail.com </p>
-      
-        <br/><br/>
-        <h3>Question: 'How can I update my personal information in the portal?'</h3> 
-        <p>Navigate to the "Profile" section to update your personal details such as address, phone number, and emergency contact information. </p>
 
-        <br/><br/>
-        <h3>Question: 'Can I change my password, and how often should I do it?'</h3> 
-        <p>Yes, you can change your password in the "Security" or "Account Settings" section. It is recommended to update your password regularly for security purposes. </p>
+      <div className="faq-section">
+        <div className="faq-box">
+          <h3>1. How do I log in to the employee portal?</h3>
+          <p>
+            To log in, visit [your employee panel URL] and enter your username
+            and password. If you encounter login issues, use the "Forgot
+            Password" option or contact IT support at bytetech000@gmail.com
+          </p>
+        </div>
 
-        <br/><br/>
-        <h3>Question: 'Where can I find information about my work schedule?'</h3> 
-        <p>The "Schedule" or "Work Calendar" section of the employee portal provides details about your work schedule. You can view your shifts, breaks, and any upcoming events. </p>
+        <div className="faq-box">
+          <h3>2. How can I update my personal information in the portal?</h3>
+          <p>
+            Navigate to the "Profile" section to update your personal details
+            such as address, phone number, and emergency contact information.
+          </p>
+        </div>
 
-        <br/><br/>
-        <h3>Question: 'What is the purpose of the municipality website?'</h3> 
-        <p>The municipality website serves as a central hub for residents, businesses, and employees to access information, services, and resources related to local government activities. </p>
+        <div className="faq-box">
+          <h3>3. Can I change my password, and how often should I do it?</h3>
+          <p>
+            Yes, you can change your password in the "Security" or "Account
+            Settings" section. It is recommended to update your password
+            regularly for security purposes.
+          </p>
+        </div>
+
+        <div className="faq-box">
+          <h3>4. Where can I find information about my work schedule?</h3>
+          <p>
+            The "Schedule" or "Work Calendar" section of the employee portal
+            provides details about your work schedule. You can view your shifts,
+            breaks, and any upcoming events.
+          </p>
+        </div>
+
+        <div className="faq-box">
+          <h3>5. What is the purpose of the municipality website?</h3>
+          <p>
+            The municipality website serves as a central hub for residents,
+            businesses, and employees to access information, services, and
+            resources related to local government activities.
+          </p>
+        </div>
+
+        <div className="faq-box">
+          <h3>6. How do I report technical issues or provide feedback?</h3>
+          <p>
+            To report technical issues or provide feedback, you can use the
+            "Support" or "Feedback" section of the web portal. Submit your
+            inquiry or feedback through the provided form, and our support team
+            will assist you or address your feedback accordingly.
+          </p>
+        </div>
+
+        <div className="faq-box">
+          <h3>7. How do I submit feedback or suggestions for improvement?</h3>
+          <p>
+            To submit feedback or suggestions for improvement, you can use the
+            "Feedback" or "Suggestions" section of the web portal. Provide
+            detailed feedback about your experience, ideas for improvement, or
+            suggestions for new features, and our team will review them for
+            consideration.
+          </p>
+        </div>
+
+        <div className="faq-box">
+          <h3>8. How can I view my transaction history?</h3>
+          <p>
+            You can view your transaction history by accessing the
+            "Transactions" section of the employee portal. This section provides
+            a record of all your past transactions, including dates, types, and
+            status updates.
+          </p>
+        </div>
+        
       </div>
 
       <Footer />

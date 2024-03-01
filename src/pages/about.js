@@ -54,7 +54,7 @@ const About = () => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="home">Home</a>
+              <a href="/home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
@@ -74,8 +74,13 @@ const About = () => {
             <li>
               <a href="/about">About</a>
             </li>
-            <li>
-              <a href="/transactions">Settings</a>
+            <li className="dropdown">
+              <a>Settings</a>
+              <div className="dropdown-content">
+                <a href="/faq">FAQ</a>
+                <a href="/helps">Help</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+              </div>
             </li>
           </ul>
         </nav>
@@ -94,20 +99,20 @@ const About = () => {
             </div>
           </div>
           {dropdownOpen && (
-              <div className="modal-content">
-                <ul>
-                  <li>
-                    <a href="/account-settings">Account Settings</a>
-                  </li>
-                  <li>
-                    <a onClick={handleLogout}>Logout</a>
-                  </li>
-                </ul>
-                <button className="close-buttons" onClick={toggleDropdown}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
-            )}
+            <div className="modal-content">
+              <ul>
+                <li>
+                  <a href="/account-settings">Account Settings</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </ul>
+              <button className="close-buttons" onClick={toggleDropdown}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

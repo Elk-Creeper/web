@@ -468,43 +468,48 @@ function App() {
   return (
     <div>
       <div className="container">
-        <div className="header">
-          <img src={logo} alt="logo" className="SidebarLogo" />
-          <div className="SidebarTitle">
-            <span className="muni">MUNI</span>
-            <span className="serve">SERVE</span>
-          </div>
+      <div className="header">
+        <img src={logo} alt="logo" className="SidebarLogo" />
+        <div className="SidebarTitle">
+          <span className="muni">MUNI</span>
+          <span className="serve">SERVE</span>
+        </div>
 
-          <nav className="horizontal-nav">
-            <ul>
-              <li>
-                <a href="/home">Home</a>
-              </li>
-              <li className="dropdown">
-                <a>Services</a>
-                <div className="dropdown-content">
-                  <a href="/birthReg">Certificate of Live Birth</a>
-                  <a href="/marriageCert">Marriage Certificate</a>
-                  <a href="/deathCert">Death Certificate</a>
-                  <a href="/job">Job Application</a>
-                </div>
-              </li>
-              <li>
-                <a href="/appointments">Appointments</a>
-              </li>
-              <li>
-                <a href="/news">News</a>
-              </li>
-              <li>
-                <a href="/about">About</a>
-              </li>
-              <li>
-                <a href="/transactions">Settings</a>
-              </li>
-            </ul>
-          </nav>
+        <nav className="horizontal-nav">
+          <ul>
+            <li>
+              <a href="/home">Home</a>
+            </li>
+            <li className="dropdown">
+              <a>Services</a>
+              <div className="dropdown-content">
+                <a href="/birthReg">Certificate of Live Birth</a>
+                <a href="/marriageCert">Marriage Certificate</a>
+                <a href="/deathCert">Death Certificate</a>
+                <a href="/job">Job Application</a>
+              </div>
+            </li>
+            <li>
+              <a href="/appointments">Appointments</a>
+            </li>
+            <li>
+              <a href="/news">News</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li className="dropdown">
+              <a>Settings</a>
+              <div className="dropdown-content">
+                <a href="/faq">FAQ</a>
+                <a href="/helps">Help</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
 
-          <div className="icons">
+        <div className="icons">
           <img
             src={notification}
             alt="Notification.png"
@@ -518,22 +523,22 @@ function App() {
             </div>
           </div>
           {dropdownOpen && (
-              <div className="modal-content">
-                <ul>
-                  <li>
-                    <a href="/account-settings">Account Settings</a>
-                  </li>
-                  <li>
-                    <a onClick={handleLogout}>Logout</a>
-                  </li>
-                </ul>
-                <button className="close-buttons" onClick={toggleDropdown}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
-            )}
+            <div className="modal-content">
+              <ul>
+                <li>
+                  <a href="/account-settings">Account Settings</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </ul>
+              <button className="close-buttons" onClick={toggleDropdown}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          )}
         </div>
-        </div>
+      </div>
 
         <div className="containers">
           <h1>APPOINTMENTS</h1>
@@ -559,7 +564,7 @@ function App() {
               >
                 <option value="">Filter by Offices</option>
                 <option value="Municipal Mayor's Office">
-                  Municipal mayor's Office
+                  Municipal Mayor's Office
                 </option>
                 <option value="Municipal Vice Mayor's Office">
                   Municipal Vice Mayor's Office

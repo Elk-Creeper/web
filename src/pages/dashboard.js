@@ -501,32 +501,32 @@ const Dashboard = ({ count }) => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="dashboard">Home</a>
+              <a href="home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
               <div className="dropdown-content">
-                <a href="/birthReg">Certificate of Live Birth</a>
-                <a href="/marriageCert">Marriage Certificate</a>
-                <a href="/deathCert">Death Certificate</a>
-                <a href="/job">Job Application</a>
+                <a href="birthReg">Certificate of Live Birth</a>
+                <a href="marriageCert">Marriage Certificate</a>
+                <a href="deathCert">Death Certificate</a>
+                <a href="job">Job Application</a>
               </div>
             </li>
             <li>
-              <a href="/appointments">Appointments</a>
+              <a href="appointments">Appointments</a>
             </li>
             <li>
-              <a href="/news">News</a>
+              <a href="news">News</a>
             </li>
             <li>
-              <a href="/about">About</a>
+              <a href="about">About</a>
             </li>
             <li className="dropdown">
               <a>Settings</a>
               <div className="dropdown-content">
-                <a href="/faq">FAQ</a>
-                <a href="/help">Help</a>
-                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="faq">FAQ</a>
+                <a href="helps">Help</a>
+                <a href="privacy-policy">Privacy Policy</a>
               </div>
             </li>
           </ul>
@@ -549,7 +549,10 @@ const Dashboard = ({ count }) => {
             <div className="modal-content">
               <ul>
                 <li>
-                  <a href="/account-settings">Account Settings</a>
+                  <a href="/account-settings">Profile</a>
+                </li>
+                <li>
+                  <a href="/history">History</a>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>
@@ -580,17 +583,28 @@ const Dashboard = ({ count }) => {
                       <img src={logo} alt="logo" />
                       <h5>Appointment</h5>
                       <h3>
-                        {new Date(
-                          item.createdAt.seconds * 1000
-                        ).toLocaleDateString()}
+                        {item.createdAt && item.createdAt.seconds
+                          ? new Date(
+                              item.createdAt.seconds * 1000
+                            ).toLocaleDateString()
+                          : ""}
                       </h3>
                     </div>
                     <p>
-                      {item.name} requested for {item.personnel} from{" "}
-                      {item.department} for an appointment on{" "}
-                      {new Date(item.date.seconds * 1000).toLocaleDateString()}{" "}
+                      {item.userName} {item.userLastName} requested for{" "}
+                      {item.personnel} from {item.department} for an appointment
+                      on{" "}
+                      {item.date && item.date.seconds
+                        ? new Date(
+                            item.date.seconds * 1000
+                          ).toLocaleDateString()
+                        : ""}{" "}
                       at{" "}
-                      {new Date(item.time.seconds * 1000).toLocaleTimeString()}{" "}
+                      {item.time && item.time.seconds
+                        ? new Date(
+                            item.time.seconds * 1000
+                          ).toLocaleTimeString()
+                        : ""}{" "}
                       regarding {item.reason}. Check the application for
                       approval.
                     </p>

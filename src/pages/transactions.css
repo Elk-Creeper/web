@@ -510,3 +510,13 @@ body {
     color: #1e7566;
   }
 }
+
+.resume h3 {
+  margin-left: 370px;
+  margin-top: -260px;
+}
+
+.resume .placeholder {
+  width: 270px;
+  margin-left: 370px;
+}
