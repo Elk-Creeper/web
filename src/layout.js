@@ -19,6 +19,7 @@ import Privacy from './pages/privacy-policy';
 import Forgot from './pages/forgot-password';
 import History from './pages/history';
 import Account from './pages/accounts';
+import Notification from './pages/notif';
 
 
 const Layout = () => {
@@ -44,6 +45,7 @@ const Layout = () => {
                         <Route path="/privacy-policy" component={Privacy} />
                         <Route path="/forgot-password" component={Forgot} />
                         <Route path="/account-settings" component={Account} />
+                        <Route path="/notifications" component={Notification} />
                     </Switch>
                 </MainContent>
             </div>

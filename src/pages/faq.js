@@ -17,17 +17,6 @@ import {
   where,
 } from "firebase/firestore";
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT",
-};
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
@@ -71,39 +60,141 @@ const Dashboard = ({ count }) => {
     <div className="container">
       <style>
         {`
-          .faq-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+          .container {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            margin: 0 auto;
           }
 
-          .faq-box {
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backgroundColor: "#f0f0f0",
+            padding: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+          }
+
+          .SidebarLogo {
+            width: 50px;
+            height: 50px;
+          }
+
+          .SidebarTitle {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333333;
+          }
+
+          .horizontal-nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .horizontal-nav ul li {
+            margin-right: 20px;
+          }
+
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            padding: 10px 0;
+          }
+
+          .dropdown-content a {
+            color: #333333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+          }
+
+          .dropdown-content a:hover {
+            background-color: #307A59;
+          }
+
+          .dropdown:hover .dropdown-content {
+            display: block;
+          }
+
+          .icons {
+            display: flex;
+            align-items: center;
+          }
+
+          .notif-icon {
+            width: 30px;
+            height: auto;
+            margin-right: 20px;
+          }
+
+          .account-name {
+            display: flex;
+            align-items: center;
+          }
+
+          .dropdown-arrow {
+            cursor: pointer;
+          }
+
+          .modal-content {
+            position: absolute;
             background-color: #ffffff;
             padding: 20px;
-            border-radius: 10px;
+            border: 1px solid #cccccc;
+            z-index: 1;
+            top: 100%;
+            right: 0;
+            border-radius: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           }
 
-          . headings h4 {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            color: #333333;
-            margin-bottom: 20px;
+          .close-buttons {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
           }
 
-          .faq-box h3 {
+          .headings {
+            margin-bottom: 40px; /
+          }
+
+          .faq-section {
+            display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           gap: 30px;
+           margin-bottom: 80px;
+          }
+
+          .faq-box {
+            background-color: #ffffff; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center; 
+          }
+
+          h3 {
             margin-bottom: 10px;
             font-size: 20px;
             color: #333333;
           }
-
-          .faq-box p {
-            margin-bottom: 0;
-            color: #666666;
-          }
         `}
       </style>
+
       <div className="header">
         <img src={logo} alt="logo" className="SidebarLogo" />
         <div className="SidebarTitle">
@@ -114,7 +205,7 @@ const Dashboard = ({ count }) => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="/home">Home</a>
+              <a href="home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
@@ -176,14 +267,24 @@ const Dashboard = ({ count }) => {
         </div>
       </div>
 
-      <div className="headings">
-        <h4>Frequently Asked Questions</h4>
+      <div>
+        <h4
+          style={{
+            textAlign: "center",
+            color: "#333",
+            fontWeight: "bold",
+            marginTop: "120px",
+            marginBottom: "50px",
+          }}
+        >
+          FREQUENTLY ASKED QUESTIONS
+        </h4>
       </div>
 
       <div className="faq-section">
         <div className="faq-box">
           <h3>1. How do I log in to the employee portal?</h3>
-          <p>
+          <p style={{lineHeight: "25px"}}>
             To log in, visit [your employee panel URL] and enter your username
             and password. If you encounter login issues, use the "Forgot
             Password" option or contact IT support at bytetech000@gmail.com
@@ -255,7 +356,6 @@ const Dashboard = ({ count }) => {
             status updates.
           </p>
         </div>
-        
       </div>
 
       <Footer />

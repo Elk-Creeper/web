@@ -13,17 +13,7 @@ import NewsDetails from './newsDetails';
 import Footer from '../components/footer';
 import useAuth from "../components/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faTimes  } from "@fortawesome/free-solid-svg-icons";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT" // Your Firebase configuration
-};
+import { faCaretDown, faTimes, faUser, faHistory, faSignOutAlt  } from "@fortawesome/free-solid-svg-icons";
 
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
@@ -367,18 +357,21 @@ const NewsForm = () => {
           </div>
           {dropdownOpen && (
             <div className="modal-content">
-              <ul>
-                <li>
-                  <a href="/account-settings">Account Settings</a>
-                </li>
-                <li>
-                  <a onClick={handleLogout}>Logout</a>
-                </li>
-              </ul>
-              <button className="close-buttons" onClick={toggleDropdown}>
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
+            <ul>
+              <li>
+                <FontAwesomeIcon icon={faUser} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a href="/account-settings">Profile</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faHistory} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a href="/history">History</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faSignOutAlt} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a onClick={handleLogout}>Logout</a>
+              </li>
+            </ul>
+            <button className="close-buttons" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
           )}
         </div>
       </div>

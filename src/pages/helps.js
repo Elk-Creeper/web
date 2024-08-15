@@ -22,17 +22,6 @@ import {
   where,
 } from "firebase/firestore";
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT",
-};
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
@@ -92,7 +81,7 @@ const Dashboard = ({ count }) => {
         <nav className="horizontal-nav">
           <ul>
             <li>
-              <a href="/home">Home</a>
+              <a href="home">Home</a>
             </li>
             <li className="dropdown">
               <a>Services</a>
@@ -153,408 +142,766 @@ const Dashboard = ({ count }) => {
           )}
         </div>
       </div>
-
-      <div className="headings">
+      <div>
         <h4
-          style={{ textAlign: "center", color: "black", marginBottom: "50px", textSize: "50px",  fontWeight: "bold" }}
+          style={{
+            textAlign: "center",
+            color: "#333",
+            fontWeight: "bold",
+            marginTop: "100px",
+          }}
         >
           HELP CENTER
         </h4>
       </div>
 
-      <div className="terms">
-        <p>
+      <div className="terms" style={{ padding: "20px" }}>
+        <p style={{ fontSize: "1.1rem", marginBottom: "20px" }}>
           Welcome to the Help Center. If you have any questions or need
           assistance, you've come to the right place.
         </p>
-
         <section>
-          <ul style={{ listStyle: "none" }}>
-            <li style={{ textDecoration: "none" }}>
-              <strong>
-                1. <a href="#navigate">How to navigate the website:</a>
-              </strong>{" "}
-            </li>
-            <li>
-              <strong>
-                2. <a href="#settings">Account settings and customization:</a>
+          <ul style={{ listStyle: "none", padding: "0" }}>
+            <li
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  backgroundColor: "#1e7566",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                1
+              </div>
+              <strong style={{ color: "#1e7566" }}>
+                <a
+                  href="#navigate"
+                  style={{ color: "#1e7566", textDecoration: "none" }}
+                >
+                  How to navigate the website:
+                </a>
               </strong>
             </li>
-            <li>
-              <strong>
-                3. <a href="#troubleshoot">Troubleshooting common issues:</a>
-              </strong>{" "}
+            <li
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  backgroundColor: "#1e7566",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                2
+              </div>
+              <strong style={{ color: "#1e7566" }}>
+                <a
+                  href="#settings"
+                  style={{ color: "#1e7566", textDecoration: "none", textAlign: "center" }}
+                >
+                  Account settings and customization:
+                </a>
+              </strong>
             </li>
-            <li>
-              <strong>
-                4. <a href="#contact">Contacting support:</a>
-              </strong>{" "}
+            <li
+              style={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  backgroundColor: "#1e7566",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                3
+              </div>
+              <strong style={{ color: "#1e7566" }}>
+                <a
+                  href="#troubleshoot"
+                  style={{ color: "#1e7566", textDecoration: "none" }}
+                >
+                  Troubleshooting common issues:
+                </a>
+              </strong>
+            </li>
+            <li style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  backgroundColor: "#1e7566",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                4
+              </div>
+              <strong style={{ color: "#1e7566" }}>
+                <a
+                  href="#contact"
+                  style={{ color: "#1e7566", textDecoration: "none" }}
+                >
+                  Contacting support:
+                </a>
+              </strong>
             </li>
           </ul>
         </section>
 
-        <section>
-          <h3>Can't Find What You Need?</h3>
-          <p style={{ marginTop: "10px" }}>
+        <section
+          style={{
+            backgroundColor: "#f0f0f0",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+            marginBottom: "30px",
+            textAlign: "center",
+          }}
+        >
+          <h3
+            style={{
+              color: "#1e7566",
+              marginBottom: "20px",
+              textTransform: "uppercase",
+            }}
+          >
+            Can't Find What You Need?
+          </h3>
+          <p
+            style={{
+              color: "#555",
+              fontSize: "1.1rem",
+              lineHeight: "1.6",
+              marginBottom: "20px",
+            }}
+          >
             If you can't find the information you need, feel free to contact our
             support team:
           </p>
-          <ul style={{ listStyle: "none" }}>
-            <li>
-              Email: <a href="bytetech000@gmail.com">bytetech000@gmail.com</a>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            <li style={{ color: "#555", marginBottom: "10px" }}>
+              <span style={{ fontWeight: "bold" }}>Email:</span>
+              <a
+                href="mailto:bytetech000@gmail.com"
+                style={{
+                  textDecoration: "none",
+                  color: "#1e7566",
+                  marginLeft: "5px",
+                }}
+              >
+                bytetech000@gmail.com
+              </a>
             </li>
-            <li>Phone: 09925691965</li>
+            <li style={{ color: "#555" }}>
+              <span style={{ fontWeight: "bold" }}>Phone:</span>
+              <span style={{ color: "#1e7566", marginLeft: "5px" }}>
+                09925691965
+              </span>
+            </li>
           </ul>
-          <p style={{ marginBottom: "60px" }}>
+          <p
+            style={{
+              color: "#555",
+              fontSize: "1.1rem",
+              lineHeight: "1.6",
+              marginTop: "20px",
+            }}
+          >
             Our support team is available during business hours to assist you.
           </p>
         </section>
-
         <div className="boxes">
           <section
             id="navigate"
             style={{
-              padding: "10px",
+              padding: "20px",
               marginBottom: "20px",
-              lineHeight: "5px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
-              borderRadius: "8px", // Add border radius for rounded corners
-              backgroundColor: "#ffffff", // Add background color
+              lineHeight: "1.5",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
             }}
           >
-            <p   style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",}}>
+            <h3
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                color: "#1e7566",
+              }}
+            >
               Here's a step-by-step guide on navigating the various features
               available to you:
-            </p>
-            <h4>1. Login:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              1. Start by accessing the employee portal login page. Enter your
-              designated username and password to securely log in.
-            </p>
-            <h4>2. Dashboard:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              2. Upon login, you'll be greeted by the dashboard, your central
-              hub for managing tasks and notifications. The dashboard provides
-              an overview of your daily activities, pending approvals, and any
-              important announcements.
-            </p>
-            <h4>3. Work Schedule:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              3. Check your work schedule in the "Schedule" or "Work Calendar".
-              Here, you can view your shifts, breaks, and any upcoming events
-              related to your duties.
-            </p>
-            <h4>4. Appointments:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              4. Navigate to the "Appointments" section to review and manage
-              scheduled appointments. Here, you can approve or disapprove
-              appointments based on availability and other relevant factors.
-            </p>
-            <h4>5. Service Requests:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              5. Process service requests efficiently by accessing the "Service
-              Requests" section. Review incoming requests, update their status,
-              and ensure timely responses to citizen inquiries.
-            </p>
-            <h4>6. Transaction Records:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              6. Check and manage transaction records in the dedicated
-              "Transactions" area. This section allows you to track and update
-              the status of various transactions, ensuring accurate and
-              transparent record-keeping.
-            </p>
-            <h4>7. News Management:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              7. Stay connected with citizens by utilizing the "News" section.
-              Here, you can create, edit, and delete news articles. Keep the
-              community informed about important updates, events, and
-              initiatives.
-            </p>
-            <h4>8. Profile Management:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              8. Ensure that your personal information is up-to-date by
-              navigating to the "Profile" section. This includes contact
-              details, emergency contacts, and other relevant information.
-            </p>
-            <h4>9. Account Settings:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              9. For account-related activities, navigate to the "Security" or
-              "Account Settings" section. Here, you can change your password and
-              update other security preferences.
-            </p>
-            <h4>10. FAQ and Support:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              10. If you have questions or encounter issues, explore the "FAQ"
-              section for answers to common queries. For personalized
-              assistance, contact the IT support team using the provided contact
-              details.
-            </p>
-            <h4>11. Logout:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              11. Always conclude your session by securely logging out. This
-              ensures the confidentiality of sensitive information and maintains
-              the integrity of your account.
-            </p>
+            </h3>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                1. Employee Portal Login:
+              </p>
+              <p>
+                Start by accessing the employee portal login page. <br />
+                Enter your designated username and
+                <br />
+                password to securely log in.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                2. Dashboard Overview:
+              </p>
+              <p>
+                Upon login, you'll be greeted by the dashboard,
+                <br />
+                your central hub for managing tasks and
+                <br />
+                notifications. The dashboard provides an
+                <br />
+                overview of your daily activities, pending
+                <br />
+                approvals, and any important announcements.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                3. Work Schedule:
+              </p>
+              <p>
+                Check your work schedule in the "Schedule" or
+                <br />
+                "Work Calendar". Here, you can view your shifts,
+                <br />
+                breaks, and any upcoming events related to your duties.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                4. Appointments:
+              </p>
+              <p>
+                Navigate to the "Appointments" section to review
+                <br />
+                and manage scheduled appointments. Here, you can
+                <br />
+                approve or disapprove appointments based on availability
+                <br />
+                and other relevant factors.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                5. Service Requests:
+              </p>
+              <p>
+                Process service requests efficiently by
+                <br />
+                accessing the "Service Requests" section. <br />
+                Review incoming requests, update their
+                <br />
+                status, and ensure timely responses to
+                <br />
+                citizen inquiries.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                6. Transaction Records:
+              </p>
+              <p>
+                Check and manage transaction records in
+                <br />
+                the dedicated "Transactions" area. <br />
+                This section allows you to track and <br />
+                update the status of various transactions,
+                <br />
+                ensuring accurate and transparent record-keeping.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                7. News Management:
+              </p>
+              <p>
+                Stay connected with citizens by utilizing
+                <br />
+                the "News" section. Here, you can create,
+                <br />
+                edit, and delete news articles. Keep the
+                <br />
+                community informed about important updates,
+                <br />
+                events, and initiatives.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                8. Profile Management:
+              </p>
+              <p>
+                Ensure that your personal information
+                <br />
+                is up-to-date by navigating to the
+                <br />
+                "Profile" section. This includes contact
+                <br />
+                details, emergency contacts, and other
+                <br />
+                relevant information.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                9. Account Settings:
+              </p>
+              <p>
+                For account-related activities, navigate
+                <br />
+                to the "Security" or "Account Settings"
+                <br />
+                section. Here, you can change your password
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                10. FAQ and Support:
+              </p>
+              <p>
+                If you have questions or encounter issues,
+                <br />
+                explore the "FAQ" section for answers to <br />
+                common queries. For personalized assistance, <br />
+                contact the IT support team using the provided
+                <br />
+                contact details.
+                <br />
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                11. Logout:
+              </p>
+              <p>
+                Always conclude your session by securely
+                <br />
+                logging out. This ensures the confidentiality
+                <br />
+                of sensitive information and maintains the <br />
+                integrity of your account.
+                <br />
+              </p>
+            </div>
           </section>
 
           <section
             id="settings"
             style={{
-              padding: "10px",
+              padding: "20px",
               marginBottom: "20px",
-              lineHeight: "5px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
-              borderRadius: "8px", // Add border radius for rounded corners
-              backgroundColor: "#ffffff", // Add background color
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h3 style={{ marginBottom: "20px" }}>
+            <h3
+              style={{
+                marginBottom: "30px",
+                textAlign: "center",
+                color: "#1e7566",
+              }}
+            >
               Account Settings and Customization
             </h3>
-            <p style={{ marginBottom: "10px" }}>
-              This guide will help you personalize your experience and manage
-              your account settings efficiently.
-            </p>
-            <h4>1. Accessing Account Settings:</h4>
-            <p style={{ marginTop: "-10px" }}>
-             1. Begin by logging into the employee portal with your username and
-              password. Look for the "Account Settings" or "Profile" section.
-            </p>
-            <h4>2. Profile Information:</h4>
-            <p style={{ marginTop: "-10px" }}>
-             2. Update your personal information, including contact details and
-              emergency contacts. Ensure that all information is accurate and
-              up-to-date.
-            </p>
-            <h4>3. Security Settings:</h4>
-            <p style={{ marginTop: "-10px" }}>
-             3. In the "Security" section, you can enhance your account's
-              security: Change your password regularly for added protection.
-              Enable two-factor authentication if available for an extra layer
-              of security.
-            </p>
-            <h4>4. Email Preferences:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              4.Manage email notifications and communication preferences. Choose
-              the types of emails you want to receive and the frequency of
-              updates.
-            </p>
-            <h4>5. Save Changes:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              5. After making adjustments, be sure to save your changes. Some
-              modifications may require you to log out and log back in for the
-              updates to take effect.
-            </p>
-            <h4>6. Help and Support:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              6. If you encounter any challenges or have questions about account
-              settings, refer to the Help Center or FAQ section. For
-              personalized assistance, contact our IT support team using the
-              provided contact details.
-            </p>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ marginBottom: "10px" }}>
+                This guide will help you personalize your experience and manage
+                your account settings efficiently.
+              </p>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                1. Accessing Account Settings:
+              </p>
+              <p>
+                {" "}
+                Begin by logging into the employee portal
+                <br />
+                with your username and password. Look for
+                <br />
+                the "Account Settings" or "Profile" section.
+                <br />
+              </p>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                2. Update Personal Information:
+              </p>
+              <p>
+                Update your personal information, including
+                <br />
+                contact details and emergency contacts. <br />
+                Ensure that all information is accurate and
+                <br />
+                up-to-date.
+                <br />
+              </p>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                3. Enhance Account Security:
+              </p>
+              <p>
+                In the "Security" section, you can enhance
+                <br />
+                your account's security: Change your password
+                <br />
+                regularly for added protection. Enable two-factor
+                <br />
+                authentication if available for an extra layer
+                <br />
+                of security.
+                <br />
+              </p>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                4. Manage Email Notifications:
+              </p>
+              <p>
+                Manage email notifications and communication
+                <br />
+                preferences. Choose the types of emails you
+                <br />
+                want to receive and the frequency of updates.
+                <br />
+              </p>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                5. Save Changes:
+              </p>
+              <p>
+                After making adjustments, be sure to save
+                <br />
+                your changes. Some modifications may require
+                <br />
+                you to log out and log back in for the
+                <br />
+                updates to take effect.
+                <br />
+              </p>
+            </div>
+            <div>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                6. Need Help?
+              </p>
+              <p>
+                If you encounter any challenges or
+                <br />
+                have questions about account settings,
+                <br />
+                refer to the Help Center or FAQ section.
+                <br />
+                For personalized assistance, contact
+                <br />
+                our IT support team using the
+                <br />
+                provided contact details.
+                <br />
+              </p>
+            </div>
           </section>
 
           <section
             id="troubleshoot"
             style={{
-              padding: "10px",
-              lineHeight: "5px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
-              borderRadius: "8px", // Add border radius for rounded corners
-              backgroundColor: "#ffffff", // Add background color
+              padding: "20px",
+              marginBottom: "20px",
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h3>Troubleshooting Common Issues</h3>
+            <p
+              style={{
+                fontWeight: "bold",
+                marginBottom: "30px",
+                textAlign: "center",
+                color: "#1e7566",
+              }}
+            >
+              Troubleshooting Common Issues
+            </p>
             <p>
               If you encounter issues while using the employee panel, follow
               these steps to address common problems:
             </p>
-            <h4>1. Login Issues:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              {" "}
               1. If, Unable to log in.
             </p>
             <p>
-              Verify that you are using the correct username and password.
-            </p>
-            <p>
+              Verify that you are using the
+              <br />
+              correct username and password.
+              <br />
               Ensure that CAPS LOCK is turned off.
+              <br />
+              <br />
+              If forgotten, use the "Forgot Password" <br />
+              option or contact IT support for assistance.
+              <br />
             </p>
-            <p>
-              If forgotten, use the "Forgot Password" option or contact IT
-              support for assistance.
-            </p>
-
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
               2. If, Dashboard is not displaying.
             </p>
-            <p>Check your internet connection.</p>
-            <p>Clear browser cache and cookies.</p>
-            <p>Try accessing the panel from a different browser or device.</p>
-            <h4>3. Slow Performance:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
+            <p>
+              {" "}
+              Check your internet connection.
+              <br />
+              Clear browser cache and cookies.
+              <br />
+              Try accessing the panel from a different browser or device.
+              <br />
+            </p>
+
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
               3. If, Panel is slow to respond.
             </p>
-            <p>Close unnecessary tabs or applications.</p>
-            <p>Clear browser cache and history.</p>
-            <p>Ensure your device meets the platform's system requirements.</p>
-            <h4>4. Error Messages:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              4. If, Encounter error messages.
-            </p>
-            <p>Note the error message and try to replicate the issue.</p>
             <p>
-              Check the Help Center or contact IT support with details about the
-              error.
-            </p>
-            <h4>5. Appointment Approval Issues:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              5. If, Unable to approve appointments.
-            </p>
-            <p>Ensure you have the necessary permissions.</p>
-            <p>Check for conflicting schedules or resource availability.</p>
-            <p>Review the appointment details for accuracy.</p>
-            <h4>6. Service Request Processing:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              6. If, Issues with processing service requests.
-            </p>
-            <p>Verify that all required information is provided.</p>
-            <p>Check for any system notifications or updates.</p>
-            <p>Contact relevant departments for assistance if needed.</p>
-            <h4>7. News Management Problems:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              7. If, Difficulty creating, editing, or deleting news.
-            </p>
-            <p>Confirm that you have the appropriate permissions.</p>
-            <p>Check for any restrictions on news creation or editing.</p>
-            <p>Review the content guidelines for news articles.</p>
-            <h4>8. System Downtime:</h4>
-            <h4>Problem:</h4>
-            <p
-              style={{
-                marginTop: "-15px",
-                lineHeight: "5px",
-                fontWeight: "bold",
-              }}
-            >
-             8. If, Platform is temporarily unavailable.
-            </p>
-            <p>Check for announcements or status updates on the platform.</p>
-            <p>
-              If the issue persists, contact IT support for further assistance.
+              Close unnecessary tabs or applications.
+              <br />
+              Clear browser cache and history.
+              <br />
+              Ensure your device meets the platform's system requirements.
+              <br />
+              <p />
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                4. If, Encounter error messages.
+              </p>
+              <p>
+                Note the error message and try to
+                <br />
+                replicate the issue. Check the Help
+                <br />
+                Center or contact IT support with
+                <br />
+                details about the error.
+                <br />
+              </p>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                5. If, Unable to approve appointments.
+              </p>
+              <p>
+                Ensure you have the necessary permissions.
+                <br />
+                Check for conflicting schedules or resource
+                <br />
+                availability. Review the appointment details
+                <br />
+                for accuracy.
+                <br />
+              </p>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                6. If Issues with processing service requests.
+              </p>
+              <p>
+                Verify that all required information
+                <br />
+                is provided. Check for any system <br />
+                notifications or updates. Contact <br />
+                relevant departments for assistance <br />
+                if needed.
+                <br />
+              </p>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                7. If, Difficulty creating, editing, or deleting news.
+              </p>
+              <p>
+                Confirm that you have the appropriate
+                <br />
+                permissions. Check for any restrictions
+                <br />
+                on news creation or editing. Review the
+                <br />
+                content guidelines for news articles.
+                <br />
+              </p>
+              <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                8. If, Platform is temporarily unavailable.
+              </p>
+              <p>
+                Check for announcements or status
+                <br />
+                updates on the platform.
+                <br />
+                If the issue persists, contact IT support for further
+                assistance.
+                <br />
+              </p>
             </p>
           </section>
 
           <section
             id="contact"
             style={{
-              padding: "10px",
+              padding: "20px",
               marginBottom: "20px",
-              lineHeight: "5px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add box shadow for visual appeal
-              borderRadius: "8px", // Add border radius for rounded corners
-              backgroundColor: "#ffffff", // Add background color
+              borderRadius: "8px",
+              backgroundColor: "#ffffff",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h3>Contacting Support</h3>
+            <p
+              style={{
+                fontWeight: "bold",
+                marginBottom: "10px",
+                color: "#1e7566",
+              }}
+            >
+              Contacting Support
+            </p>
             <p>
               {" "}
               If you encounter challenges or have questions that require
               assistance, follow these steps to get in touch with our dedicated
               support team:
             </p>
-            <h4>1. Help Center:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              First Stop: Before reaching out to support, explore the Help
-              Center or Frequently Asked Questions (FAQ) section. Many common
-              queries are addressed here, and you might find a quick solution to
-              your issue.
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Help Center:
             </p>
-            <h4>2. Contact Information:</h4>
-            <p style={{ marginTop: "-10px" }}>
+            <p>
+              Before reaching out to support, explore the Help
+              <br />
+              Center or Frequently Asked Questions (FAQ) section.
+              <br />
+              Many common queries are addressed here, and you might
+              <br />
+              find a quick solution to your issue.
+              <br />
+            </p>
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Contact Information:
+            </p>
+            <p>
               IT Support: If you cannot find the answer in the Help Center,
+              <br />
               contact our IT support team directly. Look for the provided
+              <br />
               contact details, which may include phone numbers, or email
               addresses.
+              <br />
             </p>
-            <h4>3. Provide Details:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              Be Specific: When contacting support, be as specific as possible
-              about the issue you are facing. Include error messages, relevant
-              dates, and any steps you have taken to troubleshoot.
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Provide Details:
             </p>
-            <h4>4. Office Hours:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              Check Availability: Confirm the operating hours of the support
-              team. If it's outside regular office hours, check if there are
+            <p>
+              Be Specific: When contacting support,
+              <br />
+              be as specific as possible about the
+              <br />
+              issue you are facing. Include error
+              <br />
+              messages, relevant dates, and any steps <br />
+              you have taken to troubleshoot.
+              <br />
+            </p>
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Office Hours:
+            </p>
+            <p>
+              Check Availability: Confirm the operating
+              <br />
+              hours of the support team. If it's outside <br />
+              regular office hours, check if there are
+              <br />
               alternative methods for urgent issues.
+              <br />
             </p>
-            <h4>5. Emergency Issues:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              Emergency Contacts: For critical issues or emergencies, ensure you
-              have access to emergency contact information. Follow the
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Emergency Issues:
+            </p>
+            <p>
+              Emergency Contacts: For critical issues or
+              <br />
+              emergencies, ensure you have access to
+              <br />
+              emergency contact information. Follow the
+              <br />
               established protocols for urgent matters.
+              <br />
             </p>
-            <h4>6. Feedback Channels:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              User Feedback: If you have feedback or suggestions, consider using
-              designated channels within the platform. Your input is valuable
-              for ongoing improvements.
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              6. Feedback Channels:
             </p>
-            <h4>7. Follow-Up:</h4>
-            <p style={{ marginTop: "-10px" }}>
-              Stay Informed: After reaching out to support, stay informed about
-              the progress of your inquiry.
+            <p>
+              User Feedback: If you have feedback or suggestions,
+              <br />
+              consider using designated channels within the platform.
+              <br />
+              Your input is valuable for ongoing improvements.
+              <br />
+            </p>
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              {" "}
+              7. Follow-Up:
+            </p>
+            <p>
+              Stay Informed: After reaching out to support,
+              <br />
+              stay informed about the progress of your inquiry.
+              <br />
             </p>
           </section>
         </div>

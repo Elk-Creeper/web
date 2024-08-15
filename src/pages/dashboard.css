@@ -27,7 +27,7 @@ body, html {
   height: 80px;
   background-color: #fff;
   z-index: 1; /* Set a lower z-index value for the header */
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); /* Add bottom shadow */
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1); 
 }
 
 .horizontal-nav {
@@ -176,22 +176,16 @@ h2 {
   flex-direction: row;
 }
 
-.requests {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
-  margin-left: 60px;
-  text-align: justify;
-  width: 450px;
+.requests-container {
+  margin-top: 20px;
 }
 
-/* CSS for each request item */
 .request-item {
   border: 1px solid #ccc;
   padding: 15px;
   background-color: #f9f9f9;
   border-radius: 25px;
+  width: 250px;
 }
 
 .title {
@@ -199,9 +193,8 @@ h2 {
 }
 
 .title h3 {
-  margin-left: 200px;
-  margin-top: 7px;
-  font-size: 11px;
+  margin-left: 10px; /* Adjust margin as needed */
+  font-size: 14px; /* Adjust font size as needed */
   font-weight: 500;
   color: gray;
 }
@@ -215,8 +208,6 @@ h2 {
   font-size: 16px;
   margin: 0;
   margin-top: 3px;
-  margin-left: 100px;
-  margin-bottom: 7px;
 }
 
 .request-item p {
@@ -233,7 +224,7 @@ h2 {
   border-radius: 25px;
   width: 120px;
   height: 35px;
-  margin-left: 320px;
+  cursor: pointer;
 }
 
 .check:hover {
@@ -267,37 +258,6 @@ h2 {
   }
 }
 
-/* CSS for the news part */
- .news {
-  font-size: 16px;
-  margin-top: -190px;
-  margin-left: 420px;
-  margin-left: 400px;
-}
-
-.image-admin {
-  display: flex;
-  width: 100px;
-  height: 20px;
-  align-items: center;
-  margin-left: 400px;
-  margin-left: 380px;
-  margin-bottom: 70px;
-  margin-top: 80px;
-}
-
-.image-admin img {
-  width: 340px;
-  height: 150px;
-  margin-inline: 15px;
-  border-radius: 5px;
-}
-
-.calendar {
-  margin-top: 15px;
-  margin-left: 10px;
-}
-
 .footer {
   background-color: #1e7566;
   color: #fff;
@@ -318,6 +278,7 @@ h2 {
 
 .columns-container {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
   max-width: 1200px; /* Set your desired max-width */
@@ -327,6 +288,7 @@ h2 {
 .column {
   flex: 1;
   margin-left: 20px; /* Adjust spacing between columns as needed */
+  margin-bottom: -60px;
 }
 
 .footer p {
@@ -366,8 +328,8 @@ h2 {
   flex-direction: row;
   justify-content: center;
   margin-inline: 100px;
-  margin-top: -230px;
-  margin-bottom: 20px;
+  margin-top: -200px;
+  margin-bottom: -20px;
 }
 
 .report,
@@ -380,7 +342,8 @@ h2 {
 .report .day,
 .report .week,
 .report .month,
-.report .year {
+.report .year,
+.report .pending {
   width: 200px; /* Adjust width as needed */
 }
 

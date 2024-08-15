@@ -25,20 +25,8 @@ import jsPDF from "jspdf";
 import DeathRegistrationForm from "./DeathRegistrationForm";
 import DeathCertificateForm from "./DeathCertificateForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faTimes, faUser, faHistory, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useHistory } from "react-router-dom";
-
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT",
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -103,7 +91,7 @@ function App() {
   const [selectedForm, setSelectedForm] = useState(null);
 
   const collectionTypeMap = {
-    deathCert: "Death Certificate",
+    deathCert: "Request Copy of Death Certificate",
     death_reg: "Death Registration",
   };
 
@@ -113,51 +101,40 @@ function App() {
       let allData = [];
   
       for (const collectionName of collections) {
-        const snapshot = await collection(firestore, collectionName);
+        const querySnapshot = await getDocs(collection(firestore, collectionName));
         console.log(`Fetching data from ${collectionName}...`);
-        
-        const unsubscribe = onSnapshot(snapshot, async (querySnapshot) => { // Make the callback function async
-          allData = []; // Clear previous data
-          
-          querySnapshot.forEach(async (doc) => { // Make the inner callback function async as well
-            const item = {
-              id: doc.id,
-              status: "Pending",
-              collectionType: collectionTypeMap[collectionName],
-              createdAt: doc.data().createdAt || { seconds: 0 },
-              ...doc.data(),
-            };
   
-            if (item.imagePath) {
-              const imageUrl = await getDownloadURL(ref(storage, item.imagePath)); // Use await within the async callback
-              item.imageUrl = imageUrl;
-            }
+        for (const doc of querySnapshot.docs) { // Change here
+          const item = {
+            id: doc.id,
+            status: "Pending",
+            collectionType: collectionTypeMap[collectionName],
+            createdAt: doc.data().createdAt || { seconds: 0 },
+            ...doc.data(),
+          };
   
-            if (!item.createdAt) {
-              console.error(
-                `Missing createdAt field in document with id: ${item.id}`
-              );
-              return;
-            }
-  
-            allData.push(item);
-          });
-  
-          allData.sort(
-            (a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
-          );
-  
-          setData(allData);
-          setLoading(false);
-  
-          if (initialLoad) {
-            setSelectedStatusFilter("Pending");
-            setInitialLoad(false);
+          if (item.imagePath) {
+            const imageUrl = await getDownloadURL(ref(storage, item.imagePath));
+            item.imageUrl = imageUrl;
           }
-        });
   
-        // Save the unsubscribe function to clean up the listener later
-        unsubscribeFunctions.push(unsubscribe);
+          if (!item.createdAt) {
+            console.error(`Missing createdAt field in document with id: ${item.id}`);
+            continue;
+          }
+  
+          allData.push(item);
+        }
+  
+        allData.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      }
+  
+      setData(allData);
+      setLoading(false);
+  
+      if (initialLoad) {
+        setSelectedStatusFilter("Pending");
+        setInitialLoad(false);
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -220,6 +197,7 @@ function App() {
               : "Death Certificate",
           userName: selectedItemData.userName,
           address: selectedItemData.userBarangay,
+          employee: user ? user.email : "Unknown", // Assuming you store user's email in user.email
         });
   
         // Update the local state to reflect the new status
@@ -1448,18 +1426,21 @@ const generateDeathRegistrationForm = (
           </div>
           {dropdownOpen && (
             <div className="modal-content">
-              <ul>
-                <li>
-                  <a href="/account-settings">Account Settings</a>
-                </li>
-                <li>
-                  <a onClick={handleLogout}>Logout</a>
-                </li>
-              </ul>
-              <button className="close-buttons" onClick={toggleDropdown}>
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
+            <ul>
+              <li>
+                <FontAwesomeIcon icon={faUser} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a href="/account-settings">Profile</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faHistory} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a href="/history">History</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faSignOutAlt} style={{width: "20px", height: "20px", color: "#307A59"}}/> <a onClick={handleLogout}>Logout</a>
+              </li>
+            </ul>
+            <button className="close-buttons" onClick={toggleDropdown}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
           )}
         </div>
       </div>

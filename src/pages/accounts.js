@@ -29,16 +29,6 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { Modal, Button, Form, Table } from "react-bootstrap";
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT",
-};
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);

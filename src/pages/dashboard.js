@@ -5,11 +5,15 @@ import Footer from "../components/footer";
 import notification from "../assets/icons/Notification.png";
 import useAuth from "../components/useAuth";
 import Chart from "react-apexcharts";
-import ReactApexChart from "react-apexcharts";
 import "apexcharts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faTimes } from "@fortawesome/free-solid-svg-icons";
-import Gravatar from "react-gravatar";
+import {
+  faCaretDown,
+  faTimes,
+  faUser,
+  faHistory,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
@@ -21,17 +25,6 @@ import {
   limit,
   where,
 } from "firebase/firestore";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAsIqHHA8727cGeTjr0dUQQmttqJ2nW_IE",
-  authDomain: "muniserve-4dc11.firebaseapp.com",
-  projectId: "muniserve-4dc11",
-  storageBucket: "muniserve-4dc11.appspot.com",
-  messagingSenderId: "874813480248",
-  appId: "1:874813480248:web:edd1ff1f128b5bb4a2b5cd",
-  measurementId: "G-LS66HXR3GT",
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -45,11 +38,10 @@ const Dashboard = ({ count }) => {
   const [weekTransactions, setWeekTransactions] = useState(0);
   const [monthTransactions, setMonthTransactions] = useState(0);
   const [yearTransactions, setYearTransactions] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const history = useHistory();
-
+  const [unreadCount, setUnreadCount] = useState(0);
+  
   // Function for the account name
   const { user } = useAuth();
   const [userEmail, setUserEmail] = useState("");
@@ -116,85 +108,95 @@ const Dashboard = ({ count }) => {
   }, []);
 
   const formattedTime = currentDateTime.toLocaleTimeString();
-
-  const [pendingTransactions, setPendingTransactions] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   // Function to fetch data from Firestore
-  const fetchPendingTransactions = async () => {
+  const fetchPendingRequests = async () => {
     try {
-      const collectionDisplayNames = {
-        birth_reg: "Birth Registration",
-        marriage_reg: "Marriage Registration",
-        job: "Job",
-        marriageCert: "Marriage Certificate",
-        deathCert: "Death Certificate",
-        appointments: "Appointments",
-      };
+      const collections = [
+        "birth_reg",
+        "marriageCert",
+        "marriage_reg",
+        "death_reg",
+        "deathCert",
+        "job",
+        "appointments",
+      ];
+      const pendingRequests = [];
 
-      const pendingTransactions = [];
-
-      for (const collectionName of Object.keys(collectionDisplayNames)) {
-        const collectionRef = collection(firestore, collectionName);
+      for (const collectionName of collections) {
         const querySnapshot = await getDocs(
-          query(collectionRef, where("status", "==", "Pending"))
+          query(
+            collection(firestore, collectionName),
+            where("status", "==", "Pending")
+          )
         );
 
-        const transactions = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
+        querySnapshot.forEach((doc) => {
+          pendingRequests.push({
             id: doc.id,
             collection: collectionName,
-            collectionDisplayName: collectionDisplayNames[collectionName],
-            status: "Pending",
-            ...data,
-          };
+            ...doc.data(),
+          });
         });
-
-        pendingTransactions.push(...transactions);
       }
 
-      setPendingTransactions(pendingTransactions);
+      // Sort the pending requests by date if needed
+      pendingRequests.sort(
+        (a, b) => b.createdAt?.seconds - a.createdAt?.seconds
+      );
+
+      // Limit to the latest 6 entries
+      const limitedRequests = pendingRequests.slice(0, 6);
+
+      setPendingRequests(limitedRequests);
     } catch (error) {
-      console.error("Error fetching pending transactions: ", error);
+      console.error("Error fetching pending requests: ", error);
     }
   };
 
   useEffect(() => {
-    // Fetch pending transactions when the component mounts
-    fetchPendingTransactions();
+    fetchPendingRequests();
   }, []);
 
   const fetchTransactions = async (timeInterval, customDate) => {
+    let startDate, endDate;
     const currentDate = customDate || new Date();
-    let startDate;
-    let count; // Declare count variable
-
+  
     switch (timeInterval) {
       case "day":
-        startDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate()
-        );
+        startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        endDate = currentDate;
         break;
       case "week":
         startDate = getStartOfWeek(currentDate);
+        endDate = currentDate;
         break;
       case "month":
         startDate = getStartOfMonth(currentDate);
+        endDate = currentDate;
         break;
       case "year":
         startDate = getStartOfYear(currentDate);
+        endDate = currentDate;
+        break;
+      case "previousYear":
+        ({ startDate, endDate } = getStartAndEndOfPreviousYear());
         break;
       default:
         startDate = currentDate;
+        endDate = currentDate;
     }
-
-    const transactions = await getTransactions(startDate, currentDate);
-    count = transactions.length; // Assign a value to count
+  
+    const transactions = await getTransactions(startDate, endDate);
+    const count = transactions.length;
     updateTransactionCount(timeInterval, count);
   };
 
+  useEffect(() => {
+    fetchTransactions("previousYear");
+  }, []);  
+  
   const getStartOfWeek = (date) => {
     const dayOfWeek = date.getDay(); // 0 is Sunday, 1 is Monday, etc.
     const startDate = new Date(date);
@@ -216,8 +218,18 @@ const Dashboard = ({ count }) => {
       where("createdAt", ">=", startDate),
       where("createdAt", "<=", endDate)
     );
+    const marriageRegQuery = query(
+      collection(firestore, "marriage_reg"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
     const marriageCertQuery = query(
       collection(firestore, "marriageCert"),
+      where("createdAt", ">=", startDate),
+      where("createdAt", "<=", endDate)
+    );
+    const deathRegQuery = query(
+      collection(firestore, "death_reg"),
       where("createdAt", ">=", startDate),
       where("createdAt", "<=", endDate)
     );
@@ -238,15 +250,21 @@ const Dashboard = ({ count }) => {
     );
 
     const birthRegSnapshot = await getDocs(birthRegQuery);
+    const marriageRegSnapshot = await getDocs(marriageRegQuery);
     const marriageCertSnapshot = await getDocs(marriageCertQuery);
+    const deathRegSnapshot = await getDocs(deathRegQuery);
     const deathCertSnapshot = await getDocs(deathCertQuery);
     const jobSnapshot = await getDocs(jobQuery);
     const appointmentsSnapshot = await getDocs(appointmentsQuery);
 
     const birthRegTransactions = birthRegSnapshot.docs.map((doc) => doc.data());
+    const marriageRegTransactions = marriageRegSnapshot.docs.map((doc) =>
+      doc.data()
+    );
     const marriageCertTransactions = marriageCertSnapshot.docs.map((doc) =>
       doc.data()
     );
+    const deathRegTransactions = deathRegSnapshot.docs.map((doc) => doc.data());
     const deathCertTransactions = deathCertSnapshot.docs.map((doc) =>
       doc.data()
     );
@@ -257,7 +275,9 @@ const Dashboard = ({ count }) => {
 
     const allTransactions = [
       ...birthRegTransactions,
+      ...marriageRegTransactions,
       ...marriageCertTransactions,
+      ...deathRegTransactions,
       ...deathCertTransactions,
       ...jobTransactions,
       ...appointmentsTransaction,
@@ -284,6 +304,53 @@ const Dashboard = ({ count }) => {
         break;
     }
   };
+
+  const [pendingTransactions, setPendingTransactions] = useState(0);
+
+  useEffect(() => {
+    // Fetch and count pending transactions
+    fetchPendingTransactions();
+  }, []);
+
+  // Function to fetch pending transactions from Firestore
+  const fetchPendingTransactions = async () => {
+    try {
+      // Fetch pending transactions from all collections
+      const collections = [
+        "birth_reg",
+        "marriageCert",
+        "marriage_reg",
+        "death_reg",
+        "deathCert",
+        "job",
+        "appointments",
+      ];
+
+      let totalCount = 0;
+
+      for (const collectionName of collections) {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firestore, collectionName),
+            where("status", "==", "Pending")
+          )
+        );
+
+        totalCount += querySnapshot.size;
+      }
+
+      setPendingTransactions(totalCount);
+    } catch (error) {
+      console.error("Error fetching pending transactions: ", error);
+    }
+  };
+
+  const getStartAndEndOfPreviousYear = () => {
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(currentYear - 1, 0, 1);
+    const endDate = new Date(currentYear - 1, 11, 31, 23, 59, 59);
+    return { startDate, endDate };
+  };  
 
   const chartData = {
     day: {
@@ -474,8 +541,55 @@ const Dashboard = ({ count }) => {
         labels: ["This Year"],
       },
     },
+    pending: {
+      series: [yearTransactions], // Use the previous year transactions count
+      options: {
+        chart: {
+          type: "radialBar",
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 5,
+              size: "50%",
+              background: "transparent",
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: "front",
+            },
+            dataLabels: {
+              name: {
+                show: true,
+                fontSize: "10px",
+                fontWeight: "light",
+                color: "#000",
+                offsetY: -5,
+              },
+              value: {
+                show: true,
+                offsetY: 5,
+                color: "blue",
+                fontSize: "25px",
+                fontWeight: "bold",
+                formatter: function (val) {
+                  return val;
+                },
+              },
+            },
+          },
+        },
+        fill: {
+          colors: ["#FF0000"], // Change the color of the radial bar for pending transactions
+        },
+        labels: ["Previous Years"],
+      },
+    },
   };
-
+  
   // Function to toggle dropdown
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -487,6 +601,16 @@ const Dashboard = ({ count }) => {
     await logout(); // Call the logout function
     history.push("/login"); // Redirect to the login page after logout
     window.scrollTo(0, 0);
+  };
+
+  const collectionNames = {
+    birth_reg: "Birth Registration",
+    marriageCert: "Marriage Certificate",
+    marriage_reg: "Marriage Registration",
+    death_reg: "Death Registration",
+    deathCert: "Death Certificate",
+    job: "Job Application",
+    appointments: "Appointment",
   };
 
   return (
@@ -533,11 +657,14 @@ const Dashboard = ({ count }) => {
         </nav>
 
         <div className="icons">
-          <img
-            src={notification}
-            alt="Notification.png"
-            className="notif-icon"
-          />
+          <a href="notifications">
+            <img
+              src={notification}
+              alt="Notification.png"
+              className="notif-icon"
+            />
+            {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+          </a>
 
           <div className="account-name">
             <h1>{userEmail}</h1>
@@ -549,12 +676,24 @@ const Dashboard = ({ count }) => {
             <div className="modal-content">
               <ul>
                 <li>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    style={{ width: "20px", height: "20px", color: "#307A59" }}
+                  />{" "}
                   <a href="/account-settings">Profile</a>
                 </li>
                 <li>
+                  <FontAwesomeIcon
+                    icon={faHistory}
+                    style={{ width: "20px", height: "20px", color: "#307A59" }}
+                  />{" "}
                   <a href="/history">History</a>
                 </li>
                 <li>
+                  <FontAwesomeIcon
+                    icon={faSignOutAlt}
+                    style={{ width: "20px", height: "20px", color: "#307A59" }}
+                  />{" "}
                   <a onClick={handleLogout}>Logout</a>
                 </li>
               </ul>
@@ -567,144 +706,114 @@ const Dashboard = ({ count }) => {
       </div>
 
       <div className="center">
-        <div className="clock" style={{ marginLeft: "110px" }}>
-          <h4>Good day, It's</h4>
+        <div className="clock" style={{ marginLeft: "40px" }}>
+          <h4>Good day, userName. It's</h4>
           <h2>{formattedTime}</h2>
+        </div>
+
+        <div className="reports"
+          style={{ marginLeft: "560px", marginTop: "-180px" }}
+        >
+          <div className="report">
+            <div className="day">
+              <Chart
+                options={chartData.day.options}
+                series={chartData.day.series}
+                type="radialBar"
+                height="200"
+              />
+            </div>
+            <div className="week">
+              <Chart
+                options={chartData.week.options}
+                series={chartData.week.series}
+                type="radialBar"
+                height="200"
+              />
+            </div>
+            <div className="month">
+              <Chart
+                options={chartData.month.options}
+                series={chartData.month.series}
+                type="radialBar"
+                height="200"
+              />
+            </div>
+            <div className="year">
+              <Chart
+                options={chartData.year.options}
+                series={chartData.year.series}
+                type="radialBar"
+                height="200"
+              />
+            </div>
+            <div className="pending">
+              <Chart
+                options={chartData.pending.options}
+                series={chartData.pending.series}
+                type="radialBar"
+                height="200"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="subhead">
           <div className="columns-container">
             <div className="column">
-              <div style={{ marginLeft: "-180px" }}>Appointments</div>
-              <div className="requests" style={{ marginLeft: "-180px" }}>
-                {data.map((item) => (
-                  <div key={item.id} className="request-item">
+              <div style={{ marginLeft: "-220px", marginTop: "40px" }}>
+                Pending Service Requests
+              </div>
+              <div
+                className="request-list"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  marginLeft: "-220px",
+                  gap: "40px",
+                  marginTop: "20px",
+                }}
+              >
+                {pendingRequests.map((request) => (
+                  <div
+                    key={request.id}
+                    className="request-item"
+                    style={{ width: "450px" }}
+                  >
                     <div className="title">
                       <img src={logo} alt="logo" />
-                      <h5>Appointment</h5>
+                      <h5>{collectionNames[request.collection]}</h5>
                       <h3>
-                        {item.createdAt && item.createdAt.seconds
+                        {request.createdAt && request.createdAt.seconds
                           ? new Date(
-                              item.createdAt.seconds * 1000
+                              request.createdAt.seconds * 1000
                             ).toLocaleDateString()
                           : ""}
                       </h3>
                     </div>
                     <p>
-                      {item.userName} {item.userLastName} requested for{" "}
-                      {item.personnel} from {item.department} for an appointment
-                      on{" "}
-                      {item.date && item.date.seconds
+                      {request.userName} {request.userLastName} requested for{" "}
+                      {request.personnel} from {request.department} for{" "}
+                      {collectionNames[request.collection]} on{" "}
+                      {request.date && request.date.seconds
                         ? new Date(
-                            item.date.seconds * 1000
+                            request.date.seconds * 1000
                           ).toLocaleDateString()
                         : ""}{" "}
                       at{" "}
-                      {item.time && item.time.seconds
+                      {request.time && request.time.seconds
                         ? new Date(
-                            item.time.seconds * 1000
+                            request.time.seconds * 1000
                           ).toLocaleTimeString()
                         : ""}{" "}
-                      regarding {item.reason}. Check the application for
+                      regarding {request.reason}. Check the application for
                       approval.
                     </p>
-                    <a href="./appointments">
-                      <button className="check">Check Now</button>
-                    </a>
+                    <Link to={`/${request.collection}/${request.id}`}>
+                      <button className="check">View Details</button>
+                    </Link>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Second Column */}
-            <div className="column">
-              <div className="reports">
-                <div className="report">
-                  <div className="day">
-                    <Chart
-                      options={chartData.day.options}
-                      series={chartData.day.series}
-                      type="radialBar"
-                      height="200"
-                    />
-                  </div>
-                  <div className="week">
-                    <Chart
-                      options={chartData.week.options}
-                      series={chartData.week.series}
-                      type="radialBar"
-                      height="200"
-                    />
-                  </div>
-                  <div className="month">
-                    <Chart
-                      options={chartData.month.options}
-                      series={chartData.month.series}
-                      type="radialBar"
-                      height="200"
-                    />
-                  </div>
-                  <div className="year">
-                    <Chart
-                      options={chartData.year.options}
-                      series={chartData.year.series}
-                      type="radialBar"
-                      height="200"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="subhead"
-                style={{ marginLeft: "90px", marginTop: "180px" }}
-              >
-                <table className="transaction-table">
-                  <caption
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    LIST OF ALL PENDING TRANSACTIONS
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th style={{ fontSize: "17px" }}>User Name</th>
-                      <th style={{ fontSize: "17px" }}>Service Type</th>
-                      <th style={{ fontSize: "17px" }}>Date of Application</th>
-                      <th style={{ fontSize: "17px" }}>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pendingTransactions
-                      .sort(
-                        (a, b) =>
-                          b.createdAt.toMillis() - a.createdAt.toMillis()
-                      ) // Sort by createdAt timestamp
-                      .map((transactions, index) => (
-                        <tr key={transactions.id}>
-                          <td>{index + 1}</td>
-                          <td style={{ minWidth: "200px", fontSize: "15px" }}>
-                            {transactions.userName || "N/A"}
-                          </td>
-                          <td style={{ minWidth: "200px", fontSize: "15px" }}>
-                            {transactions.collectionDisplayName || "N/A"}
-                          </td>
-                          <td style={{ minWidth: "230px", fontSize: "15px" }}>
-                            {transactions.createdAt &&
-                            transactions.createdAt.toDate
-                              ? transactions.createdAt.toDate().toLocaleString()
-                              : "Invalid Date"}
-                          </td>
-                          <td style={{ minWidth: "150px", fontSize: "15px" }}>
-                            {transactions.status || "N/A"}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
